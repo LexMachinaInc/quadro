@@ -1,0 +1,253 @@
+/*
+
+All grid code is placed in a 'supports' rule (feature query) at the bottom of the CSS (Line 320).
+
+The 'supports' rule will only run if your browser supports CSS grid.
+
+Flexbox is used as a fallback so that browsers which don't support grid will still recieve an identical layout.
+
+*/
+
+/* Base styles */
+
+:root {
+  font-size: 10px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  background-color: #e2e4e6;
+}
+
+.flexContainer {
+  display: flex;
+  font-size: 14px;
+}
+
+.flexSpaceAround {
+  justify-content: space-evenly;
+}
+
+.flexItem {
+  flex: 1;
+}
+.flexStart {
+  justify-content: flex-start;
+}
+.flexEnd {
+  justify-content: flex-end;
+}
+.blueBackground {
+  background: rgb(7, 88, 138);
+}
+.nav {
+  list-style: none;
+}
+.nav a, span {
+  text-decoration: none;
+  display: block;
+  padding: 0 1em;
+  color: white;
+}
+
+.nav button {
+  text-decoration: none;
+  display: block;
+  padding: 0 1em;
+  color: white;
+  background:none!important;
+  border:none;
+  font: inherit;
+  cursor: pointer;
+}
+
+.lists-container {
+  display: flex;
+  align-items: flex-start;
+  padding: 0 0.8rem 0.8rem;
+  overflow-x: auto;
+  height: calc(100vh - 8.6rem);
+  margin-top: 0.8rem;
+}
+
+.list {
+  flex: 0 0 27rem;
+  display: flex;
+  flex-direction: column;
+  background-color: #e2e4e6;
+  max-height: calc(100vh - 11.8rem);
+  border-radius: 0.3rem;
+  margin-right: 1rem;
+}
+
+.list:last-of-type {
+  margin-right: 0;
+}
+
+.list-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #525252;
+  padding: 1rem;
+  text-align: center;
+}
+
+.list-items {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-content: flex-start;
+  padding: 0 0.6rem 0.5rem;
+  overflow-y: auto;
+}
+
+.list-items li {
+  font-size: 1.4rem;
+  font-weight: 400;
+  line-height: 1.3;
+  background-color: #fff;
+  color: #4d4d4d;
+  border-bottom: 0.1rem solid #ccc;
+  border-radius: 0.3rem;
+  margin-bottom: 0.6rem;
+  word-wrap: break-word;
+}
+
+.list-items li:last-of-type {
+  margin-bottom: 0;
+}
+
+.mock-card {
+  width: 260px;
+  height: 100px;
+}
+
+.card {
+  margin-bottom: 5px;
+}
+
+/* Add some padding inside the card container */
+.card-container {
+  padding: 2px 16px;
+}
+
+.issue-number-container {
+  margin-block-start: 0.5em;
+  margin-block-end: 0.5em;
+}
+
+.center {
+  justify-content: center;
+}
+
+.issue-number {
+  text-decoration: none;
+  color: #2278cf;
+}
+
+.issue-number:hover {
+  color: #428bca;
+}
+
+.loader-container {
+  text-align: center;
+  width: 100%;
+  position: absolute;
+  margin-top: 25%;
+}
+
+.labels-container {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.github-label {
+  padding: 5px;
+  margin: 1.5px;
+  font-size: 10px;
+  border-radius: 0.3rem;
+
+  &.light {
+    color: #000;
+  }
+
+  &.dark {
+    color: #fff;
+  }
+}
+
+/*
+
+The following rule will only run if your browser supports CSS grid.
+
+Remove or comment-out the code block below to see how the browser will fall-back to flexbox styling.
+
+*/
+
+@supports (display: grid) {
+  body {
+      display: grid;
+      grid-template-rows: 4rem 3rem auto;
+      grid-row-gap: 0.8rem;
+  }
+
+  .masthead {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      grid-column-gap: 2rem;
+  }
+
+  .boards-menu {
+      display: grid;
+      grid-template-columns: 9rem 18rem;
+      grid-column-gap: 0.8rem;
+  }
+
+  .user-settings {
+      display: grid;
+      grid-template-columns: repeat(4, auto);
+      grid-column-gap: 0.8rem;
+  }
+
+  .board-controls {
+      display: grid;
+      grid-auto-flow: column;
+      grid-column-gap: 1rem;
+  }
+
+  .lists-container {
+      display: grid;
+      grid-auto-columns: 27rem;
+      grid-auto-flow: column;
+      grid-column-gap: 1rem;
+  }
+
+  .list {
+      display: grid;
+      grid-template-rows: auto minmax(auto, 1fr) auto;
+  }
+
+  .list-items {
+      display: grid;
+      grid-row-gap: 0.6rem;
+  }
+
+  .logo,
+  .list,
+  .list-items,
+  .boards-btn,
+  .board-controls .btn,
+  .user-settings-btn {
+      margin: 0;
+  }
+}
+
