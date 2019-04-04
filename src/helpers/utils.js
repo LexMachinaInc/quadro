@@ -81,3 +81,11 @@ export function lightOrDark(color) {
   return hsp > 127.5 ? "light" : "dark";
 }
 
+export function extractInfo(data) {
+  return {
+    user: data.login,
+    avatar: data.avatar_url,
+    userPage: data.html_url
+  }
+}
+

@@ -3,10 +3,8 @@ import DashBoard from "./components/DashBoard";
 import Logout from "./components/Logout";
 import Home from './components/Home';
 import Board from './components/Board';
-import { getCookie, setCookie } from "./helpers/cookies";
-import qs from "querystring";
-import axios from "axios";
-import { parseIssuesData, organizeDataIntoStatusBuckets, removePullRequests } from "./helpers/utils";
+import { getToken } from "./helpers/authorization";
+import { fetchUserIssues, fetchUserInfo } from "./helpers/github";
 import loader from "./assets/green-loader-icon.gif";
 
 export default class App extends Component {
@@ -17,54 +15,29 @@ export default class App extends Component {
 
   async componentDidMount() {
     if (!this.state.data) {
-      const token = await this.getToken();
+      const token = await getToken();
       if (token) {
-        this.fetchIssues(token);
+        this.initializeBoard(token);
       }
     }
   }
 
-  getToken() {
-    const quadro = getCookie("quadro");
-    if (quadro != null) {
-      return quadro;
-    } else {
-      return axios("/authenticated")
-        .then(resp => resp.data)
-        .then(({ token }) => {
-          if (token) {
-            setCookie("quadro", token, 14)
-            return token;
-          }
-        })
-        .catch(err => console.log(err));
-    }
-  }
-
-  fetchIssues(token) {
-    this.setState({loading: true})
-    const issuesUrl = `https://api.github.com/orgs/LexMachinaInc/issues?${
-      qs.stringify({
-        filter: 'assigned',
-        state: 'open',
-        access_token: token
-      })}`;
-
-    return axios.get(issuesUrl)
-      .then(data => data.data)
-      .then(removePullRequests)
-      .then(parseIssuesData)
-      .then(organizeDataIntoStatusBuckets)
-      .then(data => this.setState({data, loading: false}))
-      .catch(error => {
-        console.log(error);
-        this.setState({loading: false});
-      });
+  initializeBoard(token) {
+    this.setState({ loading: true }, async () => {
+      const user = fetchUserInfo(token);
+      const issues = fetchUserIssues(token);
+      const [userData, issueData] = await Promise.all([user, issues]);
+      if (userData && issueData) {
+        this.setState({ data: { user: userData, issues: issueData}, loading: false })
+      } else {
+        this.setState({ loading: false })
+      }
+    })
   }
 
   render() {
     const { data, loading } = this.state;
-    const logBtn = data ? <Logout /> : <a href="/login">Login</a>;
+    const logBtn = data && data.issues ? <Logout /> : <a href="/login">Login</a>;
 
     if (loading) {
       return (
@@ -74,12 +47,13 @@ export default class App extends Component {
         </div>
       )
     } else {
+      const user = data && data.user ? { user: data.user } : {};
       return (
         <div id="container" className="wrapper">
           <div>
-            <DashBoard action={logBtn} />
+            <DashBoard action={logBtn} { ...user } />
             <div className="box">
-              {data ? <Board data={data} /> : <Home /> }
+              {data && data.issues ? <Board data={data.issues} /> : <Home /> }
             </div>
           </div>
         </div>

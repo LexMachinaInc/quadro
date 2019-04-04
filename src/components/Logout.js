@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { deleteCookie } from "../helpers/cookies";
+import { deleteCookie } from "../helpers/authorization";
 import '../App.scss';
 
 export default class Logout extends Component {

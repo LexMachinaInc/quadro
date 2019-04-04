@@ -30,6 +30,9 @@ body {
 .flexContainer {
   display: flex;
   font-size: 14px;
+  align-items: center;
+  padding: 2px;
+  height: 78px;
 }
 
 .flexSpaceAround {
@@ -51,7 +54,7 @@ body {
 .nav {
   list-style: none;
 }
-.nav a, span {
+.nav a:not(.user-profile), span {
   text-decoration: none;
   display: block;
   padding: 0 1em;
@@ -123,6 +126,15 @@ body {
 
 .list-items li:last-of-type {
   margin-bottom: 0;
+}
+
+.user-profile {
+  display: flex;
+}
+
+.user-avatar {
+  height: 42px;
+  border-radius: 50%;
 }
 
 .mock-card {
