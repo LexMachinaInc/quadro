@@ -1,9 +1,13 @@
 import React from 'react';
-import { Element, shape, arrayOf } from 'prop-types';
+import { Element, shape, arrayOf, func } from 'prop-types';
 import '../App.scss';
 
-export default function DashBoard ({ action, data }) {
-  const { user, members } = data;
+export default function DashBoard ({ handlers, action, data }) {
+  const { user, members, board } = data;
+  const onChangeHandler = (e) => {
+    const value = e.target.value;
+    handlers.changeMemberBoard(value);
+  }
   return (
     <nav className="flexContainer blueBackground">
       <ul className="nav flexItem flexStart">
@@ -13,7 +17,7 @@ export default function DashBoard ({ action, data }) {
         <ul className="nav flexItem flexStart">
           <li className="member-dropdown">
             <label class="member-select-label" for="member-select">Board:</label>
-            <select id="member-select" className="select-css" value={user.user}>
+            <select onChange={onChangeHandler} id="member-select" className="select-css" value={board.member}>
               {members.map((mem) => (
                 <option value={mem.login}>{mem.login}</option>
               ))}
@@ -37,6 +41,9 @@ DashBoard.defaultProps = {
 }
 
 DashBoard.propTypes = {
+  handlers: shape({
+    changeMemberBoard: func,
+  }),
   action: Element.isRequired,
   data: shape({
     user: shape({}),
