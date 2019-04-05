@@ -72,6 +72,10 @@ body {
   cursor: pointer;
 }
 
+.logo-title {
+  width: 100px;
+}
+
 .lists-container {
   display: flex;
   align-items: flex-start;
@@ -137,6 +141,18 @@ body {
   border-radius: 50%;
 }
 
+.assignee-avatar {
+  height: 20px;
+  margin: 2px;
+}
+
+.assignee-avatar-container {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+  margin-top: 4px;
+}
+
 .mock-card {
   width: 260px;
   height: 100px;
@@ -149,6 +165,10 @@ body {
 /* Add some padding inside the card container */
 .card-container {
   padding: 2px 16px;
+}
+
+.card-header {
+  display: flex;
 }
 
 .issue-number-container {

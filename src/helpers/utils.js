@@ -5,6 +5,12 @@ function getIssueState(labels) {
   return labelObj ? parseInt(labelObj.name[0], 10) : null;
 }
 
+function getAssignees(assignees) {
+  return assignees.map((assignee) => (
+    { name: assignee.login, avatar: assignee.avatar_url }
+  ));
+}
+
 export function organizeDataIntoStatusBuckets(data) {
   return data.reduce((result, issue) => {
     const status = issue.status || 0;
@@ -27,7 +33,7 @@ export function parseIssuesData(issues) {
       milestone,
       number: issueNumber,
       comments,
-      user: { avatar_url: createdByAvatar },
+      assignees,
     } = issue;
 
     return {
@@ -38,7 +44,7 @@ export function parseIssuesData(issues) {
       milestone,
       issueNumber,
       comments,
-      createdByAvatar,
+      assignees: getAssignees(assignees),
       status: getIssueState(labels)
     };
   });

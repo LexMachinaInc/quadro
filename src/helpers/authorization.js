@@ -35,4 +35,17 @@ export function getToken() {
   }
 }
 
+export function logOut(e) {
+  e.preventDefault();
+  deleteCookie("quadro");
+  fetch('/logout')
+    .then(resp => resp.json())
+    .then((resp) => {
+      if (resp.logout === 'success') {
+        window.location.replace('/');
+      }
+    });
+}
+
+
 
