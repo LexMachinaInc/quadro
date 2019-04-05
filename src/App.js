@@ -4,7 +4,7 @@ import Logout from "./components/Logout";
 import Home from './components/Home';
 import Board from './components/Board';
 import { getToken } from "./helpers/authorization";
-import { fetchUserIssues, fetchUserInfo } from "./helpers/github";
+import { fetchUserIssues, fetchUserInfo, fetchLexMachinaMembers } from "./helpers/github";
 import loader from "./assets/green-loader-icon.gif";
 
 export default class App extends Component {
@@ -26,9 +26,10 @@ export default class App extends Component {
     this.setState({ loading: true }, async () => {
       const user = fetchUserInfo(token);
       const issues = fetchUserIssues(token);
-      const [userData, issueData] = await Promise.all([user, issues]);
+      const members = fetchLexMachinaMembers(token);
+      const [userData, issueData, membersData] = await Promise.all([user, issues, members]);
       if (userData && issueData) {
-        this.setState({ data: { user: userData, issues: issueData}, loading: false })
+        this.setState({ data: { user: userData, issues: issueData, members: membersData }, loading: false })
       } else {
         this.setState({ loading: false })
       }

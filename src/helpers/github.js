@@ -37,3 +37,19 @@ export function fetchUserInfo(token) {
       return null;
     });
 }
+
+export function fetchLexMachinaMembers(token) {
+  const membersUrl = `https://api.github.com/orgs/LexMachinaInc/members?${
+    qs.stringify({
+      access_token: token,
+      per_page: 50,
+    })}`;
+
+  return axios.get(membersUrl)
+    .then(data => data.data)
+    .then(data => data)
+    .catch(error => {
+      console.log(error);
+      return null;
+    });
+}
