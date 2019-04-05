@@ -4,7 +4,7 @@ import Logout from "./components/Logout";
 import Home from './components/Home';
 import Board from './components/Board';
 import { getToken } from "./helpers/authorization";
-import { fetchUserIssues, fetchUserInfo, fetchLexMachinaMembers } from "./helpers/github";
+import { fetchUserIssues, fetchUserInfo, fetchLexMachinaMembers, fetchMemberIssues } from "./helpers/github";
 import loader from "./assets/green-loader-icon.gif";
 
 export default class App extends Component {
@@ -50,7 +50,15 @@ export default class App extends Component {
       board: { member }
     };
 
-    this.setState({ data });
+    this.setState({ data, loading: true }, async () => {
+      const token = await getToken();
+      const issues = await fetchMemberIssues(member, token);
+      const data = {
+        ...this.state.data,
+        issues,
+      };
+      this.setState({ data, loading: false })
+    });
 
   }
 
@@ -66,17 +74,24 @@ export default class App extends Component {
       changeMemberBoard: this.changeMemberBoard.bind(this),
     };
 
-    if (loading) {
+    if (loading && !data) {
       return (
         <div>
           <DashBoard action={<span>Logging in ...</span>} />
           <div className="loader-container"><img src={loader}></img></div>
         </div>
       )
+    } else if (loading) {
+      return (
+        <div>
+          <DashBoard handlers={handlers} action={logBtn} data={ { user, members, board } } />
+          <div className="loader-container"><img src={loader}></img></div>
+        </div>
+      )
     } else {
       return (
         <div id="container" className="wrapper">
-          <div>s
+          <div>
             <DashBoard handlers={handlers} action={logBtn} data={ { user, members, board } } />
             <div className="box">
               {issues ? <Board data={issues} /> : <Home /> }

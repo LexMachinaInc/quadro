@@ -1,11 +1,11 @@
 const LABELS = new Set(['0 - Backlog', '1 - Ready', '2 - Working', '3 - Done']);
 
-function getIssueState(labels) {
+function getIssueState(labels = []) {
   const labelObj = labels.find(label => LABELS.has(label.name));
   return labelObj ? parseInt(labelObj.name[0], 10) : null;
 }
 
-function getAssignees(assignees) {
+function getAssignees(assignees = []) {
   return assignees.map((assignee) => (
     { name: assignee.login, avatar: assignee.avatar_url }
   ));
@@ -95,3 +95,6 @@ export function extractInfo(data) {
   }
 }
 
+export function consolidateMembers(members) {
+  return members.reduce((result, next) => result.concat(next), []);
+}
