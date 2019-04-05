@@ -72,6 +72,10 @@ body {
   cursor: pointer;
 }
 
+.add-border-black {
+  border: 0.5px solid #000;
+}
+
 .logo-title {
   width: 100px;
 }
@@ -151,6 +155,7 @@ body {
   width: 100%;
   justify-content: flex-end;
   margin-top: 4px;
+  padding: 0;
 }
 
 .mock-card {
@@ -165,6 +170,10 @@ body {
 /* Add some padding inside the card container */
 .card-container {
   padding: 2px 16px;
+
+  p {
+    word-break: break-word;
+  }
 }
 
 .card-header {

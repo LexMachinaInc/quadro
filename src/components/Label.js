@@ -3,12 +3,10 @@ import { lightOrDark } from "../helpers/utils";
 
 export default function Label({ labels }) {
   return labels.map(label => {
-    if (label.name.includes("zube")) {
-      return null;
-    }
     const background = lightOrDark(label.color);
+    const borderClass = label.color === "ffffff" ? "add-border-black" : "";
     return (
-      <span className={`github-label ${background}`} style={{
+      <span className={`github-label ${background} ${borderClass}`} style={{
         backgroundColor: `#${label.color}`
       }}
       >
