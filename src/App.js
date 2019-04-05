@@ -38,7 +38,10 @@ export default class App extends Component {
 
   render() {
     const { data, loading } = this.state;
-    const logBtn = data && data.issues ? <Logout /> : <a href="/login">Login</a>;
+    const user = data && data.user;
+    const members = data && data.members;
+    const issues = data && data.issues;
+    const logBtn = user || members || issues ? <Logout /> : <a href="/login">Login</a>;
 
     if (loading) {
       return (
@@ -48,13 +51,12 @@ export default class App extends Component {
         </div>
       )
     } else {
-      const user = data && data.user ? { user: data.user } : {};
       return (
         <div id="container" className="wrapper">
           <div>
-            <DashBoard action={logBtn} { ...user } />
+            <DashBoard action={logBtn} data={ { user, members } } />
             <div className="box">
-              {data && data.issues ? <Board data={data.issues} /> : <Home /> }
+              {issues ? <Board data={issues} /> : <Home /> }
             </div>
           </div>
         </div>
