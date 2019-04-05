@@ -24,8 +24,8 @@ Board.propTypes = {
 }
 
 Board.statusMap = {
-  0: '0 - Backlog',
-  1: '1 - Ready',
-  2: '2 - Working',
-  3: '3 - Done',
+  0: 'Backlog',
+  1: 'Ready',
+  2: 'In Progress',
+  3: 'Done',
 }

@@ -1,8 +1,21 @@
-const LABELS = new Set(['0 - Backlog', '1 - Ready', '2 - Working', '3 - Done']);
+const ZUBE_LABELS = {
+  "[zube]: Backlog": 0,
+  "[zube]: Ready": 1,
+  "[zube]: In Progress": 2,
+  "[zube]: Done": 3,
+};
+
+const WAFFLE_LABELS = new Set(["0 - Backlog", "1 - Ready", "2 - Working", "3 - Done"]);
 
 function getIssueState(labels = []) {
-  const labelObj = labels.find(label => LABELS.has(label.name));
-  return labelObj ? parseInt(labelObj.name[0], 10) : null;
+  const zubeLabelObj = labels.find(label => label.name in ZUBE_LABELS);
+  const waffleLabelObj = labels.find(label => WAFFLE_LABELS.has(label.name));
+  if (zubeLabelObj) {
+    return ZUBE_LABELS[zubeLabelObj.name];
+  } else if (waffleLabelObj) {
+    return parseInt(waffleLabelObj.name[0], 10)
+  }
+  return null;
 }
 
 function getAssignees(assignees = []) {
