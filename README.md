@@ -10,7 +10,7 @@ To get this app working locally, you'll need to:
 
 1. Clone this repo
 2. Run npm install
-3. Create a Github Oauth App
+3. Create a [Github Oauth App](https://developer.github.com/apps/building-oauth-apps/creating-an-oauth-app/)
    * Set the home page in the App to `http://localhost:8080`
    * Set the redirect URL to `http://localhost:8080/oauth/redirect`
 4. create an `.env` file in the root and add the following:
@@ -25,6 +25,10 @@ REDIRECT_URL='http://localhost:8080/oauth/redirect'
 To run this locally for UI changes, you can run just `npm start`, which will start up a local dev server. But you won't be able to make any API requests to Github or authenticate.
 
 To authenticate, you'll have to run `node server` in one tab, and in another `npm run build`.
+
+## Development
+
+Any work that you'd like to push to the repo, please do so in a branch off of `master`via a pull request. Assign the PR to `@wired4code`.
 
 ## Available Scripts
 
