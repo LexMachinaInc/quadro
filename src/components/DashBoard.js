@@ -13,20 +13,18 @@ export default function DashBoard ({ handlers, action, data }) {
       <ul className="nav flexItem flexStart">
           <li className="logo-title"><a href="/"><strong>QUADRO</strong></a></li>
       </ul>
-      { members ? (
-        <ul className="nav flexItem flexStart">
-          <li className="member-dropdown">
-            <label class="member-select-label" for="member-select">Board:</label>
-            <select onChange={onChangeHandler} id="member-select" className="select-css" value={board.member}>
-              {members.map((mem) => (
-                <option value={mem.login}>{mem.login}</option>
-              ))}
-            </select>
-          </li>
-        </ul>
-      ) : null }
       <ul className="nav flexContainer flexEnd">
-        { user ? <a className="user-profile" href={user.userPage} target="_blank" rel="noopener noreferrer"><img className="user-avatar" src={user.avatar}></img></a> : null}
+        { members ? (
+            <li className="member-dropdown">
+              <label class="member-select-label" for="member-select">Board:</label>
+              <select onChange={onChangeHandler} id="member-select" className="select-css" value={board.member}>
+                {members.map((mem) => (
+                  <option value={mem.login}>{mem.login}</option>
+                ))}
+              </select>
+            </li>
+        ) : null }
+        { user ? <li><a className="user-profile" href={user.userPage} target="_blank" rel="noopener noreferrer"><img className="user-avatar" src={user.avatar}></img></a></li> : null}
         <li>{action}</li>
       </ul>
     </nav>
