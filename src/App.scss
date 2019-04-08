@@ -163,6 +163,19 @@ body {
   height: 100px;
 }
 
+.empty-board {
+  width: 300px;
+  height: 250px;
+  background: white;
+  margin-top: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  color: #07588a;
+  border-radius: 1%;
+}
+
 .card {
   margin-bottom: 5px;
 }

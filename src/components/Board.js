@@ -2,18 +2,23 @@ import React from 'react';
 import { arrayOf, shape } from "prop-types";
 import '../App.scss';
 import CardContainer from './CardContainer';
+import EmptyBoard from "./EmptyBoard";
+
+function hasData(data) {
+  return data.some((bucket) => bucket.length > 0);
+}
 
 export default function Board({ data}) {
   return (
     <div>
       <section className="lists-container center">
-        {data.map((bucket, idx) => (
+        {hasData(data) ? data.map((bucket, idx) => (
           <CardContainer
             key={Board.statusMap[idx]}
             title={Board.statusMap[idx]}
             issues={bucket}
           />
-        ))}
+        )) : <EmptyBoard />}
       </section>
     </div>
   );
