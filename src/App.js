@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import ApolloClient from "apollo-boost";
+import { ApolloProvider } from "react-apollo";
+import { gql } from "apollo-boost";
 import DashBoard from "./components/DashBoard";
 import Logout from "./components/Logout";
 import Home from './components/Home';
@@ -7,19 +10,48 @@ import { getToken } from "./helpers/authorization";
 import { fetchUserIssues, fetchUserInfo, fetchLexMachinaMembers, fetchMemberIssues } from "./helpers/github";
 import loader from "./assets/green-loader-icon.gif";
 
+const client = new ApolloClient({
+  uri: "https://api.github.com/graphql",
+  request: async operation => {
+    const token = await getToken();
+    if (token) {
+      operation.setContext({
+        headers: {
+          authorization: `Bearer ${token}`
+        }
+      });
+    }
+  }
+});
+
 export default class App extends Component {
   state = {
-    data: null,
-    loading: false,
+    status: "initial",
   }
 
   async componentDidMount() {
-    if (!this.state.data) {
-      const token = await getToken();
-      if (token) {
-        this.initializeBoard(token);
-      }
+    const token = await getToken();
+    if (token) {
+      this.setState( { status: "authenticated" });
     }
+    // client
+    //   .query({
+    //     query: gql`
+    //       {
+    //         viewer {
+    //           avatarUrl
+    //         }
+    //       }
+    //     `
+    //   })
+    //   .then(result => console.log(result))
+
+    // if (!this.state.data) {
+    //   const token = await getToken();
+    //   if (token) {
+    //     this.initializeBoard(token);
+    //   }
+    // }
   }
 
   initializeBoard(token) {
@@ -63,42 +95,59 @@ export default class App extends Component {
   }
 
   render() {
-    //TODO: restructure this to use destructuring with defaults
-    const { data, loading } = this.state;
-    const user = data && data.user;
-    const members = data && data.members;
-    const issues = data && data.issues;
-    const board = data && data.board;
-    const logBtn = user || members || issues ? <Logout /> : <a href="/login">Login</a>;
-    const handlers = {
-      changeMemberBoard: this.changeMemberBoard.bind(this),
-    };
-
-    if (loading && !data) {
-      return (
-        <div>
-          <DashBoard action={<span>Logging in ...</span>} />
-          <div className="loader-container"><img src={loader}></img></div>
-        </div>
-      )
-    } else if (loading) {
-      return (
-        <div>
-          <DashBoard handlers={handlers} action={logBtn} data={ { user, members, board } } />
-          <div className="loader-container"><img src={loader}></img></div>
-        </div>
-      )
-    } else {
-      return (
+    const { status } = this.state;
+    const logBtn = status === "authenticated" ? <Logout /> : <a href="/login">Login</a>;
+    return (
+      <ApolloProvider client={client}>
         <div id="container" className="wrapper">
           <div>
-            <DashBoard handlers={handlers} action={logBtn} data={ { user, members, board } } />
-            <div className="box">
-              {issues ? <Board data={issues} /> : <Home /> }
-            </div>
+            <DashBoard  action={logBtn} status={status} />
+            {/* <div className="box">
+              { status === "authenticated" ? <Board /> : <Home /> }
+            </div> */}
           </div>
         </div>
-      );
-    }
+      </ApolloProvider>
+    );
+
+
+
+    //TODO: restructure this to use destructuring with defaults
+    // const { data, loading } = this.state;
+    // const user = data && data.user;
+    // const members = data && data.members;
+    // const issues = data && data.issues;
+    // const board = data && data.board;d
+    // const logBtn = user || members || issues ? <Logout /> : <a href="/login">Login</a>;
+    // const handlers = {
+    //   changeMemberBoard: this.changeMemberBoard.bind(this),
+    // };
+
+    // if (loading && !data) {
+    //   return (
+    //     <div>
+    //       <DashBoard action={<span>Logging in ...</span>} />
+    //       <div className="loader-container"><img src={loader}></img></div>
+    //     </div>
+    //   )
+    // } else if (loading) {
+    //   return (
+    //     <div>
+    //       <DashBoard handlers={handlers} action={logBtn} data={ { user, members, board } } />
+    //       <div className="loader-container"><img src={loader}></img></div>
+    //     </div>
+    //   )
+    // } else {
+    //   return (
+        // <div id="container" className="wrapper">
+        //   <div>
+        //     <DashBoard handlers={handlers} action={logBtn} data={ { user, members, board } } />
+        //     <div className="box">
+        //       {issues ? <Board data={issues} /> : <Home /> }
+        //     </div>
+        //   </div>
+        // </div>
+    //   );
+    // }
   }
 }
