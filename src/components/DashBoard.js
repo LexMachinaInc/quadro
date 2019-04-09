@@ -1,23 +1,15 @@
 import React from 'react';
-import { gql } from "apollo-boost";
 import { Query } from "react-apollo";
+import { DASHBOARD_DATA } from "../helpers/github";
 import { Element, shape, arrayOf, func, string } from 'prop-types';
 import '../App.scss';
 
-const GET_AVATAR = gql`
-  query {
-    viewer {
-      avatarUrl
-      login
-    }
-  }`;
+export default function DashBoard ({ action, status, handlers, member }) {
+  const onChangeHandler = (e) => {
+    const value = e.target.value;
+    handlers.changeMemberBoard(value);
+  };
 
-export default function DashBoard ({ action, status }) {
-  // const { user, members, board } = data;
-  // const onChangeHandler = (e) => {
-  //   const value = e.target.value;
-  //   handlers.changeMemberBoard(value);
-  // }
   return (
     <nav className="flexContainer blueBackground">
       <ul className="nav flexItem flexStart">
@@ -25,11 +17,25 @@ export default function DashBoard ({ action, status }) {
       </ul>
       <ul className="nav flexContainer flexEnd">
         { status === "authenticated" ? (
-          <Query query={GET_AVATAR}>
+          <Query query={DASHBOARD_DATA}>
             {({ loading, error, data }) => {
+
               if (loading) return null;
               if (error) return <span>Error :(</span>;
+
+              const members = data.repository.assignableUsers.nodes;
+              const currentMember = member || data.viewer.login;
+
               return (
+                <React.Fragment>
+                  <li className="member-dropdown">
+                    <label class="member-select-label" for="member-select">Board:</label>
+                    <select onChange={onChangeHandler} id="member-select" className="select-css" value={currentMember}>
+                      {members.map((mem) => (
+                        <option value={mem.login}>{mem.login}</option>
+                      ))}
+                    </select>
+                  </li>
                   <li>
                     <a
                       className="user-profile"
@@ -42,6 +48,7 @@ export default function DashBoard ({ action, status }) {
                         </img>
                       </a>
                   </li>
+                </React.Fragment>
               )
             }}
           </Query>

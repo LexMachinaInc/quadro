@@ -5,7 +5,11 @@ import '../App.scss';
 
 export default function Card({ issue }) {
   const {
-    number, url, title, labels: { nodes: issueLabels }, assignees: { edges: issueAssignees },
+    number,
+    url,
+    title,
+    labels: { nodes: issueLabels },
+    assignees: { edges: issueAssignees },
   } = issue;
   return (
     <div className="card">
@@ -21,7 +25,15 @@ export default function Card({ issue }) {
                 {number}
             </a>
           </h4>
-          <span className="assignee-avatar-container">{issueAssignees.map((assignee) => <img className="assignee-avatar" src={assignee.node.avatarUrl} title={assignee.node.login} alt={assignee.node.login}></img>)}</span>
+          <span className="assignee-avatar-container">
+            {issueAssignees.map((assignee) =>
+              <img
+                className="assignee-avatar"
+                src={assignee.node.avatarUrl}
+                title={assignee.node.login}
+                alt={assignee.node.login}></img>
+            )}
+          </span>
         </div>
         <p>{title}</p>
         <div class="labels-container"><Label labels={issueLabels} /></div>

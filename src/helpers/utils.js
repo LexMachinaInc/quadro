@@ -18,12 +18,6 @@ export function getIssueState(labels = []) {
   return 0;
 }
 
-function getAssignees(assignees = []) {
-  return assignees.map((assignee) => (
-    { name: assignee.login, avatar: assignee.avatar_url }
-  ));
-}
-
 export function organizeDataIntoStatusBuckets(data) {
   return data.reduce((result, issue) => {
     const status = issue.status || 0;
@@ -32,36 +26,6 @@ export function organizeDataIntoStatusBuckets(data) {
   }, [[], [], [], []]);
 }
 
-export function removePullRequests(issues) {
-  return issues.filter((issue) => !("pull_request" in issue))
-}
-
-export function parseIssuesData(issues) {
-  return issues.map((issue) => {
-    const {
-      title,
-      created_at: created,
-      html_url: issueUrl,
-      labels,
-      milestone,
-      number: issueNumber,
-      comments,
-      assignees,
-    } = issue;
-
-    return {
-      title,
-      created,
-      issueUrl,
-      labels,
-      milestone,
-      issueNumber,
-      comments,
-      assignees: getAssignees(assignees),
-      status: getIssueState(labels)
-    };
-  });
-}
 
 export function lightOrDark(color) {
 
@@ -98,16 +62,4 @@ export function lightOrDark(color) {
 
   // Using the HSP value, determine whether the color is light or dark
   return hsp > 127.5 ? "light" : "dark";
-}
-
-export function extractInfo(data) {
-  return {
-    user: data.login,
-    avatar: data.avatar_url,
-    userPage: data.html_url
-  }
-}
-
-export function consolidateMembers(members) {
-  return members.reduce((result, next) => result.concat(next), []);
 }
