@@ -10,7 +10,7 @@ export default function CardContainer({ title, issues }) {
       <ul className="list-items">
         {issues.map(issue => (
           <li>
-            <Card key={issue.issueNumber} issue={issue} />
+            <Card key={issue.number} issue={issue} />
           </li>
         ))}
       </ul>

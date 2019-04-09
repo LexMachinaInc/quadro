@@ -4,7 +4,6 @@ import MockCard from "./MockCard";
 
 export default function Home() {
   const titles = ["Backlog", "Ready", "In Progress", "Done"];
-  const cards = [3, 7, 4, 10];
   return (
     <div>
       <section className="lists-container center">

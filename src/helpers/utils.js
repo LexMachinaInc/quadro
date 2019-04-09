@@ -7,7 +7,7 @@ const ZUBE_LABELS = {
 
 const WAFFLE_LABELS = new Set(["0 - Backlog", "1 - Ready", "2 - Working", "3 - Done"]);
 
-function getIssueState(labels = []) {
+export function getIssueState(labels = []) {
   const zubeLabelObj = labels.find(label => label.name in ZUBE_LABELS);
   const waffleLabelObj = labels.find(label => WAFFLE_LABELS.has(label.name));
   if (zubeLabelObj) {
@@ -15,13 +15,7 @@ function getIssueState(labels = []) {
   } else if (waffleLabelObj) {
     return parseInt(waffleLabelObj.name[0], 10)
   }
-  return null;
-}
-
-function getAssignees(assignees = []) {
-  return assignees.map((assignee) => (
-    { name: assignee.login, avatar: assignee.avatar_url }
-  ));
+  return 0;
 }
 
 export function organizeDataIntoStatusBuckets(data) {
@@ -32,36 +26,6 @@ export function organizeDataIntoStatusBuckets(data) {
   }, [[], [], [], []]);
 }
 
-export function removePullRequests(issues) {
-  return issues.filter((issue) => !("pull_request" in issue))
-}
-
-export function parseIssuesData(issues) {
-  return issues.map((issue) => {
-    const {
-      title,
-      created_at: created,
-      html_url: issueUrl,
-      labels,
-      milestone,
-      number: issueNumber,
-      comments,
-      assignees,
-    } = issue;
-
-    return {
-      title,
-      created,
-      issueUrl,
-      labels,
-      milestone,
-      issueNumber,
-      comments,
-      assignees: getAssignees(assignees),
-      status: getIssueState(labels)
-    };
-  });
-}
 
 export function lightOrDark(color) {
 
@@ -98,16 +62,4 @@ export function lightOrDark(color) {
 
   // Using the HSP value, determine whether the color is light or dark
   return hsp > 127.5 ? "light" : "dark";
-}
-
-export function extractInfo(data) {
-  return {
-    user: data.login,
-    avatar: data.avatar_url,
-    userPage: data.html_url
-  }
-}
-
-export function consolidateMembers(members) {
-  return members.reduce((result, next) => result.concat(next), []);
 }
