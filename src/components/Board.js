@@ -16,7 +16,7 @@ export default function Board( { member }) {
   return (
     <div>
       <section className="lists-container center">
-        <Query query={GET_BOARD_DATA(member)}>
+        <Query query={GET_BOARD_DATA} variables={{ member }}>
           {({ loading, error, data }) => {
             if (loading) {
               return (
