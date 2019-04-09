@@ -148,6 +148,7 @@ body {
 .assignee-avatar {
   height: 20px;
   margin: 2px;
+  border-radius: 10%;
 }
 
 .assignee-avatar-container {
@@ -226,7 +227,7 @@ body {
 
 .github-label {
   padding: 5px;
-  margin: 1.5px;
+  margin: 2px;
   font-size: 10px;
   border-radius: 0.3rem;
 
@@ -236,6 +237,7 @@ body {
 
   &.dark {
     color: #fff;
+    font-weight: 700;
   }
 }
 
