@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "react-apollo";
 import { gql } from "apollo-boost";
+import { Query } from "react-apollo";
 import DashBoard from "./components/DashBoard";
 import Logout from "./components/Logout";
 import Home from './components/Home';
@@ -27,24 +28,23 @@ const client = new ApolloClient({
 export default class App extends Component {
   state = {
     status: "initial",
+    member: undefined,
   }
 
   async componentDidMount() {
     const token = await getToken();
     if (token) {
-      this.setState( { status: "authenticated" });
+      client
+        .query({
+          query: gql`
+          query {
+            viewer {
+              login
+            }
+          }`
+        })
+        .then(result => this.setState( { status: "authenticated", member: result.data.viewer.login }));
     }
-    // client
-    //   .query({
-    //     query: gql`
-    //       {
-    //         viewer {
-    //           avatarUrl
-    //         }
-    //       }
-    //     `
-    //   })
-    //   .then(result => console.log(result))
 
     // if (!this.state.data) {
     //   const token = await getToken();
@@ -102,9 +102,9 @@ export default class App extends Component {
         <div id="container" className="wrapper">
           <div>
             <DashBoard  action={logBtn} status={status} />
-            {/* <div className="box">
-              { status === "authenticated" ? <Board /> : <Home /> }
-            </div> */}
+            <div className="box">
+              { status === "authenticated" ? <Board member={this.state.member} /> : <Home /> }
+            </div>
           </div>
         </div>
       </ApolloProvider>

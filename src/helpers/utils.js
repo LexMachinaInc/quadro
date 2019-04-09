@@ -7,7 +7,7 @@ const ZUBE_LABELS = {
 
 const WAFFLE_LABELS = new Set(["0 - Backlog", "1 - Ready", "2 - Working", "3 - Done"]);
 
-function getIssueState(labels = []) {
+export function getIssueState(labels = []) {
   const zubeLabelObj = labels.find(label => label.name in ZUBE_LABELS);
   const waffleLabelObj = labels.find(label => WAFFLE_LABELS.has(label.name));
   if (zubeLabelObj) {
@@ -15,7 +15,7 @@ function getIssueState(labels = []) {
   } else if (waffleLabelObj) {
     return parseInt(waffleLabelObj.name[0], 10)
   }
-  return null;
+  return 0;
 }
 
 function getAssignees(assignees = []) {
