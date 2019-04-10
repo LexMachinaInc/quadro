@@ -6,6 +6,7 @@ import '../App.scss';
 
 export default function DashBoard ({ action, status, handlers, member, members, avatar }) {
   const onChangeHandler = (e) => {
+    e.currentTarget.blur();
     const value = e.target.value;
     handlers.changeMemberBoard(value);
   };

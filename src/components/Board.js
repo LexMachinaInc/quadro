@@ -17,9 +17,9 @@ export default function Board( { member }) {
   return (
     <div>
       <Query query={GET_BOARD_DATA} variables={{ member, end: null }} notifyOnNetworkStatusChange>
-        {({ loading, error, data, fetchMore, refetch, networkStatus }) => {
+        {({ loading, error, data, fetchMore, refetch }) => {
 
-          if (loading || networkStatus === 4) return <Loader />;
+          if (loading) return <Loader />;
           if (error) return <EmptyBoard />;
 
           const { hasNextPage, endCursor} = data.repository.issues.pageInfo;

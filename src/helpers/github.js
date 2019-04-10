@@ -36,7 +36,7 @@ export const DASHBOARD_DATA = gql`
 export const GET_BOARD_DATA = gql`
   query board($member: String!, $end: String) {
     repository(owner: "LexMachinaInc", name:"deus_lex") {
-      issues(states:[OPEN], filterBy:{assignee: $member}, first:50, after: $end) {
+      issues(states:[OPEN], filterBy:{assignee: $member}, first:50, after: $end, orderBy: {field: CREATED_AT, direction: DESC}) {
         nodes {
           assignees(first:10) {
             edges {
