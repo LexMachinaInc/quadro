@@ -27,6 +27,18 @@ export default function Board( { member }) {
           }
 
           if (error) return <EmptyBoard />;
+          const { hasNextPage, endCursor} = data.repository.issues.pageInfo;
+          if (hasNextPage) {
+            fetchMore({
+              variables: { member, end: endCursor },
+              updateQuery: (prev, { fetchMoreResult }) => {
+                if (!fetchMoreResult) return prev;
+                const updatedNodes = prev.repository.issues.nodes.concat(fetchMoreResult.repository.issues.nodes);
+                fetchMoreResult.repository.issues.nodes = updatedNodes;
+                return fetchMoreResult;
+              }
+            })
+          }
 
           const issues = data.repository.issues.nodes.map(
             (issue) => {
@@ -48,7 +60,7 @@ export default function Board( { member }) {
                     />
                   ))}
                 </section>
-                {hasNextPage ? (
+                {/* {hasNextPage ? (
                   <LoadMoreButton
                     onLoadMore={() => fetchMore({
                       variables: { member, end: endCursor },
@@ -60,7 +72,7 @@ export default function Board( { member }) {
                       }
                     })}
                   />
-                ) : null}
+                ) : null} */}
               </React.Fragment>
             )
           }
