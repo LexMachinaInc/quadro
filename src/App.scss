@@ -85,7 +85,7 @@ body {
   align-items: flex-start;
   padding: 0 0.8rem 0.8rem;
   overflow-x: auto;
-  height: calc(100vh - 8.6rem);
+  height: calc(100vh - 11rem);
   margin-top: 0.8rem;
 
   &.accomodate-load-more {
@@ -138,6 +138,28 @@ body {
 
 .list-items li:last-of-type {
   margin-bottom: 0;
+}
+
+.refresh-container {
+  background: #07588a;
+  display: flex;
+  font-weight: 500;
+  justify-content: center;
+  align-items: center;
+  line-height: 25px;
+}
+
+.refresh-button {
+  font-size: 18px;
+  background: #07588a;
+  color: #fff;
+  border: none;
+  display: flex;
+  cursor: click;
+}
+
+.refresh-button:hover {
+  opacity: 0.75;
 }
 
 .user-profile {

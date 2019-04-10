@@ -4,30 +4,26 @@ import { arrayOf, shape } from "prop-types";
 import '../App.scss';
 import CardContainer from './CardContainer';
 import EmptyBoard from "./EmptyBoard";
-import loader from "../assets/green-loader-icon.gif";
 import { getIssueState, organizeDataIntoStatusBuckets } from "../helpers/utils";
 import { GET_BOARD_DATA } from "../helpers/github";
-import LoadMoreButton from './LoadMoreButton';
-
-function hasData(data) {
-  return data.some((bucket) => bucket.length > 0);
-}
+import Loader from "./Loader";
 
 export default function Board( { member }) {
+  const handleRefetch = (cb) => (e) => {
+    e.preventDefault();
+    e.currentTarget.blur();
+    cb();
+  }
   return (
     <div>
-      <Query query={GET_BOARD_DATA} variables={{ member, end: null }}>
-        {({ loading, error, data, fetchMore }) => {
-          if (loading) {
-            return (
-              <div className="loader-container">
-                <img src={loader}></img>
-              </div>
-            )
-          }
+      <Query query={GET_BOARD_DATA} variables={{ member, end: null }} notifyOnNetworkStatusChange>
+        {({ loading, error, data, fetchMore, refetch, networkStatus }) => {
 
+          if (loading || networkStatus === 4) return <Loader />;
           if (error) return <EmptyBoard />;
+
           const { hasNextPage, endCursor} = data.repository.issues.pageInfo;
+
           if (hasNextPage) {
             fetchMore({
               variables: { member, end: endCursor },
@@ -48,10 +44,9 @@ export default function Board( { member }) {
 
           if (issues.length) {
             const buckets = organizeDataIntoStatusBuckets(issues);
-            const { hasNextPage, endCursor  } = data.repository.issues.pageInfo;
             return (
               <React.Fragment>
-                <section className={`lists-container center ${hasNextPage ? "accomodate-load-more" : ""}`}>
+                <section className="lists-container center">
                   {buckets.map((bucket, idx) => (
                     <CardContainer
                       key={Board.statusMap[idx]}
@@ -60,19 +55,14 @@ export default function Board( { member }) {
                     />
                   ))}
                 </section>
-                {/* {hasNextPage ? (
-                  <LoadMoreButton
-                    onLoadMore={() => fetchMore({
-                      variables: { member, end: endCursor },
-                      updateQuery: (prev, { fetchMoreResult }) => {
-                        if (!fetchMoreResult) return prev;
-                        const updatedNodes = prev.repository.issues.nodes.concat(fetchMoreResult.repository.issues.nodes);
-                        fetchMoreResult.repository.issues.nodes = updatedNodes;
-                        return fetchMoreResult;
-                      }
-                    })}
-                  />
-                ) : null} */}
+                <div className="refresh-container">
+                  <button
+                    className="refresh-button"
+                    onClick={handleRefetch(refetch)}
+                  >
+                    Update Board
+                  </button>
+                </div>
               </React.Fragment>
             )
           }
