@@ -87,6 +87,10 @@ body {
   overflow-x: auto;
   height: calc(100vh - 8.6rem);
   margin-top: 0.8rem;
+
+  &.accomodate-load-more {
+    height: calc(100vh - 12rem);
+  }
 }
 
 .list {
@@ -239,6 +243,19 @@ body {
     color: #fff;
     font-weight: 700;
   }
+}
+
+.load-more-container {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  background: blue;
+}
+
+.load-more-btn {
+  font-size: 18px;
+  border-radius: 10%;
+
 }
 
 .member-dropdown {

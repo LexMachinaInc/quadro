@@ -7,6 +7,7 @@ import EmptyBoard from "./EmptyBoard";
 import loader from "../assets/green-loader-icon.gif";
 import { getIssueState, organizeDataIntoStatusBuckets } from "../helpers/utils";
 import { GET_BOARD_DATA } from "../helpers/github";
+import LoadMoreButton from './LoadMoreButton';
 
 function hasData(data) {
   return data.some((bucket) => bucket.length > 0);
@@ -15,39 +16,57 @@ function hasData(data) {
 export default function Board( { member }) {
   return (
     <div>
-      <section className="lists-container center">
-        <Query query={GET_BOARD_DATA} variables={{ member }}>
-          {({ loading, error, data }) => {
-            if (loading) {
-              return (
-                <div className="loader-container">
-                  <img src={loader}></img>
-                </div>
-              )
-            }
+      <Query query={GET_BOARD_DATA} variables={{ member, end: null }}>
+        {({ loading, error, data, fetchMore }) => {
+          if (loading) {
+            return (
+              <div className="loader-container">
+                <img src={loader}></img>
+              </div>
+            )
+          }
 
-            if (error) return <EmptyBoard />;
+          if (error) return <EmptyBoard />;
 
-            const issues = data.repository.issues.nodes.map(
-              (issue) => {
-                issue.status = getIssueState(issue.labels.nodes);
-                return issue;
-            });
+          const issues = data.repository.issues.nodes.map(
+            (issue) => {
+              issue.status = getIssueState(issue.labels.nodes);
+              return issue;
+          });
 
-            if (issues.length) {
-              const buckets = organizeDataIntoStatusBuckets(issues);
-              return buckets.map((bucket, idx) => (
-                <CardContainer
-                  key={Board.statusMap[idx]}
-                  title={Board.statusMap[idx]}
-                  issues={bucket}
-                />
-              ));
-            }
-            return <EmptyBoard />
-          }}
-        </Query>
-      </section>
+          if (issues.length) {
+            const buckets = organizeDataIntoStatusBuckets(issues);
+            const { hasNextPage, endCursor  } = data.repository.issues.pageInfo;
+            return (
+              <React.Fragment>
+                <section className={`lists-container center ${hasNextPage ? "accomodate-load-more" : ""}`}>
+                  {buckets.map((bucket, idx) => (
+                    <CardContainer
+                      key={Board.statusMap[idx]}
+                      title={Board.statusMap[idx]}
+                      issues={bucket}
+                    />
+                  ))}
+                </section>
+                {hasNextPage ? (
+                  <LoadMoreButton
+                    onLoadMore={() => fetchMore({
+                      variables: { member, end: endCursor },
+                      updateQuery: (prev, { fetchMoreResult }) => {
+                        if (!fetchMoreResult) return prev;
+                        const updatedNodes = prev.repository.issues.nodes.concat(fetchMoreResult.repository.issues.nodes);
+                        fetchMoreResult.repository.issues.nodes = updatedNodes;
+                        return fetchMoreResult;
+                      }
+                    })}
+                  />
+                ) : null}
+              </React.Fragment>
+            )
+          }
+          return <EmptyBoard />
+        }}
+      </Query>
     </div>
   )
 }
