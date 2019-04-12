@@ -8,8 +8,8 @@ export default function Card({ issue }) {
     number,
     url,
     title,
-    labels: { nodes: issueLabels },
-    assignees: { edges: issueAssignees },
+    labels,
+    assignees,
   } = issue;
   return (
     <div className="card">
@@ -26,7 +26,7 @@ export default function Card({ issue }) {
             </a>
           </h4>
           <span className="assignee-avatar-container">
-            {issueAssignees.map((assignee) =>
+            {assignees.map((assignee) =>
               <img
                 className="assignee-avatar"
                 src={assignee.node.avatarUrl}
@@ -36,7 +36,7 @@ export default function Card({ issue }) {
           </span>
         </div>
         <p>{title}</p>
-        <div class="labels-container"><Label labels={issueLabels} /></div>
+        <div class="labels-container"><Label labels={labels} /></div>
       </div>
     </div>
   );

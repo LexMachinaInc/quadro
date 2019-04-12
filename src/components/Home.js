@@ -3,7 +3,7 @@ import '../App.scss';
 import MockCard from "./MockCard";
 
 export default function Home() {
-  const titles = ["Backlog", "Ready", "In Progress", "Done"];
+  const titles = ["Backlog", "Ready", "In Progress", "Done", "Closed"];
   return (
     <div>
       <section className="lists-container center">
