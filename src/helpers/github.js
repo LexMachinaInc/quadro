@@ -33,11 +33,11 @@ export const DASHBOARD_DATA = gql`
     }
   }`;
 
-export const BACKLOG_QUERY_STRING = (member) => `user:LexMachinaInc repo:deus_lex assignee:${member} is:issue state:open -label:\"1 - Ready\" -label:\"2 - Working\" -label:\"3 - Done\" -label:\"[zube]: Ready\" -label:\"[zube]: In Progress\" -label:\"[zube]: Done\" sort:created-desc`;
-export const READY_QUERY_STRING = (member) => `user:LexMachinaInc repo:deus_lex assignee:${member} is:issue state:open label:\"1 - Ready\" sort:created-desc`;
-export const PROGRESS_QUERY_STRING = (member) => `user:LexMachinaInc repo:deus_lex assignee:${member} is:issue state:open label:\"2 - Working\" sort:created-desc`;
-export const DONE_QUERY_STRING = (member) => `user:LexMachinaInc repo:deus_lex assignee:${member} is:issue state:open label:\"3 - Done\" sort:created-desc`;
-export const CLOSED_QUERY_STRING = (member) => `user:LexMachinaInc repo:deus_lex assignee:${member} is:issue state:closed sort:created-desc`;
+export const BACKLOG_QUERY_STRING = (member) => `user:LexMachinaInc repo:deus_lex assignee:${member} is:issue state:open -label:\"1 - Ready\" -label:\"2 - Working\" -label:\"3 - Done\" -label:\"[zube]: Ready\" -label:\"[zube]: In Progress\" -label:\"[zube]: Done\" sort:updated-desc`;
+export const READY_QUERY_STRING = (member) => `user:LexMachinaInc repo:deus_lex assignee:${member} is:issue state:open label:\"1 - Ready\" sort:updated-desc`;
+export const PROGRESS_QUERY_STRING = (member) => `user:LexMachinaInc repo:deus_lex assignee:${member} is:issue state:open label:\"2 - Working\" sort:updated-desc`;
+export const DONE_QUERY_STRING = (member) => `user:LexMachinaInc repo:deus_lex assignee:${member} is:issue state:open label:\"3 - Done\" sort:updated-desc`;
+export const CLOSED_QUERY_STRING = (member) => `user:LexMachinaInc repo:deus_lex assignee:${member} is:issue state:closed sort:updated-desc`;
 
 export const GET_BUCKET = gql`
   query board($queryStr: String!, $end: String) {
