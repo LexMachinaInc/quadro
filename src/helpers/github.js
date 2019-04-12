@@ -33,33 +33,43 @@ export const DASHBOARD_DATA = gql`
     }
   }`;
 
-export const GET_BOARD_DATA = gql`
-  query board($member: String!, $end: String) {
-    repository(owner: "LexMachinaInc", name:"deus_lex") {
-      issues(states:[OPEN], filterBy:{assignee: $member}, first:50, after: $end, orderBy: {field: CREATED_AT, direction: DESC}) {
-        nodes {
-          assignees(first:10) {
-            edges {
-              node {
-                login
-                avatarUrl
+export const BACKLOG_QUERY_STRING = (member) => `user:LexMachinaInc repo:deus_lex assignee:${member} is:issue state:open -label:\"1 - Ready\" -label:\"2 - Working\" -label:\"3 - Done\" -label:\"[zube]: Ready\" -label:\"[zube]: In Progress\" -label:\"[zube]: Done\" sort:created-desc`;
+export const READY_QUERY_STRING = (member) => `user:LexMachinaInc repo:deus_lex assignee:${member} is:issue state:open label:\"1 - Ready\" sort:created-desc`;
+export const PROGRESS_QUERY_STRING = (member) => `user:LexMachinaInc repo:deus_lex assignee:${member} is:issue state:open label:\"2 - Working\" sort:created-desc`;
+export const DONE_QUERY_STRING = (member) => `user:LexMachinaInc repo:deus_lex assignee:${member} is:issue state:open label:\"3 - Done\" sort:created-desc`;
+export const CLOSED_QUERY_STRING = (member) => `user:LexMachinaInc repo:deus_lex assignee:${member} is:issue state:closed sort:created-desc`;
+
+export const GET_BUCKET = gql`
+  query board($queryStr: String!, $end: String) {
+    search(first:10, type:ISSUE, query:$queryStr, after: $end) {
+      issueCount
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      edges {
+        node {
+          ... on Issue {
+            labels(first: 10) {
+              nodes {
+                name
+                color
+              }
+            }
+            number
+            title
+            url
+            assignees(first: 10) {
+              edges {
+                node {
+                  login
+                  avatarUrl
+                }
               }
             }
           }
-          number
-          title
-          url
-          labels(first:10) {
-            nodes {
-              name
-              color
-            }
-          }
-        }
-        pageInfo {
-          endCursor
-          hasNextPage
         }
       }
     }
-  }`;
+  }
+`

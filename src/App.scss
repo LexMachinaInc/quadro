@@ -241,8 +241,13 @@ body {
 .loader-container {
   text-align: center;
   width: 100%;
-  position: absolute;
-  margin-top: 25%;
+}
+
+.loading-more {
+  font-size: 14px;
+  display: flex;
+  align-content: center;
+  justify-content: center;
 }
 
 .labels-container {

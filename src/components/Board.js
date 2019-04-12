@@ -5,81 +5,33 @@ import '../App.scss';
 import CardContainer from './CardContainer';
 import EmptyBoard from "./EmptyBoard";
 import { getIssueState, organizeDataIntoStatusBuckets } from "../helpers/utils";
-import { GET_BOARD_DATA } from "../helpers/github";
+import { BACKLOG_QUERY_STRING, READY_QUERY_STRING, PROGRESS_QUERY_STRING, DONE_QUERY_STRING, CLOSED_QUERY_STRING, GET_BUCKET } from "../helpers/github";
 import Loader from "./Loader";
 
 export default function Board( { member }) {
-  const handleRefetch = (cb) => (e) => {
-    e.preventDefault();
-    e.currentTarget.blur();
-    cb();
-  }
   return (
-    <div>
-      <Query query={GET_BOARD_DATA} variables={{ member, end: null }} notifyOnNetworkStatusChange>
-        {({ loading, error, data, fetchMore, refetch }) => {
-
-          if (loading) return <Loader />;
-          if (error) return <EmptyBoard />;
-
-          const { hasNextPage, endCursor} = data.repository.issues.pageInfo;
-
-          if (hasNextPage) {
-            fetchMore({
-              variables: { member, end: endCursor },
-              updateQuery: (prev, { fetchMoreResult }) => {
-                if (!fetchMoreResult) return prev;
-                const updatedNodes = prev.repository.issues.nodes.concat(fetchMoreResult.repository.issues.nodes);
-                fetchMoreResult.repository.issues.nodes = updatedNodes;
-                return fetchMoreResult;
-              }
-            })
-          }
-
-          const issues = data.repository.issues.nodes.map(
-            (issue) => {
-              issue.status = getIssueState(issue.labels.nodes);
-              return issue;
-          });
-
-          if (issues.length) {
-            const buckets = organizeDataIntoStatusBuckets(issues);
-            return (
-              <React.Fragment>
-                <section className="lists-container center">
-                  {buckets.map((bucket, idx) => (
-                    <CardContainer
-                      key={Board.statusMap[idx]}
-                      title={Board.statusMap[idx]}
-                      issues={bucket}
-                    />
-                  ))}
-                </section>
-                <div className="refresh-container">
-                  <button
-                    className="refresh-button"
-                    onClick={handleRefetch(refetch)}
-                  >
-                    Update Board
-                  </button>
-                </div>
-              </React.Fragment>
-            )
-          }
-          return <EmptyBoard />
-        }}
-      </Query>
-    </div>
-  )
+    <section className="lists-container center">
+      {Board.buckets.map((bucket) => (
+        <CardContainer
+          key={bucket.title}
+          title={bucket.title}
+          query={bucket.query}
+          queryString={bucket.queryString}
+          member={member}
+        />
+      ))}
+    </section>
+  );
 }
 
 Board.propTypes = {
   data: arrayOf(shape({})).isRequired,
 }
 
-Board.statusMap = {
-  0: 'Backlog',
-  1: 'Ready',
-  2: 'In Progress',
-  3: 'Done',
-}
+Board.buckets = [
+  {title: "Backlog", query: GET_BUCKET, queryString: BACKLOG_QUERY_STRING },
+  {title: "Ready", query: GET_BUCKET, queryString: READY_QUERY_STRING },
+  {title: "In Progress", query: GET_BUCKET, queryString: PROGRESS_QUERY_STRING },
+  {title: "Done", query: GET_BUCKET, queryString: DONE_QUERY_STRING },
+  {title: "Closed", query: GET_BUCKET, queryString: CLOSED_QUERY_STRING },
+];
