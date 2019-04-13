@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import { ApolloProvider } from "react-apollo";
-import { gql } from "apollo-boost";
 import DashBoard from "./components/DashBoard";
 import Logout from "./components/Logout";
 import Home from './components/Home';
 import Board from './components/Board';
 import { getToken } from "./helpers/authorization";
 import { getApolloClient, DASHBOARD_DATA } from "./helpers/github";
+import { updateUrl, checkMemberInUrl, cleanUrl } from "./helpers/ui";
+import { extractMemberNames } from "./helpers/utils";
 
 const client = getApolloClient();
 
@@ -28,15 +29,21 @@ export default class App extends Component {
   logUserIn() {
     client
       .query({query: DASHBOARD_DATA})
-      .then(result => this.setState({
-        status: "authenticated",
-        member: result.data.viewer.login,
-        avatar: result.data.viewer.avatarUrl,
-        members: result.data.repository.assignableUsers.nodes
-      }));
+      .then(result => {
+        const member = result.data.viewer.login;
+        const members = extractMemberNames(result.data.repository.assignableUsers.nodes);
+        const memberInUrl = checkMemberInUrl(members);
+        this.setState({
+          status: "authenticated",
+          member: memberInUrl ? memberInUrl : member,
+          avatar: result.data.viewer.avatarUrl,
+          members: result.data.repository.assignableUsers.nodes
+        })
+      });
   }
 
   changeMemberBoard(member) {
+    updateUrl(member);
     this.setState({ member });
   }
 

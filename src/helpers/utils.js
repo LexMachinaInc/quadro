@@ -63,3 +63,7 @@ export function lightOrDark(color) {
   // Using the HSP value, determine whether the color is light or dark
   return hsp > 127.5 ? "light" : "dark";
 }
+
+export function extractMemberNames(members){
+  return new Set(members.map((member) => member.login))
+}
