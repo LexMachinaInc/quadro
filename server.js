@@ -45,6 +45,7 @@ app.use(session(sessionObj));
 
 app.get('/login', (req, res) => {
   req.session.csrf_string = randomString.generate();
+  req.session.query = req.query;
   // construct the GitHub URL you redirect your user to.
   // qs.stringify is a method that creates foo=bar&bar=baz
   // type of string for you.
@@ -71,8 +72,6 @@ app.get('/logout', (req, res) => {
 });
 
 app.get('/oauth/redirect', (req, res) => {
-  console.log('redirected!');
-
   const requestToken = req.query.code;
   const returnedState = req.query.state;
 

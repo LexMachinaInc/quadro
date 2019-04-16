@@ -1,8 +1,7 @@
 import React from 'react';
-import { Query } from "react-apollo";
-import { DASHBOARD_DATA } from "../helpers/github";
 import { Element, shape, arrayOf, func, string } from 'prop-types';
 import '../App.scss';
+import { CONFIG } from "../helpers/github";
 
 export default function DashBoard ({ action, status, handlers, member, members, avatar }) {
   const onChangeHandler = (e) => {
@@ -25,6 +24,10 @@ export default function DashBoard ({ action, status, handlers, member, members, 
                 {members.map((mem) => (
                   <option value={mem.login}>{mem.login}</option>
                 ))}
+                {<option disabled>_________</option>}
+                {Object.entries(CONFIG.meetings).map((meeting) => (
+                  <option value={meeting[0]}>{meeting[1]}</option>
+                ))}
               </select>
             </li>
             <li>
@@ -35,7 +38,9 @@ export default function DashBoard ({ action, status, handlers, member, members, 
                 rel="noopener noreferrer">
                   <img
                     className="user-avatar"
-                    src={avatar}>
+                    src={avatar}
+                    alt={member}
+                  >
                   </img>
                 </a>
             </li>

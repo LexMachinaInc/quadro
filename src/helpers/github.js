@@ -1,3 +1,4 @@
+/*eslint-disable no-useless-escape */
 import ApolloClient from "apollo-boost";
 import { gql } from "apollo-boost";
 import { getToken } from "./authorization";
@@ -33,11 +34,18 @@ export const DASHBOARD_DATA = gql`
     }
   }`;
 
-export const BACKLOG_QUERY_STRING = (member) => `user:LexMachinaInc repo:deus_lex assignee:${member} is:issue state:open -label:\"1 - Ready\" -label:\"2 - Working\" -label:\"3 - Done\" -label:\"[zube]: Ready\" -label:\"[zube]: In Progress\" -label:\"[zube]: Done\" sort:updated-desc`;
-export const READY_QUERY_STRING = (member) => `user:LexMachinaInc repo:deus_lex assignee:${member} is:issue state:open label:\"1 - Ready\" sort:updated-desc`;
-export const PROGRESS_QUERY_STRING = (member) => `user:LexMachinaInc repo:deus_lex assignee:${member} is:issue state:open label:\"2 - Working\" sort:updated-desc`;
-export const DONE_QUERY_STRING = (member) => `user:LexMachinaInc repo:deus_lex assignee:${member} is:issue state:open label:\"3 - Done\" sort:updated-desc`;
-export const CLOSED_QUERY_STRING = (member) => `user:LexMachinaInc repo:deus_lex assignee:${member} is:issue state:closed sort:updated-desc`;
+function queryStringBuilder(view, member, labels, state) {
+  const user = CONFIG.owner;
+  const repo = CONFIG.repo;
+  let query = `user:${user} repo:${repo} sort:updated-desc state:${state}`;
+  if (view === "member") {
+    query = query + ` assignee:${member}`;
+  }
+  if (labels) {
+    query = `${query} ${labels}`;
+  }
+  return query;
+}
 
 export const GET_BUCKET = gql`
   query board($queryStr: String!, $end: String) {
@@ -46,6 +54,29 @@ export const GET_BUCKET = gql`
       pageInfo {
         hasNextPage
         endCursor
+      }
+      edges {
+        node {
+          ... on PullRequest {
+            labels(first: 10) {
+              nodes {
+                name
+                color
+              }
+            }
+            title
+            number
+            url
+            assignees(first: 10) {
+              edges {
+                node {
+                  login
+                  avatarUrl
+                }
+              }
+            }
+          }
+        }
       }
       edges {
         node {
@@ -73,3 +104,59 @@ export const GET_BUCKET = gql`
     }
   }
 `
+
+export const CONFIG = {
+  owner: "LexMachinaInc",
+  repo: "deus_lex",
+  buckets: [
+    {title: "Backlog", key: "backlog" },
+    {title: "Ready", key: "ready" },
+    {title: "In Progress", key: "progress" },
+    {title: "Done", key: "done" },
+    {title: "Closed", key: "closed" },
+  ],
+  meetings: {
+    design: "DESIGN MEETING",
+    development: "DEVELOPMENT MEETING",
+    frontend: "FRONTEND TEAM MEETING",
+    fullstack: "FULL-STACK MEETING",
+    nlp: "NLP MEETING",
+  },
+  queries: {
+    buckets: {
+      labels: {
+        backlog: `-label:\"1 - Ready\" -label:\"2 - Working\" -label:\"3 - Done\" -label:\"[zube]: Ready\" -label:\"[zube]: In Progress\" -label:\"[zube]: Done\"`,
+        ready: `label:\"1 - Ready\"`,
+        progress: `label:\"2 - Working\"`,
+        done: `label:\"3 - Done\"`,
+      }
+    },
+    meetings: {
+      design: {
+        labels: `label:\"Design Meeting\"`
+      },
+      development: {
+        labels: `label:\"Development Meeting\"`
+      },
+      frontend: {
+        labels: `label:\"Front End Team Meeting\"`
+      },
+      fullstack: {
+        labels: `label:\"Full-Stack Meeting\"`
+      },
+      nlp: {
+        labels: `label:\"NLP Meeting\"`
+      }
+    }
+  }
+};
+
+export function getQueryString(member, bucket) {
+  const view = Object.keys(CONFIG.meetings).includes(member) ? "meeting" : "member";
+  const state = bucket === "closed" ? "closed" : "open";
+  const bucketLabels = CONFIG.queries.buckets.labels[bucket];
+  const labels = view === "meeting" ?
+    `${bucketLabels} ${CONFIG.queries.meetings[member].labels}` :
+    bucketLabels;
+  return queryStringBuilder(view, member, labels, state);
+}

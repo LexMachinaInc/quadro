@@ -48,6 +48,7 @@ export function lightOrDark(color) {
       color = +("0x" + color.slice(1).replace(
       color.length < 5 && /./g, '$&$&'));
 
+      /* eslint-disable no-mixed-operators */
       r = color >> 16;
       g = color >> 8 & 255;
       b = color & 255;
@@ -65,5 +66,5 @@ export function lightOrDark(color) {
 }
 
 export function extractMemberNames(members){
-  return new Set(members.map((member) => member.login))
+  return members.map((member) => member.login);
 }

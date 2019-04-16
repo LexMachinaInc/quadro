@@ -4,7 +4,7 @@ import loader from "../assets/green-loader-icon.gif";
 export default function Loader() {
   return (
     <div className="loader-container">
-      <img src={loader}></img>
+      <img src={loader} alt="loading-icon"></img>
     </div>
   );
 }
