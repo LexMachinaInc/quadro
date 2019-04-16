@@ -16,12 +16,13 @@ export function updateUrl(member) {
   window.history.pushState({ path:newurl },"", newurl);
 }
 
-export function checkMemberInUrl(members) {
+export function checkViewInUrl(names) {
+  const views = new Set(names);
   const params = getSearchParams();
   if (params.has("board")) {
-    const member = params.get("board");
-    if (members.has(member)) {
-      return member;
+    const view = params.get("board");
+    if (views.has(view)) {
+      return view;
     }
     cleanUrl();
     return null;

@@ -38,7 +38,9 @@ export default function DashBoard ({ action, status, handlers, member, members, 
                 rel="noopener noreferrer">
                   <img
                     className="user-avatar"
-                    src={avatar}>
+                    src={avatar}
+                    alt={member}
+                  >
                   </img>
                 </a>
             </li>

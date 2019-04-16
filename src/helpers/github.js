@@ -1,3 +1,4 @@
+/*eslint-disable no-useless-escape */
 import ApolloClient from "apollo-boost";
 import { gql } from "apollo-boost";
 import { getToken } from "./authorization";

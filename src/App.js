@@ -5,8 +5,8 @@ import Logout from "./components/Logout";
 import Home from './components/Home';
 import Board from './components/Board';
 import { getToken } from "./helpers/authorization";
-import { getApolloClient, DASHBOARD_DATA } from "./helpers/github";
-import { updateUrl, checkMemberInUrl, cleanUrl } from "./helpers/ui";
+import { getApolloClient, DASHBOARD_DATA, CONFIG } from "./helpers/github";
+import { updateUrl, checkViewInUrl } from "./helpers/ui";
 import { extractMemberNames } from "./helpers/utils";
 
 const client = getApolloClient();
@@ -30,12 +30,14 @@ export default class App extends Component {
     client
       .query({query: DASHBOARD_DATA})
       .then(result => {
+        // TODO: maybe view in URL?
         const member = result.data.viewer.login;
         const members = extractMemberNames(result.data.repository.assignableUsers.nodes);
-        const memberInUrl = checkMemberInUrl(members);
+        const meetings = Object.keys(CONFIG.meetings)
+        const viewInUrl = checkViewInUrl([...members, ...meetings]);
         this.setState({
           status: "authenticated",
-          member: memberInUrl ? memberInUrl : member,
+          member: viewInUrl ? viewInUrl : member,
           avatar: result.data.viewer.avatarUrl,
           members: result.data.repository.assignableUsers.nodes
         })
@@ -53,13 +55,21 @@ export default class App extends Component {
     const handlers = {
       changeMemberBoard: this.changeMemberBoard.bind(this),
     };
+    const authenticated = status === "authenticated";
     return (
       <ApolloProvider client={client}>
         <div id="container" className="wrapper">
           <div>
-            <DashBoard  action={logBtn} status={status} handlers={handlers} member={member} avatar={avatar} members={members} />
+            <DashBoard
+              action={logBtn}
+              status={status}
+              handlers={handlers}
+              member={member}
+              avatar={avatar}
+              members={members}
+            />
             <div className="box">
-              { status === "authenticated" ? <Board member={member} /> : <Home /> }
+              { authenticated ? <Board member={member} /> : <Home /> }
             </div>
           </div>
         </div>
