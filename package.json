@@ -1,6 +1,7 @@
 {
   "name": "quadro",
-  "version": "0.1.0",
+  "author": "Sonny Sheth",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "apollo-boost": "^0.3.1",
