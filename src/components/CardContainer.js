@@ -21,7 +21,7 @@ export default function CardContainer({ title, member, query, queryString }) {
   return (
     <div className="list">
       <h3 className="list-title">{title}</h3>
-      <Query query={query} variables={{ queryStr: queryString(member), end: null }}>
+      <Query query={query} variables={{ queryStr: queryString, end: null }}>
         {({ loading, error, data, fetchMore}) => {
           if (loading) return <Loader />;
           if (error) return <EmptyBoard />;
@@ -44,7 +44,7 @@ export default function CardContainer({ title, member, query, queryString }) {
               className="list-items"
               onScroll={handleScroll(hasNextPage, () => {
                 return fetchMore({
-                  variables: { queryStr: queryString(member), end: endCursor },
+                  variables: { queryStr: queryString, end: endCursor },
                   updateQuery: (prev, { fetchMoreResult }) => {
                     setIsFetching(false);
                     if (!fetchMoreResult) return prev;
@@ -72,6 +72,6 @@ export default function CardContainer({ title, member, query, queryString }) {
 CardContainer.propTypes = {
   title: string.isRequired,
   query: func.isRequired,
-  queryString: func.isRequired,
+  queryString: string.isRequired,
   member: string.isRequired,
 };
