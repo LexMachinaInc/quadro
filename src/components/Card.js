@@ -11,16 +11,18 @@ export default function Card({ issue }) {
     labels,
     assignees,
   } = issue;
+  const isPR = url.includes("pull");
   return (
     <div className="card">
       <div className="card-container">
         <div className="card-header">
           <h4 className="issue-number-container">
             <a
-              className="issue-number"
+              className={`issue-number ${isPR ? "pull-request" : ""}`.trim()}
               href={url}
               target="_blank"
               rel="noopener noreferrer"
+              title={isPR ? "pull request" : "issue"}
             >
                 {number}
             </a>

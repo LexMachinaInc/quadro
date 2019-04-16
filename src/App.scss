@@ -232,6 +232,11 @@ body {
 .issue-number {
   text-decoration: none;
   color: #2278cf;
+  padding: 1px;
+}
+
+.pull-request {
+  border: 1px solid #32CD32;
 }
 
 .issue-number:hover {
