@@ -54,7 +54,7 @@ export default class App extends Component {
 
   render() {
     const { status, member, avatar, members } = this.state;
-    const logBtn = status === "authenticated" ? <Logout /> : <a href="/login">Login</a>;
+    const logBtn = status === "authenticated" ? <Logout /> : null;
     const handlers = {
       changeMemberBoard: this.changeMemberBoard.bind(this),
     };

@@ -12,7 +12,7 @@ export default function CardContainer({ title, member, query, queryString }) {
 
   const handleScroll = (nextPage, fetchMore) => (e) => {
     const { scrollHeight, scrollTop, clientHeight } = e.target;
-    if (!isFetching && nextPage && (scrollHeight - scrollTop) === clientHeight) {
+    if (!isFetching && nextPage && (scrollHeight - scrollTop) >= clientHeight) {
       setIsFetching(true);
       fetchMore();
     }

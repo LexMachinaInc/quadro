@@ -396,3 +396,40 @@ Remove or comment-out the code block below to see how the browser will fall-back
       margin: 0;
   }
 }
+
+.modal {
+  display: flex;
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  margin: 32%;
+  background-color: #fefefe;
+
+}
+
+.modal-card {
+  display: flex;
+  background: #07588a;
+  color: #fff;
+  font-size: 18px;
+  font-weight: bold;
+  height: 100px;
+  width: 250px;
+  justify-content: center;
+  align-items: center;
+
+  a {
+    text-decoration: none;
+    color: white;
+  }
+}
