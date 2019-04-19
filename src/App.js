@@ -41,6 +41,9 @@ export default class App extends Component {
           avatar: result.data.viewer.avatarUrl,
           members: result.data.repository.assignableUsers.nodes
         })
+        if (!viewInUrl) {
+          updateUrl(member);
+        }
       });
   }
 
