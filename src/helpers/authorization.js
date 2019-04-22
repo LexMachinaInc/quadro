@@ -42,7 +42,7 @@ export function logOut(e) {
     .then(resp => resp.json())
     .then((resp) => {
       if (resp.logout === 'success') {
-        window.location.replace('/');
+        window.location.replace('/?loggedout');
       }
     });
 }

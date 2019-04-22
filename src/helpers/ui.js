@@ -29,3 +29,8 @@ export function checkViewInUrl(names) {
   }
   return null;
 }
+
+export function getStatus() {
+  const params = Array.from(getSearchParams());
+  return params.length ? params[0] : null;
+}

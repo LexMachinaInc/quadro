@@ -6,20 +6,30 @@ import Home from './components/Home';
 import Board from './components/Board';
 import { getToken } from "./helpers/authorization";
 import { getApolloClient, DASHBOARD_DATA, CONFIG } from "./helpers/github";
-import { updateUrl, checkViewInUrl } from "./helpers/ui";
+import { updateUrl, checkViewInUrl, getStatus } from "./helpers/ui";
 import { extractMemberNames } from "./helpers/utils";
 
 const client = getApolloClient();
 
 export default class App extends Component {
+  static setStatus() {
+    const status = getStatus();
+    return status ? status : "initial";
+  }
   state = {
     status: "initial",
     member: undefined,
     avatar: undefined,
     members: undefined,
+    loginLoad: false,
   }
 
   async componentDidMount() {
+    console.log("mounting again");
+    const status = App.setStatus();
+    if ( status && status[0] === "redirecting" ) {
+      this.setState({ status: status[0] });
+    }
     const token = await getToken();
     if (token) {
       this.logUserIn();
@@ -30,7 +40,6 @@ export default class App extends Component {
     client
       .query({query: DASHBOARD_DATA})
       .then(result => {
-        // TODO: maybe view in URL?
         const member = result.data.viewer.login;
         const members = extractMemberNames(result.data.repository.assignableUsers.nodes);
         const meetings = Object.keys(CONFIG.meetings)
@@ -59,6 +68,8 @@ export default class App extends Component {
       changeMemberBoard: this.changeMemberBoard.bind(this),
     };
     const authenticated = status === "authenticated";
+    const redirecting = status === "redirecting";
+
     return (
       <ApolloProvider client={client}>
         <div id="container" className="wrapper">
@@ -72,7 +83,7 @@ export default class App extends Component {
               members={members}
             />
             <div className="box">
-              { authenticated ? <Board member={member} /> : <Home /> }
+              { authenticated ? <Board member={member} /> : redirecting ? null : <Home /> }
             </div>
           </div>
         </div>
