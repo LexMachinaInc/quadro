@@ -25,7 +25,6 @@ export default class App extends Component {
   }
 
   async componentDidMount() {
-    console.log("mounting again");
     const status = App.setStatus();
     if ( status && status[0] === "redirecting" ) {
       this.setState({ status: status[0] });
