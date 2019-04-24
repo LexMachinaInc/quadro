@@ -72,6 +72,12 @@ export const DASHBOARD_DATA = gql`
           login
         }
       }
+      labels(first:4) {
+        nodes {
+          name
+          id
+        }
+      }
     }
   }`;
 
