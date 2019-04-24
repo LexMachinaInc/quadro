@@ -1,9 +1,16 @@
 import React from 'react';
-import { shape } from 'prop-types';
+import { shape, string } from 'prop-types';
 import Label from './Label';
 import '../App.scss';
 
-export default function Card({ issue }) {
+export default function Card({ issue, originBucket }) {
+
+  const onDragStart = (issueNumber, originBucket) => (e) => {
+    console.log(e, issueNumber);
+    const data = JSON.stringify({ issueNumber, originBucket });
+    e.dataTransfer.setData("text/plain", data);
+  }
+
   const {
     number,
     url,
@@ -13,7 +20,7 @@ export default function Card({ issue }) {
   } = issue;
   const isPR = url.includes("pull");
   return (
-    <div className="card">
+    <div className="card" draggable onDragStart={onDragStart(number, originBucket)}  >
       <div className="card-container">
         <div className="card-header">
           <h4 className="issue-number-container">
@@ -46,4 +53,5 @@ export default function Card({ issue }) {
 
 Card.propTypes = {
   issue: shape({}).isRequired,
+  originBucket: string.isRequired,
 };

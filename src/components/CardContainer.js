@@ -18,6 +18,13 @@ export default function CardContainer({ title, member, query, queryString }) {
     }
   }
 
+  const onDragOver = (e) => e.preventDefault();
+
+  const onDrop = (bucket) => (e) => {
+    const {issueNumber, originBucket } = JSON.parse(e.dataTransfer.getData("text/plain"));
+    console.log(`Adding issue #${issueNumber} to ${bucket} from ${originBucket}`);
+  };
+
   return (
     <div className="list">
       <h3 className="list-title">{title}</h3>
@@ -66,10 +73,12 @@ export default function CardContainer({ title, member, query, queryString }) {
                   }
                 })
               })}
+              onDragOver={onDragOver}
+              onDrop={onDrop(title)}
             >
               {issues.map(issue => (
                 <li>
-                  <Card key={issue.number} issue={issue} />
+                  <Card key={issue.number} issue={issue} originBucket={title} />
                 </li>
               ))}
               {isFetching && <div className="loading-more">Loading more issues ...</div>}
