@@ -37,6 +37,8 @@ handlers:
     script: auto
   - url: /oauth/redirect
     script: auto
+  - url: /logout
+    script: auto
   - url: /.*
     static_files: build/index.html
     upload: build/index.html
