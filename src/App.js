@@ -68,7 +68,7 @@ export default class App extends Component {
   }
 
   render() {
-    const { status, member, avatar, members } = this.state;
+    const { status, member, avatar, members, statusLabels } = this.state;
     const logBtn = status === "authenticated" ? <Logout /> : null;
     const handlers = {
       changeMemberBoard: this.changeMemberBoard.bind(this),
@@ -89,7 +89,11 @@ export default class App extends Component {
               members={members}
             />
             <div className="box">
-              { authenticated ? <Board member={member} /> : redirecting ? null : <Home /> }
+              { authenticated ?
+                <Board
+                  member={member}
+                  statusLabels={statusLabels}
+                /> : redirecting ? null : <Home /> }
             </div>
           </div>
         </div>

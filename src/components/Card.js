@@ -37,6 +37,7 @@ export default function Card({ issue, originBucket }) {
           <span className="assignee-avatar-container">
             {assignees.map((assignee) =>
               <img
+                key={assignee.node.login}
                 className="assignee-avatar"
                 src={assignee.node.avatarUrl}
                 title={assignee.node.login}
@@ -45,7 +46,7 @@ export default function Card({ issue, originBucket }) {
           </span>
         </div>
         <p>{title}</p>
-        <div class="labels-container"><Label labels={labels} /></div>
+        <div className="labels-container"><Label labels={labels} /></div>
       </div>
     </div>
   );

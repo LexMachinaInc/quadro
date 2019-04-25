@@ -1,5 +1,5 @@
 import React , { useState } from 'react';
-import { string, func } from 'prop-types';
+import { string, shape } from 'prop-types';
 import '../App.scss';
 import Card from './Card';
 import { Query } from "react-apollo";
@@ -77,7 +77,7 @@ export default function CardContainer({ title, member, query, queryString }) {
               onDrop={onDrop(title)}
             >
               {issues.map(issue => (
-                <li>
+                <li key={issue.number}>
                   <Card key={issue.number} issue={issue} originBucket={title} />
                 </li>
               ))}
@@ -92,7 +92,7 @@ export default function CardContainer({ title, member, query, queryString }) {
 
 CardContainer.propTypes = {
   title: string.isRequired,
-  query: func.isRequired,
+  query: shape({}).isRequired,
   queryString: string.isRequired,
   member: string.isRequired,
 };

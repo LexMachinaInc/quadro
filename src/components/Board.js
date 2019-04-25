@@ -1,10 +1,10 @@
 import React from 'react';
-import { arrayOf, shape } from "prop-types";
+import { string, arrayOf, shape } from "prop-types";
 import '../App.scss';
 import CardContainer from './CardContainer';
 import { CONFIG, GET_BUCKET, getQueryString } from "../helpers/github";
 
-export default function Board( { member }) {
+export default function Board( { member, statusLabels }) {
   return (
     <section className="lists-container center">
       {CONFIG.buckets.map((bucket) => {
@@ -24,5 +24,6 @@ export default function Board( { member }) {
 }
 
 Board.propTypes = {
-  data: arrayOf(shape({})).isRequired,
+  member: string.isRequired,
+  statusLabels: arrayOf(shape({})).isRequired,
 }
