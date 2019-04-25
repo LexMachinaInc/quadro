@@ -109,6 +109,7 @@ export const GET_BUCKET = gql`
               nodes {
                 name
                 color
+                id
               }
             }
             title
@@ -132,6 +133,7 @@ export const GET_BUCKET = gql`
               nodes {
                 name
                 color
+                id
               }
             }
             number
