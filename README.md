@@ -28,7 +28,7 @@ To authenticate, you'll have to run `node server` in one tab, and in another `np
 
 ## Development
 
-Any work that you'd like to push to the repo, please do so in a branch off of `master`via a pull request. Assign the PR to `@wired4code`.
+Any work that you'd like to push to the repo, please do so in a branch off of `develop` via a pull request. Assign the PR to `@wired4code`. All PRs will be into `develop`, as deployment is handled via `master`.
 
 ## Available Scripts
 
