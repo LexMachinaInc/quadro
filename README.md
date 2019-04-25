@@ -40,7 +40,7 @@ This will start the Express server. This is needed to get the Oauth token to acc
 You will want to open up two terminals. In the one, run `node server`. In the other,
 run `npm run build`. Then go to `http://localhost:8080`.
 
-### `npm start`
+### `npm dev`
 
 Runs the app in the development mode.<br>
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser. You won't
