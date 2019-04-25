@@ -1,5 +1,5 @@
 import React from 'react';
-import { Element, shape, arrayOf, func, string } from 'prop-types';
+import { element, shape, arrayOf, func, string } from 'prop-types';
 import '../App.scss';
 import { CONFIG } from "../helpers/github";
 
@@ -63,7 +63,7 @@ DashBoard.propTypes = {
   handlers: shape({
     changeMemberBoard: func,
   }),
-  action: Element.isRequired,
+  action: element.isRequired,
   status: string.isRequired,
   data: shape({
     user: shape({}),
