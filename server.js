@@ -104,29 +104,12 @@ app.get('/oauth/redirect', (req, res) => {
       // Sending user back to home page, where App component
       // will mount again and check for authentication before
       // routing user to appropriate page
-      // In production this works, but in dev mode, we need to
-      // redirect to `http://localhost:3000/`
       res.redirect('/?redirecting');
     });
   } else {
     res.send('Authentication Failed');
   }
 });
-
-// app.get('/issues', (req, resp) => {
-//   const issuesUrl = `https://api.github.com/orgs/LexMachinaInc/issues?${
-//     qs.stringify({
-//       filter: 'assigned',
-//       state: 'open',
-//       access_token: req.session.access_token
-//     })}`;
-
-//   return axios.get(issuesUrl)
-//     .then(data => data.data)
-//     .then(parseIssuesData)
-//     .then(data => resp.json({ data }))
-//     .catch(error => console.log(error));
-// });
 
 // Start the server on port 8080
 app.listen(port, () => {
