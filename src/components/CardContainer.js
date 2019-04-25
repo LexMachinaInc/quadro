@@ -12,7 +12,7 @@ export default function CardContainer({ title, member, query, queryString }) {
 
   const handleScroll = (nextPage, fetchMore) => (e) => {
     const { scrollHeight, scrollTop, clientHeight } = e.target;
-    if (!isFetching && nextPage && (scrollHeight - scrollTop) >= clientHeight) {
+    if (!isFetching && nextPage && (scrollHeight - scrollTop) === clientHeight) {
       setIsFetching(true);
       fetchMore();
     }
@@ -43,6 +43,18 @@ export default function CardContainer({ title, member, query, queryString }) {
               id={title}
               className="list-items"
               onScroll={handleScroll(hasNextPage, () => {
+                return fetchMore({
+                  variables: { queryStr: queryString, end: endCursor },
+                  updateQuery: (prev, { fetchMoreResult }) => {
+                    setIsFetching(false);
+                    if (!fetchMoreResult) return prev;
+                    const updatedEdges = prev.search.edges.concat(fetchMoreResult.search.edges);
+                    fetchMoreResult.search.edges = updatedEdges;
+                    return fetchMoreResult;
+                  }
+                })
+              })}
+              onTouchMove={handleScroll(hasNextPage, () => {
                 return fetchMore({
                   variables: { queryStr: queryString, end: endCursor },
                   updateQuery: (prev, { fetchMoreResult }) => {
