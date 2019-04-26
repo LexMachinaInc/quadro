@@ -1,21 +1,62 @@
 /*eslint-disable no-useless-escape */
-import ApolloClient from "apollo-boost";
 import { gql } from "apollo-boost";
 import { getToken } from "./authorization";
 
+import { ApolloClient } from "apollo-client";
+import { InMemoryCache, IntrospectionFragmentMatcher } from "apollo-cache-inmemory";
+import { HttpLink } from "apollo-link-http";
+import { ApolloLink, Observable } from "apollo-link";
+
 export function getApolloClient() {
-  return new ApolloClient({
-    uri: "https://api.github.com/graphql",
-    request: async operation => {
-      const token = await getToken();
-      if (token) {
-        operation.setContext({
-          headers: {
-            authorization: `Bearer ${token}`
-          }
-        });
-      }
+  const request = async operation => {
+    const token = await getToken();
+    if (token) {
+      operation.setContext({
+        headers: {
+          authorization: `Bearer ${token}`
+        }
+      });
     }
+  }
+
+  const fragmentMatcher = new IntrospectionFragmentMatcher({
+    introspectionQueryResultData: {
+      __schema: {
+        types: ["Issue", "PullRequest"],
+      },
+    },
+  });
+
+  const cache = new InMemoryCache({ fragmentMatcher });
+
+  const requestLink = new ApolloLink((operation, forward) =>
+    new Observable(observer => {
+      let handle;
+      Promise.resolve(operation)
+        .then(oper => request(oper))
+        .then(() => {
+          handle = forward(operation).subscribe({
+            next: observer.next.bind(observer),
+            error: observer.error.bind(observer),
+            complete: observer.complete.bind(observer),
+          });
+        })
+        .catch(observer.error.bind(observer));
+
+      return () => {
+        if (handle) handle.unsubscribe();
+      };
+    })
+  );
+
+  return new ApolloClient({
+    link: ApolloLink.from([
+      requestLink,
+      new HttpLink({
+        uri: "https://api.github.com/graphql",
+      })
+    ]),
+    cache
   });
 }
 
