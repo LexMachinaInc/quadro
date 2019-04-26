@@ -8,7 +8,9 @@ export default function Board( { member, statusLabels }) {
   return (
     <section className="lists-container center">
       {CONFIG.buckets.map((bucket) => {
+        console.log('bucket', bucket)
         const queryString = getQueryString(member, bucket.key)
+        const statusLabel = statusLabels.find((label) => label.name === bucket.label);
         return (
           <CardContainer
             key={bucket.key}
@@ -16,6 +18,7 @@ export default function Board( { member, statusLabels }) {
             query={GET_BUCKET}
             queryString={queryString}
             member={member}
+            statusLabelId={statusLabel ? statusLabel.id : null}
           />
         );
       })}

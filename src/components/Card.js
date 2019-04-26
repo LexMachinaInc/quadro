@@ -3,15 +3,15 @@ import { shape, string } from 'prop-types';
 import Label from './Label';
 import '../App.scss';
 
-export default function Card({ issue, originBucket }) {
+export default function Card({ issue, originStatusLabelId }) {
 
-  const onDragStart = (issueNumber, originBucket) => (e) => {
-    console.log(e, issueNumber);
-    const data = JSON.stringify({ issueNumber, originBucket });
+  const onDragStart = (issueId, originStatusLabelId, labels) => (e) => {
+    const data = JSON.stringify({ issueId, originStatusLabelId, labels });
     e.dataTransfer.setData("text/plain", data);
   }
 
   const {
+    id,
     number,
     url,
     title,
@@ -19,8 +19,11 @@ export default function Card({ issue, originBucket }) {
     assignees,
   } = issue;
   const isPR = url.includes("pull");
+
+  const labelIds = labels.map((label) => label.id);
+
   return (
-    <div className="card" draggable onDragStart={onDragStart(number, originBucket)}  >
+    <div className="card" draggable onDragStart={onDragStart(id, originStatusLabelId, labelIds)}  >
       <div className="card-container">
         <div className="card-header">
           <h4 className="issue-number-container">
@@ -52,7 +55,11 @@ export default function Card({ issue, originBucket }) {
   );
 }
 
+Card.defaultProps = {
+  originStatusLabelId: null,
+}
+
 Card.propTypes = {
   issue: shape({}).isRequired,
-  originBucket: string.isRequired,
+  originStatusLabelId: string,
 };

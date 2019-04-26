@@ -2,11 +2,12 @@ import React , { useState } from 'react';
 import { string, shape } from 'prop-types';
 import '../App.scss';
 import Card from './Card';
-import { Query } from "react-apollo";
+import { Query, Mutation } from "react-apollo";
 import Loader from "./Loader";
 import EmptyBoard from "./EmptyBoard";
+import { UPDATE_ISSUE_LABELS } from "../helpers/github";
 
-export default function CardContainer({ title, member, query, queryString }) {
+export default function CardContainer({ title, member, query, queryString, statusLabelId }) {
 
   const [isFetching, setIsFetching] = useState(false);
 
@@ -20,9 +21,10 @@ export default function CardContainer({ title, member, query, queryString }) {
 
   const onDragOver = (e) => e.preventDefault();
 
-  const onDrop = (bucket) => (e) => {
-    const {issueNumber, originBucket } = JSON.parse(e.dataTransfer.getData("text/plain"));
-    console.log(`Adding issue #${issueNumber} to ${bucket} from ${originBucket}`);
+  const onDrop = (statusLabelId) => (e) => {
+    const {issueId, originStatusLabelId, labels } = JSON.parse(e.dataTransfer.getData("text/plain"));
+    console.log(`Adding issue id ${issueId} to ${statusLabelId} from ${originStatusLabelId}`);
+    console.log(`Current labels are ${labels}`);
   };
 
   return (
@@ -35,13 +37,14 @@ export default function CardContainer({ title, member, query, queryString }) {
           const { hasNextPage, endCursor} = data.search.pageInfo;
           const issues = data.search.edges
             .map((edge) => {
-              const { number, url, title, labels, assignees } = edge.node;
+              const { number, url, title, labels, assignees, id } = edge.node;
               return {
-                number: number,
-                url: url,
-                title: title,
+                id,
+                number,
+                url,
+                title,
                 labels: labels.nodes,
-                assignees: assignees.edges,
+                assignees: assignees.edges
               }
             });
 
@@ -74,11 +77,11 @@ export default function CardContainer({ title, member, query, queryString }) {
                 })
               })}
               onDragOver={onDragOver}
-              onDrop={onDrop(title)}
+              onDrop={onDrop(statusLabelId)}
             >
               {issues.map(issue => (
                 <li key={issue.number}>
-                  <Card key={issue.number} issue={issue} originBucket={title} />
+                  <Card key={issue.number} issue={issue} originStatusLabelId={statusLabelId} />
                 </li>
               ))}
               {isFetching && <div className="loading-more">Loading more issues ...</div>}

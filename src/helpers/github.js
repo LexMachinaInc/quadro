@@ -105,6 +105,7 @@ export const GET_BUCKET = gql`
       edges {
         node {
           ... on PullRequest {
+            id
             labels(first: 10) {
               nodes {
                 name
@@ -129,6 +130,7 @@ export const GET_BUCKET = gql`
       edges {
         node {
           ... on Issue {
+            id
             labels(first: 10) {
               nodes {
                 name
@@ -154,14 +156,24 @@ export const GET_BUCKET = gql`
   }
 `
 
+export const UPDATE_ISSUE_LABELS = gql`
+  mutation UpdateIssueLabels($id: String!, $updatedLabels: [String]!) {
+    updateIssue(input:{id:$id, labelIds:$updatedLabels}) {
+      issue {
+        id
+      }
+    }
+  }
+`;
+
 export const CONFIG = {
   owner: "LexMachinaInc",
   repo: "deus_lex",
   buckets: [
-    {title: "Backlog", key: "backlog" },
-    {title: "Ready", key: "ready" },
-    {title: "In Progress", key: "progress" },
-    {title: "Done", key: "done" },
+    {title: "Backlog", key: "backlog", label: "0 - Backlog" },
+    {title: "Ready", key: "ready", label: "1 - Ready" },
+    {title: "In Progress", key: "progress", label: "2 - Working" },
+    {title: "Done", key: "done", label: "3 - Done" },
     {title: "Closed", key: "closed" },
   ],
   meetings: {
