@@ -157,10 +157,17 @@ export const GET_BUCKET = gql`
 `
 
 export const UPDATE_ISSUE_LABELS = gql`
-  mutation UpdateIssueLabels($id: String!, $updatedLabels: [String]!) {
-    updateIssue(input:{id:$id, labelIds:$updatedLabels}) {
+  mutation UpdateIssueLabels($id: ID!, $labelIds: [ID!]) {
+    updateIssue(input:{id:$id, labelIds:$labelIds}) {
       issue {
         id
+        labels(first: 100) {
+          nodes {
+            name
+            color
+            id
+          }
+        }
       }
     }
   }

@@ -5,8 +5,8 @@ import '../App.scss';
 
 export default function Card({ issue, originStatusLabelId }) {
 
-  const onDragStart = (issueId, originStatusLabelId, labels) => (e) => {
-    const data = JSON.stringify({ issueId, originStatusLabelId, labels });
+  const onDragStart = (issueId, originStatusLabelId, labelIds) => (e) => {
+    const data = JSON.stringify({ issueId, originStatusLabelId, labelIds });
     e.dataTransfer.setData("text/plain", data);
   }
 
