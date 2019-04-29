@@ -36,7 +36,7 @@ export default function CardContainer({ title, member, query, queryString, statu
     <div className="list">
       <h3 className="list-title">{title}</h3>
       <Query query={query} variables={{ queryStr: queryString, end: null }}>
-        {({ loading, error, data, fetchMore, refetch}) => {
+        {({ loading, error, data, fetchMore }) => {
           if (loading) return <Loader />;
           if (error) return <EmptyBoard />;
           const { hasNextPage, endCursor} = data.search.pageInfo;
@@ -56,16 +56,19 @@ export default function CardContainer({ title, member, query, queryString, statu
           return (
             <Mutation
               mutation={UPDATE_ISSUE_LABELS}
-              refetchQueries={[
-                {
-                  query,
-                  variables: { queryStr: allQueryStrings.ready, end: null }
-                },
-                {
-                  query,
-                  variables: { queryStr: queryString, end: null }
-                }
-              ]}
+              update={(cache, { data: { updateIssue: { issue } } }) => {
+                console.log("AQS", allQueryStrings);
+
+                Object.keys(allQueryStrings).forEach((qs) => {
+                  const queryCache = cache.readQuery({ query, variables: { queryStr: allQueryStrings[qs], end: null } });
+                  console.log("QC", queryCache);
+                  queryCache.search.edges = queryCache.search.edges.filter((edge) => edge.node.id !== issue.id)
+                });
+
+                const q = cache.readQuery({ query, variables: { queryStr: queryString, end: null } });
+                const { search: { edges }} = q;
+                q.search.edges = [{node: { ...issue }}, ...q.search.edges];
+              }}
             >
               {(updateIssue) => (
                 <ul
