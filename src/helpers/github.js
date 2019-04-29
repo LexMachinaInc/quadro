@@ -94,6 +94,11 @@ function queryStringBuilder(view, member, labels, state) {
   return query;
 }
 
+export const GET_BACKLOG = (member, bucket) => {
+  const queryStr = getQueryString(member, bucket);
+  return GET_BUCKET(queryStr);
+}
+
 export const GET_BUCKET = gql`
   query board($queryStr: String!, $end: String) {
     search(first:10, type:ISSUE, query:$queryStr, after: $end) {
@@ -161,11 +166,22 @@ export const UPDATE_ISSUE_LABELS = gql`
     updateIssue(input:{id:$id, labelIds:$labelIds}) {
       issue {
         id
-        labels(first: 100) {
+        labels(first: 10) {
           nodes {
             name
             color
             id
+          }
+        }
+        number
+        title
+        url
+        assignees(first: 10) {
+          edges {
+            node {
+              login
+              avatarUrl
+            }
           }
         }
       }

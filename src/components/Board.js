@@ -5,10 +5,14 @@ import CardContainer from './CardContainer';
 import { CONFIG, GET_BUCKET, getQueryString } from "../helpers/github";
 
 export default function Board( { member, statusLabels }) {
+  const allQueryStrings = CONFIG.buckets.reduce((result, bucket) => {
+    result[bucket.key] = getQueryString(member, bucket.key);
+    return result;
+  }, {});
   return (
     <section className="lists-container center">
       {CONFIG.buckets.map((bucket) => {
-        const queryString = getQueryString(member, bucket.key)
+        const queryString = allQueryStrings[bucket.key];
         const statusLabel = statusLabels.find((label) => label.name === bucket.label);
         return (
           <CardContainer
@@ -18,6 +22,7 @@ export default function Board( { member, statusLabels }) {
             queryString={queryString}
             member={member}
             statusLabelId={statusLabel ? statusLabel.id : null}
+            allQueryStrings={allQueryStrings}
           />
         );
       })}

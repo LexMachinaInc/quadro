@@ -7,7 +7,7 @@ import Loader from "./Loader";
 import EmptyBoard from "./EmptyBoard";
 import { UPDATE_ISSUE_LABELS } from "../helpers/github";
 
-export default function CardContainer({ title, member, query, queryString, statusLabelId }) {
+export default function CardContainer({ title, member, query, queryString, statusLabelId, allQueryStrings }) {
 
   const [isFetching, setIsFetching] = useState(false);
 
@@ -36,7 +36,7 @@ export default function CardContainer({ title, member, query, queryString, statu
     <div className="list">
       <h3 className="list-title">{title}</h3>
       <Query query={query} variables={{ queryStr: queryString, end: null }}>
-        {({ loading, error, data, fetchMore}) => {
+        {({ loading, error, data, fetchMore, refetch}) => {
           if (loading) return <Loader />;
           if (error) return <EmptyBoard />;
           const { hasNextPage, endCursor} = data.search.pageInfo;
@@ -54,7 +54,19 @@ export default function CardContainer({ title, member, query, queryString, statu
             });
 
           return (
-            <Mutation mutation={UPDATE_ISSUE_LABELS}>
+            <Mutation
+              mutation={UPDATE_ISSUE_LABELS}
+              refetchQueries={[
+                {
+                  query,
+                  variables: { queryStr: allQueryStrings.ready, end: null }
+                },
+                {
+                  query,
+                  variables: { queryStr: queryString, end: null }
+                }
+              ]}
+            >
               {(updateIssue) => (
                 <ul
                   id={title}
@@ -107,4 +119,5 @@ CardContainer.propTypes = {
   query: shape({}).isRequired,
   queryString: string.isRequired,
   member: string.isRequired,
+  allQueryStrings: shape({}).isRequired,
 };
