@@ -10,7 +10,7 @@ export default function Home() {
         <section className="lists-container center">
           {titles.map((title, idx) => {
             return (
-                <div className="list">
+                <div className="list" key={idx.toString()}>
                   <h3 className="list-title">{title}</h3>
                   <ul className="list-items">
                     <li><MockCard /></li>

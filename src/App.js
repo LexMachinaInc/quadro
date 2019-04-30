@@ -39,15 +39,22 @@ export default class App extends Component {
     client
       .query({query: DASHBOARD_DATA})
       .then(result => {
-        const member = result.data.viewer.login;
-        const members = extractMemberNames(result.data.repository.assignableUsers.nodes);
+        const {
+          viewer: {
+            login: member, avatarUrl: avatar },
+            repository: {
+              labels: { nodes: statusLabels },
+              assignableUsers: { nodes: members }}
+            } = result.data;
+        const memberNames = extractMemberNames(members);
         const meetings = Object.keys(CONFIG.meetings)
-        const viewInUrl = checkViewInUrl([...members, ...meetings]);
+        const viewInUrl = checkViewInUrl([...memberNames, ...meetings]);
         this.setState({
           status: "authenticated",
           member: viewInUrl ? viewInUrl : member,
-          avatar: result.data.viewer.avatarUrl,
-          members: result.data.repository.assignableUsers.nodes
+          avatar,
+          members,
+          statusLabels
         })
         if (!viewInUrl) {
           updateUrl(member);
@@ -61,7 +68,7 @@ export default class App extends Component {
   }
 
   render() {
-    const { status, member, avatar, members } = this.state;
+    const { status, member, avatar, members, statusLabels } = this.state;
     const logBtn = status === "authenticated" ? <Logout /> : null;
     const handlers = {
       changeMemberBoard: this.changeMemberBoard.bind(this),
@@ -82,7 +89,11 @@ export default class App extends Component {
               members={members}
             />
             <div className="box">
-              { authenticated ? <Board member={member} /> : redirecting ? null : <Home /> }
+              { authenticated ?
+                <Board
+                  member={member}
+                  statusLabels={statusLabels}
+                /> : redirecting ? null : <Home /> }
             </div>
           </div>
         </div>

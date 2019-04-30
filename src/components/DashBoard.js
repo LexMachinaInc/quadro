@@ -19,14 +19,14 @@ export default function DashBoard ({ action, status, handlers, member, members, 
         { status === "authenticated" ? (
           <React.Fragment>
             <li className="member-dropdown">
-              <label class="member-select-label" for="member-select">Board:</label>
+              <label className="member-select-label" htmlFor="member-select">Board:</label>
               <select onChange={onChangeHandler} id="member-select" className="select-css" value={member}>
                 {members.map((mem) => (
-                  <option value={mem.login}>{mem.login}</option>
+                  <option key={mem.login} value={mem.login}>{mem.login}</option>
                 ))}
                 {<option disabled>_________</option>}
                 {Object.entries(CONFIG.meetings).map((meeting) => (
-                  <option value={meeting[0]}>{meeting[1]}</option>
+                  <option key={meeting[0]} value={meeting[0]}>{meeting[1]}</option>
                 ))}
               </select>
             </li>
@@ -56,14 +56,14 @@ DashBoard.defaultProps = {
   data: {
     user: undefined,
     members: undefined,
-  }
+  },
 }
 
 DashBoard.propTypes = {
   handlers: shape({
     changeMemberBoard: func,
   }),
-  action: element.isRequired,
+  action: element,
   status: string.isRequired,
   data: shape({
     user: shape({}),
