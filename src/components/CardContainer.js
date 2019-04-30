@@ -5,7 +5,7 @@ import Card from './Card';
 import { Query, Mutation } from "react-apollo";
 import Loader from "./Loader";
 import EmptyBoard from "./EmptyBoard";
-import { UPDATE_ISSUE_LABELS } from "../helpers/github";
+import { UPDATE_ISSUE } from "../helpers/github";
 
 export default function CardContainer({ title, member, query, queryString, statusLabelId, allQueryStrings }) {
 
@@ -23,13 +23,19 @@ export default function CardContainer({ title, member, query, queryString, statu
 
   const onDrop = (statusLabelId, updateIssue) => (e) => {
     const {issueId, originStatusLabelId, labelIds } = JSON.parse(e.dataTransfer.getData("text/plain"));
-    console.log("NEW STATUS LABEL ID", statusLabelId);
-    console.log("OLD STATUS LABEL ID", originStatusLabelId)
-    console.log("CURRENT LABELS", labelIds);
+    if (statusLabelId === originStatusLabelId) {
+      return;
+    }
+
     const updatedLabelsIds = labelIds.filter((id) => id !== originStatusLabelId);
-    updatedLabelsIds.push(statusLabelId);
-    console.log("UPDATED LABELS", updatedLabelsIds);
-    updateIssue({ variables: { id: issueId, labelIds: updatedLabelsIds }});
+
+    // Moving card into Closed bucket
+    if (!statusLabelId) {
+      updateIssue({ variables: { id: issueId, labelIds: updatedLabelsIds, state: "CLOSED" }})
+    } else {
+      updatedLabelsIds.push(statusLabelId);
+      updateIssue({ variables: { id: issueId, labelIds: updatedLabelsIds, state: "OPEN" }});
+    }
   };
 
   return (
@@ -55,18 +61,14 @@ export default function CardContainer({ title, member, query, queryString, statu
 
           return (
             <Mutation
-              mutation={UPDATE_ISSUE_LABELS}
+              mutation={UPDATE_ISSUE}
               update={(cache, { data: { updateIssue: { issue } } }) => {
-                console.log("AQS", allQueryStrings);
-
                 Object.keys(allQueryStrings).forEach((qs) => {
                   const queryCache = cache.readQuery({ query, variables: { queryStr: allQueryStrings[qs], end: null } });
-                  console.log("QC", queryCache);
                   queryCache.search.edges = queryCache.search.edges.filter((edge) => edge.node.id !== issue.id)
                 });
 
                 const q = cache.readQuery({ query, variables: { queryStr: queryString, end: null } });
-                const { search: { edges }} = q;
                 q.search.edges = [{node: { ...issue }}, ...q.search.edges];
               }}
             >
