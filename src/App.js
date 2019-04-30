@@ -79,23 +79,36 @@ export default class App extends Component {
     return (
       <ApolloProvider client={client}>
         <div id="container" className="wrapper">
-          <div>
-            <DashBoard
-              action={logBtn}
-              status={status}
-              handlers={handlers}
-              member={member}
-              avatar={avatar}
-              members={members}
-            />
-            <div className="box">
-              { authenticated ?
-                <Board
-                  member={member}
-                  statusLabels={statusLabels}
-                /> : redirecting ? null : <Home /> }
-            </div>
+          <DashBoard
+            action={logBtn}
+            status={status}
+            handlers={handlers}
+            member={member}
+            avatar={avatar}
+            members={members}
+          />
+          <div className="box">
+            { authenticated ?
+              <Board
+                member={member}
+                statusLabels={statusLabels}
+              /> : redirecting ? null : <Home /> }
           </div>
+        </div>
+        <div className="column-controls-container">
+          <div className="column-controls">
+          <label><input type="checkbox"/> backlog</label>
+          <label><input type="checkbox"/> ready</label>
+          <label><input type="checkbox"/> in progress</label>
+          <label><input type="checkbox"/> done</label>
+          <label><input type="checkbox"/> closed</label>
+          </div>
+          <button
+            onClick={null}
+            className="column-controls-button"
+          >
+            &#9776;
+          </button>
         </div>
       </ApolloProvider>
     );

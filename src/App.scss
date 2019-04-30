@@ -373,7 +373,7 @@ Remove or comment-out the code block below to see how the browser will fall-back
 
   .lists-container {
       display: grid;
-      grid-auto-columns: 27rem;
+      grid-auto-columns: minmax(20rem, auto);
       grid-auto-flow: column;
       grid-column-gap: 1rem;
   }
@@ -395,6 +395,46 @@ Remove or comment-out the code block below to see how the browser will fall-back
   .board-controls .btn,
   .user-settings-btn {
       margin: 0;
+  }
+
+  .box {
+    display: grid;
+    grid-template-rows: auto auto;
+    justify-items: center;
+    width: 100%;
+  }
+
+  .column-controls-container {
+    display: grid;
+    justify-items: center;
+    width: 100%;
+    z-index: 10;
+  }
+
+
+  .column-controls {
+    align-content: center;
+    background: #fff;
+    display: grid;
+    font-size: 14px;
+    height: auto;
+    justify-content: center;
+    padding: 5px;
+    width: 100%;
+    grid-template-columns: auto auto auto auto auto;
+    justify-items: center;
+    grid-gap: 20px;
+  }
+
+  .column-controls-button {
+    background: #fff;
+    border: 1px solid #fff;
+    border-bottom-left-radius: 75%;
+    border-bottom-right-radius: 75%;
+  }
+
+  .js-hide {
+    display: none;
   }
 }
 
