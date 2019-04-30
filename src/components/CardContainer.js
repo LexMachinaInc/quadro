@@ -72,45 +72,38 @@ export default function CardContainer({ title, member, query, queryString, statu
                 q.search.edges = [{node: { ...issue }}, ...q.search.edges];
               }}
             >
-              {(updateIssue) => (
-                <ul
-                  id={title}
-                  className="list-items"
-                  onScroll={handleScroll(hasNextPage, () => {
-                    return fetchMore({
-                      variables: { queryStr: queryString, end: endCursor },
-                      updateQuery: (prev, { fetchMoreResult }) => {
-                        setIsFetching(false);
-                        if (!fetchMoreResult) return prev;
-                        const updatedEdges = prev.search.edges.concat(fetchMoreResult.search.edges);
-                        fetchMoreResult.search.edges = updatedEdges;
-                        return fetchMoreResult;
-                      }
-                    })
-                  })}
-                  onTouchMove={handleScroll(hasNextPage, () => {
-                    return fetchMore({
-                      variables: { queryStr: queryString, end: endCursor },
-                      updateQuery: (prev, { fetchMoreResult }) => {
-                        setIsFetching(false);
-                        if (!fetchMoreResult) return prev;
-                        const updatedEdges = prev.search.edges.concat(fetchMoreResult.search.edges);
-                        fetchMoreResult.search.edges = updatedEdges;
-                        return fetchMoreResult;
-                      }
-                    })
-                  })}
-                  onDragOver={onDragOver}
-                  onDrop={onDrop(statusLabelId, updateIssue)}
-                >
-                  {issues.map(issue => (
-                    <li key={issue.number}>
-                      <Card key={issue.number} issue={issue} originStatusLabelId={statusLabelId} />
-                    </li>
-                  ))}
-                  {isFetching && <div className="loading-more">Loading more issues ...</div>}
-                </ul>
-              )}
+              {(updateIssue) => {
+                const fetchMoreProps = {
+                  variables: { queryStr: queryString, end: endCursor },
+                  updateQuery: (prev, { fetchMoreResult }) => {
+                    setIsFetching(false);
+                    if (!fetchMoreResult) return prev;
+                    const updatedEdges = prev.search.edges.concat(fetchMoreResult.search.edges);
+                    fetchMoreResult.search.edges = updatedEdges;
+                    return fetchMoreResult;
+                  }
+                };
+
+                const handleFetchMore = () => fetchMore(fetchMoreProps);
+
+                return (
+                  <ul
+                    id={title}
+                    className="list-items"
+                    onScroll={handleScroll(hasNextPage, handleFetchMore)}
+                    onTouchMove={handleScroll(hasNextPage, handleFetchMore)}
+                    onDragOver={onDragOver}
+                    onDrop={onDrop(statusLabelId, updateIssue)}
+                  >
+                    {issues.map(issue => (
+                      <li key={issue.number}>
+                        <Card key={issue.number} issue={issue} originStatusLabelId={statusLabelId} />
+                      </li>
+                    ))}
+                    {isFetching && <div className="loading-more">Loading more issues ...</div>}
+                  </ul>
+                )
+              }}
             </Mutation>
           )
         }}
