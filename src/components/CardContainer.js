@@ -72,7 +72,8 @@ export default function CardContainer({ title, member, query, queryString, statu
                 q.search.edges = [{node: { ...issue }}, ...q.search.edges];
               }}
             >
-              {(updateIssue) => {
+              {(updateIssue, { loading }) => {
+                if (loading) return <Loader />;
                 const fetchMoreProps = {
                   variables: { queryStr: queryString, end: endCursor },
                   updateQuery: (prev, { fetchMoreResult }) => {
