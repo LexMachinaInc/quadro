@@ -20,7 +20,6 @@ export default function Board( { member, statusLabels }) {
             title={bucket.title}
             query={GET_BUCKET}
             queryString={queryString}
-            member={member}
             statusLabelId={statusLabel ? statusLabel.id : null}
             allQueryStrings={allQueryStrings}
           />

@@ -7,7 +7,7 @@ import Loader from "./Loader";
 import EmptyBoard from "./EmptyBoard";
 import { UPDATE_ISSUE } from "../helpers/github";
 
-export default function CardContainer({ title, member, query, queryString, statusLabelId, allQueryStrings }) {
+export default function CardContainer({ title, query, queryString, statusLabelId, allQueryStrings }) {
 
   const [isFetching, setIsFetching] = useState(false);
 
@@ -113,10 +113,14 @@ export default function CardContainer({ title, member, query, queryString, statu
   );
 }
 
+CardContainer.defaultProps = {
+  statusLabelId: null,
+}
+
 CardContainer.propTypes = {
   title: string.isRequired,
   query: shape({}).isRequired,
   queryString: string.isRequired,
-  member: string.isRequired,
   allQueryStrings: shape({}).isRequired,
+  statusLabelId: string,
 };
