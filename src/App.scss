@@ -8,6 +8,8 @@ Flexbox is used as a fallback so that browsers which don't support grid will sti
 
 */
 
+$sideBar: #1B998B;
+
 /* Base styles */
 
 :root {
@@ -70,6 +72,10 @@ body {
   border:none;
   font: inherit;
   cursor: pointer;
+
+  &.sidebar-menu-btn {
+    padding: 0;
+  }
 }
 
 .add-border-black {
@@ -371,9 +377,14 @@ Remove or comment-out the code block below to see how the browser will fall-back
       grid-column-gap: 1rem;
   }
 
+  .logo-menu-container {
+    display: grid;
+    grid-template-columns: auto auto;
+  }
+
   .lists-container {
       display: grid;
-      grid-auto-columns: minmax(20rem, auto);
+      //grid-auto-columns: minmax(20rem, auto);
       grid-auto-flow: column;
       grid-column-gap: 1rem;
   }
@@ -405,36 +416,70 @@ Remove or comment-out the code block below to see how the browser will fall-back
   }
 
   .column-controls-container {
-    display: grid;
-    justify-items: center;
-    width: 100%;
-    z-index: 10;
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: $sideBar;
+    overflow-x: hidden;
+    transition: all 0.5s ease;
+    padding-top: 10px;
+    opacity: 0;
+
+    .controls-menu-close-btn {
+      position: absolute;
+      top: 0;
+      right: 0;
+      font-size: 25px;
+      text-decoration: none;
+      background-color: $sideBar;
+      border: none;
+      color: #fff;
+      font-weight: bold;
+    }
   }
 
+  .show-side-menu {
+    width: 250px;
+    opacity: 1;
+  }
 
   .column-controls {
-    align-content: center;
-    background: #fff;
+    align-content: start;
+    background: $sideBar;
     display: grid;
     font-size: 14px;
     height: auto;
-    justify-content: center;
+    justify-content: start;
     padding: 5px;
     width: 100%;
-    grid-template-columns: auto auto auto auto auto;
-    justify-items: center;
-    grid-gap: 20px;
+    grid-template-rows: auto auto auto auto auto;
+    justify-items: start;
+    grid-gap: 5px;
+    padding-left: 25px;
+    color: #fff;
   }
 
   .column-controls-button {
     background: #fff;
     border: 1px solid #fff;
-    border-bottom-left-radius: 75%;
-    border-bottom-right-radius: 75%;
+    border-top-left-radius: 75%;
+    border-top-right-radius: 75%;
   }
 
   .js-hide {
     display: none;
+  }
+
+  .sidebar-menu-btn {
+    padding: 0;
+  }
+
+  .sidebar-menu-content {
+    line-height: 0;
+    padding: 0;
   }
 }
 

@@ -34,3 +34,9 @@ export function getStatus() {
   const params = Array.from(getSearchParams());
   return params.length ? params[0] : null;
 }
+
+export const toggleSideMenu = (e) => {
+  e.currentTarget.blur();
+  const sideMenu = document.getElementById("side-menu");
+  sideMenu.classList.toggle("show-side-menu");
+}

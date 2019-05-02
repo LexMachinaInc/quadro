@@ -6,7 +6,7 @@ import Home from './components/Home';
 import Board from './components/Board';
 import { getToken } from "./helpers/authorization";
 import { getApolloClient, DASHBOARD_DATA, CONFIG } from "./helpers/github";
-import { updateUrl, checkViewInUrl, getStatus } from "./helpers/ui";
+import { updateUrl, checkViewInUrl, getStatus, toggleSideMenu } from "./helpers/ui";
 import { extractMemberNames } from "./helpers/utils";
 
 const client = getApolloClient();
@@ -95,20 +95,21 @@ export default class App extends Component {
               /> : redirecting ? null : <Home /> }
           </div>
         </div>
-        <div className="column-controls-container">
+        <div id="side-menu" className="column-controls-container">
           <div className="column-controls">
-          <label><input type="checkbox"/> backlog</label>
-          <label><input type="checkbox"/> ready</label>
-          <label><input type="checkbox"/> in progress</label>
-          <label><input type="checkbox"/> done</label>
-          <label><input type="checkbox"/> closed</label>
+            <button
+              className="controls-menu-close-btn"
+              onClick={toggleSideMenu}
+            >
+              x
+            </button>
+            <p><strong>Columns Displayed</strong></p>
+            <label><input type="checkbox"/> Backlog</label>
+            <label><input type="checkbox"/> Ready</label>
+            <label><input type="checkbox"/> In Progress</label>
+            <label><input type="checkbox"/> Done</label>
+            <label><input type="checkbox"/> Closed</label>
           </div>
-          <button
-            onClick={null}
-            className="column-controls-button"
-          >
-            &#9776;
-          </button>
         </div>
       </ApolloProvider>
     );
