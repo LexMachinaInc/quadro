@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import { ApolloProvider } from "react-apollo";
 import DashBoard from "./components/DashBoard";
 import Logout from "./components/Logout";
-import Home from './components/Home';
-import Board from './components/Board';
+import Home from "./components/Home";
+import Board from "./components/Board";
+import SideMenu from "./components/SideMenu";
 import { getToken } from "./helpers/authorization";
 import { getApolloClient, DASHBOARD_DATA, CONFIG } from "./helpers/github";
 import { updateUrl, checkViewInUrl, getStatus } from "./helpers/ui";
@@ -39,15 +40,22 @@ export default class App extends Component {
     client
       .query({query: DASHBOARD_DATA})
       .then(result => {
-        const member = result.data.viewer.login;
-        const members = extractMemberNames(result.data.repository.assignableUsers.nodes);
+        const {
+          viewer: {
+            login: member, avatarUrl: avatar },
+            repository: {
+              labels: { nodes: statusLabels },
+              assignableUsers: { nodes: members }}
+            } = result.data;
+        const memberNames = extractMemberNames(members);
         const meetings = Object.keys(CONFIG.meetings)
-        const viewInUrl = checkViewInUrl([...members, ...meetings]);
+        const viewInUrl = checkViewInUrl([...memberNames, ...meetings]);
         this.setState({
           status: "authenticated",
           member: viewInUrl ? viewInUrl : member,
-          avatar: result.data.viewer.avatarUrl,
-          members: result.data.repository.assignableUsers.nodes
+          avatar,
+          members,
+          statusLabels
         })
         if (!viewInUrl) {
           updateUrl(member);
@@ -61,7 +69,7 @@ export default class App extends Component {
   }
 
   render() {
-    const { status, member, avatar, members } = this.state;
+    const { status, member, avatar, members, statusLabels } = this.state;
     const logBtn = status === "authenticated" ? <Logout /> : null;
     const handlers = {
       changeMemberBoard: this.changeMemberBoard.bind(this),
@@ -72,20 +80,23 @@ export default class App extends Component {
     return (
       <ApolloProvider client={client}>
         <div id="container" className="wrapper">
-          <div>
-            <DashBoard
-              action={logBtn}
-              status={status}
-              handlers={handlers}
-              member={member}
-              avatar={avatar}
-              members={members}
-            />
-            <div className="box">
-              { authenticated ? <Board member={member} /> : redirecting ? null : <Home /> }
-            </div>
+          <DashBoard
+            action={logBtn}
+            status={status}
+            handlers={handlers}
+            member={member}
+            avatar={avatar}
+            members={members}
+          />
+          <div className="box">
+            { authenticated ?
+              <Board
+                member={member}
+                statusLabels={statusLabels}
+              /> : redirecting ? null : <Home /> }
           </div>
         </div>
+        { authenticated ? <SideMenu buckets={CONFIG.buckets.map((bucket) => bucket.title)} /> : null}
       </ApolloProvider>
     );
   }

@@ -1,26 +1,32 @@
 {
   "name": "quadro",
   "author": "Sonny Sheth",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
   "dependencies": {
     "apollo-boost": "^0.3.1",
+    "apollo-cache-inmemory": "^1.5.1",
+    "apollo-client": "^2.5.1",
+    "apollo-link": "^1.2.11",
+    "apollo-link-http": "^1.5.14",
     "axios": "^0.18.0",
+    "concurrently": "^4.1.0",
     "dotenv": "^7.0.0",
     "express": "^4.16.4",
-    "express-session": "^1.15.6",
+    "express-session": "^1.16.1",
     "graphql": "^14.2.1",
-    "node-sass": "^4.11.0",
+    "graphql-tag": "^2.10.1",
+    "node-sass": "^4.12.0",
     "qs": "^6.7.0",
     "randomstring": "^1.1.5",
     "react": "^16.8.6",
-    "react-apollo": "^2.5.4",
+    "react-apollo": "^2.5.5",
     "react-dom": "^16.8.6",
-    "react-scripts": "2.1.8"
+    "react-scripts": "3.0.0"
   },
   "scripts": {
     "start": "node server.js",
-    "dev": "react-scripts start",
+    "dev": "concurrently \"node server.js\" \"react-scripts start\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -38,13 +44,12 @@
   "devDependencies": {
     "babel-loader": "^8.0.5",
     "eslint-config-airbnb": "^17.1.0",
-    "eslint-config-prettier": "^4.1.0",
+    "eslint-config-prettier": "^4.2.0",
     "eslint-loader": "^2.1.2",
-    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-import": "^2.17.2",
     "eslint-plugin-jsx-a11y": "^6.2.1",
     "eslint-plugin-prettier": "^3.0.1",
     "eslint-plugin-react": "^7.12.4",
-    "prettier": "^1.16.4"
-  },
-  "proxy": "http://localhost:8080"
+    "prettier": "^1.17.0"
+  }
 }

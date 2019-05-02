@@ -8,7 +8,7 @@ export default function Label({ labels }) {
     const borderClass = label.color === "ffffff" ? "add-border-black" : "";
     const name = removeZube(label.name);
     return (
-      <span className={`github-label ${background} ${borderClass}`} style={{
+      <span key={label.name} className={`github-label ${background} ${borderClass}`} style={{
         backgroundColor: `#${label.color}`
       }}
       >

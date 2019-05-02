@@ -1,21 +1,62 @@
 /*eslint-disable no-useless-escape */
-import ApolloClient from "apollo-boost";
 import { gql } from "apollo-boost";
 import { getToken } from "./authorization";
 
+import { ApolloClient } from "apollo-client";
+import { InMemoryCache, IntrospectionFragmentMatcher } from "apollo-cache-inmemory";
+import { HttpLink } from "apollo-link-http";
+import { ApolloLink, Observable } from "apollo-link";
+
 export function getApolloClient() {
-  return new ApolloClient({
-    uri: "https://api.github.com/graphql",
-    request: async operation => {
-      const token = await getToken();
-      if (token) {
-        operation.setContext({
-          headers: {
-            authorization: `Bearer ${token}`
-          }
-        });
-      }
+  const request = async operation => {
+    const token = await getToken();
+    if (token) {
+      operation.setContext({
+        headers: {
+          authorization: `Bearer ${token}`
+        }
+      });
     }
+  }
+
+  const fragmentMatcher = new IntrospectionFragmentMatcher({
+    introspectionQueryResultData: {
+      __schema: {
+        types: ["Issue", "PullRequest"],
+      },
+    },
+  });
+
+  const cache = new InMemoryCache({ fragmentMatcher });
+
+  const requestLink = new ApolloLink((operation, forward) =>
+    new Observable(observer => {
+      let handle;
+      Promise.resolve(operation)
+        .then(oper => request(oper))
+        .then(() => {
+          handle = forward(operation).subscribe({
+            next: observer.next.bind(observer),
+            error: observer.error.bind(observer),
+            complete: observer.complete.bind(observer),
+          });
+        })
+        .catch(observer.error.bind(observer));
+
+      return () => {
+        if (handle) handle.unsubscribe();
+      };
+    })
+  );
+
+  return new ApolloClient({
+    link: ApolloLink.from([
+      requestLink,
+      new HttpLink({
+        uri: "https://api.github.com/graphql",
+      })
+    ]),
+    cache
   });
 }
 
@@ -29,6 +70,12 @@ export const DASHBOARD_DATA = gql`
       assignableUsers(first:100) {
         nodes {
           login
+        }
+      }
+      labels(first:4) {
+        nodes {
+          name
+          id
         }
       }
     }
@@ -47,6 +94,11 @@ function queryStringBuilder(view, member, labels, state) {
   return query;
 }
 
+export const GET_BACKLOG = (member, bucket) => {
+  const queryStr = getQueryString(member, bucket);
+  return GET_BUCKET(queryStr);
+}
+
 export const GET_BUCKET = gql`
   query board($queryStr: String!, $end: String) {
     search(first:10, type:ISSUE, query:$queryStr, after: $end) {
@@ -58,10 +110,12 @@ export const GET_BUCKET = gql`
       edges {
         node {
           ... on PullRequest {
+            id
             labels(first: 10) {
               nodes {
                 name
                 color
+                id
               }
             }
             title
@@ -81,10 +135,12 @@ export const GET_BUCKET = gql`
       edges {
         node {
           ... on Issue {
+            id
             labels(first: 10) {
               nodes {
                 name
                 color
+                id
               }
             }
             number
@@ -105,14 +161,42 @@ export const GET_BUCKET = gql`
   }
 `
 
+export const UPDATE_ISSUE = gql`
+  mutation UpdateIssueLabels($id: ID!, $labelIds: [ID!], $state: IssueState) {
+    updateIssue(input:{id:$id, labelIds:$labelIds, state:$state}) {
+      issue {
+        id
+        labels(first: 10) {
+          nodes {
+            name
+            color
+            id
+          }
+        }
+        number
+        title
+        url
+        assignees(first: 10) {
+          edges {
+            node {
+              login
+              avatarUrl
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
 export const CONFIG = {
   owner: "LexMachinaInc",
   repo: "deus_lex",
   buckets: [
-    {title: "Backlog", key: "backlog" },
-    {title: "Ready", key: "ready" },
-    {title: "In Progress", key: "progress" },
-    {title: "Done", key: "done" },
+    {title: "Backlog", key: "backlog", label: "0 - Backlog" },
+    {title: "Ready", key: "ready", label: "1 - Ready" },
+    {title: "In Progress", key: "progress", label: "2 - Working" },
+    {title: "Done", key: "done", label: "3 - Done" },
     {title: "Closed", key: "closed" },
   ],
   meetings: {

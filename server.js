@@ -1,18 +1,17 @@
 // save environment variables in dotenv
-require('dotenv').config();
+require("dotenv").config();
 // Import the express lirbary
-const express = require('express');
+const express = require("express");
 // express session
-const session = require('express-session');
+const session = require("express-session");
 // node core module, construct query string
-const qs = require('querystring');
+const qs = require("querystring");
 // generates a random string for the
-const randomString = require('randomstring');
+const randomString = require("randomstring");
 
 // Import the axios library, to make HTTP requests
-const axios = require('axios');
+const axios = require("axios");
 
-//const { parseIssuesData } = require('./utilities');
 // setting up port and redirect url from process.env
 // makes it easier to deploy later
 const port = process.env.PORT || 8080;
@@ -33,17 +32,17 @@ const sessionObj = {
 // inside the public directory
 const app = express();
 
-app.use(express.static('build'));
+app.use(express.static("build"));
 
-if (app.get('env') === 'production') {
-  app.set('trust proxy', 1); // trust first proxy
+if (app.get("env") === "production") {
+  app.set("trust proxy", 1); // trust first proxy
   sessionObj.cookie.secure = true; // serve secure cookies
 }
 
 // initializes session
 app.use(session(sessionObj));
 
-app.get('/login', (req, res) => {
+app.get("/login", (req, res) => {
   req.session.csrf_string = randomString.generate();
   req.session.query = req.query;
   // construct the GitHub URL you redirect your user to.
@@ -54,24 +53,23 @@ app.get('/login', (req, res) => {
       client_id: clientID,
       redirect_uri: redirectURI,
       state: req.session.csrf_string,
-      scope: 'user repo'
+      scope: "user repo"
     })}`;
   // redirect user with express
   res.redirect(githubAuthUrl);
 });
 
-app.get('/authenticated', (req, res) => {
+app.get("/authenticated", (req, res) => {
   const token = req.session.access_token || null;
   res.json({ token: req.session.access_token })
 });
 
-app.get('/logout', (req, res) => {
+app.get("/logout", (req, res) => {
   delete req.session.access_token;
-  res.json({ logout: 'success' });
-  // req.session.destroy(() => res.send('LOGGED OUT'));
+  res.json({ logout: "success" });
 });
 
-app.get('/oauth/redirect', (req, res) => {
+app.get("/oauth/redirect", (req, res) => {
   const requestToken = req.query.code;
   const returnedState = req.query.state;
 
@@ -86,11 +84,11 @@ app.get('/oauth/redirect', (req, res) => {
     });
 
     axios({
-      method: 'post',
+      method: "post",
       url: `https://github.com/login/oauth/access_token?${params}`,
       // Setting content type header, so that we get the response in JSON
       headers: {
-        accept: 'application/json'
+        accept: "application/json"
       }
     }).then((response) => {
       // Once we get the response, extract the access token from
@@ -98,16 +96,13 @@ app.get('/oauth/redirect', (req, res) => {
       const accessToken = response.data.access_token;
       // Saving token to session
       req.session.access_token = accessToken;
-      // const param = qs.stringify({
-      //   token: accessToken
-      // })
       // Sending user back to home page, where App component
       // will mount again and check for authentication before
       // routing user to appropriate page
-      res.redirect('/?redirecting');
+      res.redirect("/?redirecting");
     });
   } else {
-    res.send('Authentication Failed');
+    res.send("Authentication Failed");
   }
 });
 

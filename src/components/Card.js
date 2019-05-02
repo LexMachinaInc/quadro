@@ -1,10 +1,17 @@
 import React from 'react';
-import { shape } from 'prop-types';
+import { shape, string } from 'prop-types';
 import Label from './Label';
 import '../App.scss';
 
-export default function Card({ issue }) {
+export default function Card({ issue, originStatusLabelId }) {
+
+  const onDragStart = (issueId, originStatusLabelId, labelIds) => (e) => {
+    const data = JSON.stringify({ issueId, originStatusLabelId, labelIds });
+    e.dataTransfer.setData("text/plain", data);
+  }
+
   const {
+    id,
     number,
     url,
     title,
@@ -12,8 +19,11 @@ export default function Card({ issue }) {
     assignees,
   } = issue;
   const isPR = url.includes("pull");
+
+  const labelIds = labels.map((label) => label.id);
+
   return (
-    <div className="card">
+    <div className="card" draggable onDragStart={onDragStart(id, originStatusLabelId, labelIds)}  >
       <div className="card-container">
         <div className="card-header">
           <h4 className="issue-number-container">
@@ -30,6 +40,7 @@ export default function Card({ issue }) {
           <span className="assignee-avatar-container">
             {assignees.map((assignee) =>
               <img
+                key={assignee.node.login}
                 className="assignee-avatar"
                 src={assignee.node.avatarUrl}
                 title={assignee.node.login}
@@ -38,12 +49,17 @@ export default function Card({ issue }) {
           </span>
         </div>
         <p>{title}</p>
-        <div class="labels-container"><Label labels={labels} /></div>
+        <div className="labels-container"><Label labels={labels} /></div>
       </div>
     </div>
   );
 }
 
+Card.defaultProps = {
+  originStatusLabelId: null,
+}
+
 Card.propTypes = {
   issue: shape({}).isRequired,
+  originStatusLabelId: string,
 };
