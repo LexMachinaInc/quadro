@@ -1,7 +1,7 @@
-import React , { useState } from 'react';
-import { string, shape } from 'prop-types';
-import '../App.scss';
-import Card from './Card';
+import React , { useState } from "react";
+import { string, shape } from "prop-types";
+import "../App.scss";
+import Card from "./Card";
 import { Query, Mutation } from "react-apollo";
 import Loader from "./Loader";
 import EmptyBoard from "./EmptyBoard";
@@ -39,7 +39,7 @@ export default function CardContainer({ title, query, queryString, statusLabelId
   };
 
   return (
-    <div className="list">
+    <div id={title} className="list">
       <h3 className="list-title">{title}</h3>
       <Query query={query} variables={{ queryStr: queryString, end: null }}>
         {({ loading, error, data, fetchMore }) => {

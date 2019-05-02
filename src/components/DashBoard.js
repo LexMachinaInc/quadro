@@ -17,7 +17,7 @@ export default function DashBoard ({ action, status, handlers, member, members, 
         <button className="sidebar-menu-btn" onClick={toggleSideMenu}>
           <span className="sidebar-menu-content">☰</span>
         </button>
-        <li className="logo-title"><a href="/"><strong>QUADRO</strong></a></li>
+        <li className="logo-title"><strong>QUADRO</strong></li>
       </ul>
       <ul className="nav flexContainer flexEnd">
         { status === "authenticated" ? (

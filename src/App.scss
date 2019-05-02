@@ -8,7 +8,9 @@ Flexbox is used as a fallback so that browsers which don't support grid will sti
 
 */
 
-$sideBar: #1B998B;
+//$sideBar: #1B998B;
+$sideBar: #fcfeff;
+$sideBarColor: #525252;
 
 /* Base styles */
 
@@ -84,6 +86,7 @@ body {
 
 .logo-title {
   width: 100px;
+  color: #fff;
 }
 
 .lists-container {
@@ -380,13 +383,12 @@ Remove or comment-out the code block below to see how the browser will fall-back
   .logo-menu-container {
     display: grid;
     grid-template-columns: auto auto;
+    grid-gap: 10px;
   }
 
   .lists-container {
       display: grid;
-      //grid-auto-columns: minmax(20rem, auto);
-      grid-auto-flow: column;
-      grid-column-gap: 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   }
 
   .list {
@@ -408,13 +410,6 @@ Remove or comment-out the code block below to see how the browser will fall-back
       margin: 0;
   }
 
-  .box {
-    display: grid;
-    grid-template-rows: auto auto;
-    justify-items: center;
-    width: 100%;
-  }
-
   .column-controls-container {
     height: 100%;
     width: 0;
@@ -424,7 +419,7 @@ Remove or comment-out the code block below to see how the browser will fall-back
     left: 0;
     background-color: $sideBar;
     overflow-x: hidden;
-    transition: all 0.5s ease;
+    transition: 0.5s ease;
     padding-top: 10px;
     opacity: 0;
 
@@ -436,7 +431,7 @@ Remove or comment-out the code block below to see how the browser will fall-back
       text-decoration: none;
       background-color: $sideBar;
       border: none;
-      color: #fff;
+      color: $sideBarColor;
       font-weight: bold;
     }
   }
@@ -459,12 +454,12 @@ Remove or comment-out the code block below to see how the browser will fall-back
     justify-items: start;
     grid-gap: 5px;
     padding-left: 25px;
-    color: #fff;
+    color: $sideBarColor;
   }
 
   .column-controls-button {
-    background: #fff;
-    border: 1px solid #fff;
+    background: $sideBarColor;
+    border: 1px solid $sideBar;
     border-top-left-radius: 75%;
     border-top-right-radius: 75%;
   }

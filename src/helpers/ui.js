@@ -40,3 +40,8 @@ export const toggleSideMenu = (e) => {
   const sideMenu = document.getElementById("side-menu");
   sideMenu.classList.toggle("show-side-menu");
 }
+
+export function toggleDisplay(title) {
+  const bucket = document.getElementById(title);
+  bucket.classList.toggle("js-hide");
+}

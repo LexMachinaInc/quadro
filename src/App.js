@@ -2,11 +2,12 @@ import React, { Component } from "react";
 import { ApolloProvider } from "react-apollo";
 import DashBoard from "./components/DashBoard";
 import Logout from "./components/Logout";
-import Home from './components/Home';
-import Board from './components/Board';
+import Home from "./components/Home";
+import Board from "./components/Board";
+import SideMenu from "./components/SideMenu";
 import { getToken } from "./helpers/authorization";
 import { getApolloClient, DASHBOARD_DATA, CONFIG } from "./helpers/github";
-import { updateUrl, checkViewInUrl, getStatus, toggleSideMenu } from "./helpers/ui";
+import { updateUrl, checkViewInUrl, getStatus } from "./helpers/ui";
 import { extractMemberNames } from "./helpers/utils";
 
 const client = getApolloClient();
@@ -95,22 +96,7 @@ export default class App extends Component {
               /> : redirecting ? null : <Home /> }
           </div>
         </div>
-        <div id="side-menu" className="column-controls-container">
-          <div className="column-controls">
-            <button
-              className="controls-menu-close-btn"
-              onClick={toggleSideMenu}
-            >
-              x
-            </button>
-            <p><strong>Columns Displayed</strong></p>
-            <label><input type="checkbox"/> Backlog</label>
-            <label><input type="checkbox"/> Ready</label>
-            <label><input type="checkbox"/> In Progress</label>
-            <label><input type="checkbox"/> Done</label>
-            <label><input type="checkbox"/> Closed</label>
-          </div>
-        </div>
+        { authenticated ? <SideMenu buckets={CONFIG.buckets.map((bucket) => bucket.title)} /> : null}
       </ApolloProvider>
     );
   }
