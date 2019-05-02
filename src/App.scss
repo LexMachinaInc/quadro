@@ -388,7 +388,7 @@ Remove or comment-out the code block below to see how the browser will fall-back
 
   .lists-container {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   }
 
   .list {
