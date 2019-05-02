@@ -2,6 +2,7 @@ import React from 'react';
 import { element, shape, arrayOf, func, string } from 'prop-types';
 import '../App.scss';
 import { CONFIG } from "../helpers/github";
+import { toggleSideMenu } from "../helpers/ui";
 
 export default function DashBoard ({ action, status, handlers, member, members, avatar }) {
   const onChangeHandler = (e) => {
@@ -12,8 +13,11 @@ export default function DashBoard ({ action, status, handlers, member, members, 
 
   return (
     <nav className="flexContainer blueBackground">
-      <ul className="nav flexItem flexStart">
-          <li className="logo-title"><a href="/"><strong>QUADRO</strong></a></li>
+      <ul className="nav flexItem flexStart logo-menu-container">
+        <button className="sidebar-menu-btn" onClick={toggleSideMenu}>
+          <span className="sidebar-menu-content">☰</span>
+        </button>
+        <li className="logo-title"><strong>QUADRO</strong></li>
       </ul>
       <ul className="nav flexContainer flexEnd">
         { status === "authenticated" ? (

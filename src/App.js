@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import { ApolloProvider } from "react-apollo";
 import DashBoard from "./components/DashBoard";
 import Logout from "./components/Logout";
-import Home from './components/Home';
-import Board from './components/Board';
+import Home from "./components/Home";
+import Board from "./components/Board";
+import SideMenu from "./components/SideMenu";
 import { getToken } from "./helpers/authorization";
 import { getApolloClient, DASHBOARD_DATA, CONFIG } from "./helpers/github";
 import { updateUrl, checkViewInUrl, getStatus } from "./helpers/ui";
@@ -79,24 +80,23 @@ export default class App extends Component {
     return (
       <ApolloProvider client={client}>
         <div id="container" className="wrapper">
-          <div>
-            <DashBoard
-              action={logBtn}
-              status={status}
-              handlers={handlers}
-              member={member}
-              avatar={avatar}
-              members={members}
-            />
-            <div className="box">
-              { authenticated ?
-                <Board
-                  member={member}
-                  statusLabels={statusLabels}
-                /> : redirecting ? null : <Home /> }
-            </div>
+          <DashBoard
+            action={logBtn}
+            status={status}
+            handlers={handlers}
+            member={member}
+            avatar={avatar}
+            members={members}
+          />
+          <div className="box">
+            { authenticated ?
+              <Board
+                member={member}
+                statusLabels={statusLabels}
+              /> : redirecting ? null : <Home /> }
           </div>
         </div>
+        { authenticated ? <SideMenu buckets={CONFIG.buckets.map((bucket) => bucket.title)} /> : null}
       </ApolloProvider>
     );
   }
