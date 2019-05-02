@@ -22,6 +22,9 @@ const clientSecret = process.env.CLIENT_SECRET;
 const redirectURI = process.env.REDIRECT_URL;
 // To create a unique session object with an expiration
 const sessionObj = {
+  genid: function(req) {
+    return randomString.generate()
+  },
   secret: randomString.generate(),
   cookie: { maxAge: 60000 },
   resave: false,
@@ -61,12 +64,13 @@ app.get("/login", (req, res) => {
 
 app.get("/authenticated", (req, res) => {
   const token = req.session.access_token || null;
-  res.json({ token: req.session.access_token })
+  res.json({ token })
 });
 
 app.get("/logout", (req, res) => {
-  delete req.session.access_token;
-  res.json({ logout: "success" });
+  req.session.destroy(function() {
+    res.json({ logout: "success" });
+  })
 });
 
 app.get("/oauth/redirect", (req, res) => {
@@ -102,7 +106,9 @@ app.get("/oauth/redirect", (req, res) => {
       res.redirect("/?redirecting");
     });
   } else {
-    res.send("Authentication Failed");
+    req.session.destroy(function() {
+      res.redirect("/?authentication_failed");
+    })
   }
 });
 
