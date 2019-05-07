@@ -1,9 +1,10 @@
 import React from 'react';
 import '../App.scss';
 import MockCard from "./MockCard";
+import { CONFIG } from "../helpers/github";
 
 export default function Home() {
-  const titles = ["Backlog", "Ready", "In Progress", "Done", "Closed"];
+  const titles = CONFIG.buckets.map((bucket) => bucket.title);
   return (
     <React.Fragment>
       <div>
