@@ -1,13 +1,20 @@
 import React , { useState } from "react";
-import { string, shape } from "prop-types";
+import { string, shape, arrayOf } from "prop-types";
 import "../App.scss";
 import Card from "./Card";
 import { Query, Mutation } from "react-apollo";
 import Loader from "./Loader";
 import EmptyBoard from "./EmptyBoard";
-import { UPDATE_ISSUE } from "../helpers/github";
+import { UPDATE_GITHUB_ISSUE, updateIssueInCache } from "../helpers/github";
+import { handleOnDrop } from "../helpers/ui";
 
-export default function CardContainer({ title, query, queryString, statusLabelId, allQueryStrings }) {
+export default function CardContainer({
+  title,
+  query,
+  queryString,
+  statusLabelId,
+  allQueryStrings,allStatusLabels
+}) {
 
   const [isFetching, setIsFetching] = useState(false);
 
@@ -21,22 +28,10 @@ export default function CardContainer({ title, query, queryString, statusLabelId
 
   const onDragOver = (e) => e.preventDefault();
 
-  const onDrop = (statusLabelId, updateIssue) => (e) => {
-    const {issueId, originStatusLabelId, labelIds } = JSON.parse(e.dataTransfer.getData("text/plain"));
-    if (statusLabelId === originStatusLabelId) {
-      return;
-    }
-
-    const updatedLabelsIds = labelIds.filter((id) => id !== originStatusLabelId);
-
-    // Moving card into Closed bucket
-    if (!statusLabelId) {
-      updateIssue({ variables: { id: issueId, labelIds: updatedLabelsIds, state: "CLOSED" }})
-    } else {
-      updatedLabelsIds.push(statusLabelId);
-      updateIssue({ variables: { id: issueId, labelIds: updatedLabelsIds, state: "OPEN" }});
-    }
-  };
+  const onDrop = (
+    statusLabelId,
+    allStatusLabels,
+    updateIssue) => (e) => handleOnDrop(e, statusLabelId, allStatusLabels, updateIssue);
 
   return (
     <div id={title} className="list">
@@ -48,31 +43,32 @@ export default function CardContainer({ title, query, queryString, statusLabelId
           const { hasNextPage, endCursor} = data.search.pageInfo;
           const issues = data.search.edges
             .map((edge) => {
-              const { number, url, title, labels, assignees, id } = edge.node;
+              const { number, url, title, labels, assignees, id, __typename: typeName } = edge.node;
               return {
                 id,
                 number,
                 url,
                 title,
                 labels: labels.nodes,
-                assignees: assignees.edges
+                assignees: assignees.edges,
+                typeName
               }
             });
 
           return (
             <Mutation
-              mutation={UPDATE_ISSUE}
-              update={(cache, { data: { updateIssue: { issue } } }) => {
+              mutation={UPDATE_GITHUB_ISSUE}
+              update={(cache, { data, data: { updateIssue } }) => {
                 Object.keys(allQueryStrings).forEach((qs) => {
                   const queryCache = cache.readQuery({ query, variables: { queryStr: allQueryStrings[qs], end: null } });
-                  queryCache.search.edges = queryCache.search.edges.filter((edge) => edge.node.id !== issue.id)
+                  queryCache.search.edges = queryCache.search.edges.filter((edge) => edge.node.id !== updateIssue.node_id);
                 });
 
                 const q = cache.readQuery({ query, variables: { queryStr: queryString, end: null } });
-                q.search.edges = [{node: { ...issue }}, ...q.search.edges];
+                q.search.edges = [{ node: updateIssueInCache(updateIssue) }, ...q.search.edges];
               }}
             >
-              {(updateIssue, { loading }) => {
+              {(updateGithubIssue, { loading }) => {
                 if (loading) return <Loader />;
                 const fetchMoreProps = {
                   variables: { queryStr: queryString, end: endCursor },
@@ -94,7 +90,7 @@ export default function CardContainer({ title, query, queryString, statusLabelId
                     onScroll={handleScroll(hasNextPage, handleFetchMore)}
                     onTouchMove={handleScroll(hasNextPage, handleFetchMore)}
                     onDragOver={onDragOver}
-                    onDrop={onDrop(statusLabelId, updateIssue)}
+                    onDrop={onDrop(statusLabelId, allStatusLabels, updateGithubIssue)}
                   >
                     {issues.map(issue => (
                       <li key={issue.number}>
@@ -123,4 +119,5 @@ CardContainer.propTypes = {
   queryString: string.isRequired,
   allQueryStrings: shape({}).isRequired,
   statusLabelId: string,
+  allStatusLabels: arrayOf(shape({})).isRequired
 };

@@ -22,6 +22,7 @@ export default function Board( { member, statusLabels }) {
             queryString={queryString}
             statusLabelId={statusLabel ? statusLabel.id : null}
             allQueryStrings={allQueryStrings}
+            allStatusLabels={statusLabels}
           />
         );
       })}
