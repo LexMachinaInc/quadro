@@ -223,16 +223,13 @@ body {
 
   p {
     word-break: break-word;
+    margin-block-start: 0.5em;
+    margin-block-end: 0.5em;
   }
 }
 
 .card-header {
   display: flex;
-  
-  p {
-    margin-block-start: 0.5em;
-    margin-block-end: 0.5em;
-  }
 }
 
 .issue-number-container {
