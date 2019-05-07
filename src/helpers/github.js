@@ -233,7 +233,7 @@ export const CONFIG = {
       labels: {
         backlog: `-label:\"1 - Ready\" -label:\"2 - Working\" -label:\"3 - Done\" -label:\"[zube]: Ready\" -label:\"[zube]: In Progress\" -label:\"[zube]: Done\"`,
         ready: `label:\"1 - Ready\"`,
-        progress: `label:\"2 - Working\"`,
+        working: `label:\"2 - Working\"`,
         done: `label:\"3 - Done\"`,
       }
     },
