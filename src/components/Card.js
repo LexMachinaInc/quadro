@@ -5,13 +5,12 @@ import '../App.scss';
 
 export default function Card({ issue, originStatusLabelId }) {
 
-  const onDragStart = (issueId, originStatusLabelId, labelIds) => (e) => {
-    const data = JSON.stringify({ issueId, originStatusLabelId, labelIds });
+  const onDragStart = (originStatusLabelId, number, labels, url) => (e) => {
+    const data = JSON.stringify({ originStatusLabelId, number, labels, url });
     e.dataTransfer.setData("text/plain", data);
   }
 
   const {
-    id,
     number,
     url,
     title,
@@ -20,10 +19,8 @@ export default function Card({ issue, originStatusLabelId }) {
   } = issue;
   const isPR = url.includes("pull");
 
-  const labelIds = labels.map((label) => label.id);
-
   return (
-    <div className="card" draggable onDragStart={onDragStart(id, originStatusLabelId, labelIds)}  >
+    <div className="card" draggable onDragStart={onDragStart(originStatusLabelId, number, labels, url)}  >
       <div className="card-container">
         <div className="card-header">
           <h4 className="issue-number-container">

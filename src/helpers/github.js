@@ -165,9 +165,9 @@ export const GET_BUCKET = gql`
   }
 `
 
-export const UPDATE_PR = gql`
-  mutation updatePullRequest($owner: String!, $repo: String!, $issue: String!, $state: String!, $labels: [String!]) {
-    updatePullRequest(input:{state:$state, labels:$labels}, owner:$owner, repo:$repo, issue:$issue)
+export const UPDATE_GITHUB_ISSUE = gql`
+  mutation updateIssue($owner: String!, $repo: String!, $issue: String!, $state: String!, $labels: [String!]) {
+    updateIssue(input:{state:$state, labels:$labels}, owner:$owner, repo:$repo, issue:$issue)
       @rest(
         type:"PullRequest"
         path:"/repos/{args.owner}/{args.repo}/issues/{args.issue}"
@@ -175,6 +175,10 @@ export const UPDATE_PR = gql`
       ) {
         node_id
         labels
+        number
+        title
+        html_url
+        assignees
       }
   }
 `;
@@ -261,4 +265,28 @@ export function getQueryString(member, bucket) {
     `${bucketLabels} ${CONFIG.queries.meetings[member].labels}` :
     bucketLabels;
   return queryStringBuilder(view, member, labels, state);
+}
+
+export function updateIssueInCache(updatedIssue) {
+  return {
+    id: updatedIssue.node_id,
+    number: updatedIssue.number,
+    title: updatedIssue.title,
+    url: updatedIssue.html_url,
+    assignees: { edges: updatedIssue.assignees.map((assignee) => (
+      {
+        node: {
+          login: assignee.login,
+          avatarUrl: assignee.avatar_url
+         }
+      }
+    ))},
+    labels: {
+      nodes: updatedIssue.labels.map((label) => (
+        {
+          color: label.color,
+          id: label.node_id, name: label.name
+        }))
+    }
+  };
 }
