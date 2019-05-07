@@ -217,7 +217,7 @@ export const CONFIG = {
   buckets: [
     {title: "Backlog", key: "backlog", label: "0 - Backlog" },
     {title: "Ready", key: "ready", label: "1 - Ready" },
-    {title: "In Progress", key: "progress", label: "2 - Working" },
+    {title: "Working", key: "working", label: "2 - Working" },
     {title: "Done", key: "done", label: "3 - Done" },
     {title: "Closed", key: "closed" },
   ],
