@@ -6,6 +6,7 @@ import { ApolloClient } from "apollo-client";
 import { InMemoryCache, IntrospectionFragmentMatcher } from "apollo-cache-inmemory";
 import { HttpLink } from "apollo-link-http";
 import { ApolloLink, Observable } from "apollo-link";
+import { RestLink } from 'apollo-link-rest';
 
 export function getApolloClient() {
   const request = async operation => {
@@ -49,9 +50,12 @@ export function getApolloClient() {
     })
   );
 
+  const restLink = new RestLink({ uri: "https://api.github.com" });
+
   return new ApolloClient({
     link: ApolloLink.from([
       requestLink,
+      restLink,
       new HttpLink({
         uri: "https://api.github.com/graphql",
       })
@@ -160,6 +164,20 @@ export const GET_BUCKET = gql`
     }
   }
 `
+
+export const UPDATE_PR = gql`
+  mutation updatePullRequest($owner: String!, $repo: String!, $issue: String!, $state: String!, $labels: [String!]) {
+    updatePullRequest(input:{state:$state, labels:$labels}, owner:$owner, repo:$repo, issue:$issue)
+      @rest(
+        type:"PullRequest"
+        path:"/repos/{args.owner}/{args.repo}/issues/{args.issue}"
+        method: "PATCH"
+      ) {
+        node_id
+        labels
+      }
+  }
+`;
 
 export const UPDATE_ISSUE = gql`
   mutation UpdateIssueLabels($id: ID!, $labelIds: [ID!], $state: IssueState) {
