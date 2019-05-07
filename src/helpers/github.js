@@ -6,6 +6,7 @@ import { ApolloClient } from "apollo-client";
 import { InMemoryCache, IntrospectionFragmentMatcher } from "apollo-cache-inmemory";
 import { HttpLink } from "apollo-link-http";
 import { ApolloLink, Observable } from "apollo-link";
+import { RestLink } from 'apollo-link-rest';
 
 export function getApolloClient() {
   const request = async operation => {
@@ -49,9 +50,12 @@ export function getApolloClient() {
     })
   );
 
+  const restLink = new RestLink({ uri: "https://api.github.com" });
+
   return new ApolloClient({
     link: ApolloLink.from([
       requestLink,
+      restLink,
       new HttpLink({
         uri: "https://api.github.com/graphql",
       })
@@ -161,6 +165,24 @@ export const GET_BUCKET = gql`
   }
 `
 
+export const UPDATE_GITHUB_ISSUE = gql`
+  mutation updateIssue($owner: String!, $repo: String!, $issue: String!, $state: String!, $labels: [String!]) {
+    updateIssue(input:{state:$state, labels:$labels}, owner:$owner, repo:$repo, issue:$issue)
+      @rest(
+        type:"PullRequest"
+        path:"/repos/{args.owner}/{args.repo}/issues/{args.issue}"
+        method: "PATCH"
+      ) {
+        node_id
+        labels
+        number
+        title
+        html_url
+        assignees
+      }
+  }
+`;
+
 export const UPDATE_ISSUE = gql`
   mutation UpdateIssueLabels($id: ID!, $labelIds: [ID!], $state: IssueState) {
     updateIssue(input:{id:$id, labelIds:$labelIds, state:$state}) {
@@ -243,4 +265,28 @@ export function getQueryString(member, bucket) {
     `${bucketLabels} ${CONFIG.queries.meetings[member].labels}` :
     bucketLabels;
   return queryStringBuilder(view, member, labels, state);
+}
+
+export function updateIssueInCache(updatedIssue) {
+  return {
+    id: updatedIssue.node_id,
+    number: updatedIssue.number,
+    title: updatedIssue.title,
+    url: updatedIssue.html_url,
+    assignees: { edges: updatedIssue.assignees.map((assignee) => (
+      {
+        node: {
+          login: assignee.login,
+          avatarUrl: assignee.avatar_url
+         }
+      }
+    ))},
+    labels: {
+      nodes: updatedIssue.labels.map((label) => (
+        {
+          color: label.color,
+          id: label.node_id, name: label.name
+        }))
+    }
+  };
 }
