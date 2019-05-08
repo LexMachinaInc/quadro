@@ -105,7 +105,7 @@ export const GET_BACKLOG = (member, bucket) => {
 
 export const GET_BUCKET = gql`
   query board($queryStr: String!, $end: String) {
-    search(first:10, type:ISSUE, query:$queryStr, after: $end) {
+    search(first:30, type:ISSUE, query:$queryStr, after: $end) {
       issueCount
       pageInfo {
         hasNextPage
