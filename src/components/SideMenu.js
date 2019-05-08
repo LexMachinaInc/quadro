@@ -1,18 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { arrayOf, string } from "prop-types";
 import { toggleSideMenu, toggleDisplay } from "../helpers/ui";
 
+function saveUserColDisplaySetting(key, buckets) {
+  console.log("SAVING", JSON.stringify(buckets));
+  localStorage.setItem(key, JSON.stringify(buckets));
+}
+
+function getUserColDisplaySetting(key) {
+  const colDisplaySetting = localStorage.getItem(key);
+  return colDisplaySetting ? JSON.parse(colDisplaySetting) : null;
+}
+
 export default function SideMenu({ buckets }) {
-  const initialBucketDisplayState = buckets.reduce((result, bucket) => {
+  const userColumnDisplay = getUserColDisplaySetting("quadroUserColDisplay");
+  const initialBucketDisplayState = userColumnDisplay ? userColumnDisplay : buckets.reduce((result, bucket) => {
     result[bucket] = true;
     return result;
   }, {});
+
   const [bucketDisplay, setBucketDisplay] = useState(initialBucketDisplayState);
 
   const toggleBucketDisplay = (bucket) => (e) => {
     const updatedBuckets = { ...bucketDisplay, [bucket]: !bucketDisplay[bucket] };
     setBucketDisplay(updatedBuckets);
     toggleDisplay(bucket);
+    saveUserColDisplaySetting("quadroUserColDisplay", updatedBuckets);
   }
 
   return (
