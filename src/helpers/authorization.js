@@ -1,4 +1,7 @@
 import axios from "axios";
+import APP_CONFIG from "../config/app.json";
+
+const AUTH_TOKEN_KEY = APP_CONFIG.cookies.authToken;
 
 export function getCookie(name) {
   const v = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
@@ -16,7 +19,7 @@ export function deleteCookie(name) {
 }
 
 export function getToken() {
-  const quadro = getCookie("quadro");
+  const quadro = getCookie(AUTH_TOKEN_KEY);
   if (quadro != null) {
     return quadro;
   } else {
@@ -24,7 +27,7 @@ export function getToken() {
       .then(resp => resp.data)
       .then(({ token }) => {
         if (token) {
-          setCookie("quadro", token, 14)
+          setCookie(AUTH_TOKEN_KEY, token, 14)
           return token;
         }
       })
