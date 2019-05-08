@@ -1,18 +1,22 @@
 import React, { useState } from "react";
 import { arrayOf, string } from "prop-types";
 import { toggleSideMenu, toggleDisplay } from "../helpers/ui";
+import { getUserColDisplaySetting, saveUserColDisplaySetting } from "../helpers/user";
 
 export default function SideMenu({ buckets }) {
-  const initialBucketDisplayState = buckets.reduce((result, bucket) => {
+  const userColumnDisplay = getUserColDisplaySetting();
+  const initialBucketDisplayState = userColumnDisplay ? userColumnDisplay : buckets.reduce((result, bucket) => {
     result[bucket] = true;
     return result;
   }, {});
+
   const [bucketDisplay, setBucketDisplay] = useState(initialBucketDisplayState);
 
   const toggleBucketDisplay = (bucket) => (e) => {
     const updatedBuckets = { ...bucketDisplay, [bucket]: !bucketDisplay[bucket] };
     setBucketDisplay(updatedBuckets);
     toggleDisplay(bucket);
+    saveUserColDisplaySetting(updatedBuckets);
   }
 
   return (

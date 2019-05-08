@@ -33,8 +33,17 @@ export default function CardContainer({
     allStatusLabels,
     updateIssue) => (e) => handleOnDrop(e, statusLabelId, allStatusLabels, updateIssue);
 
+  const showColumnOnLoad = (key, bucket) => {
+    const colDisplaySetting = localStorage.getItem(key);
+    if (colDisplaySetting) {
+      const settings = JSON.parse(colDisplaySetting);
+      return settings[bucket];
+    }
+    return true;
+  }
+
   return (
-    <div id={title} className="list">
+    <div id={title} className={`list ${!showColumnOnLoad("quadroUserColDisplay", title) ? "js-hide" : ""}`}>
       <h3 className="list-title">{title}</h3>
       <Query query={query} variables={{ queryStr: queryString, end: null }}>
         {({ loading, error, data, fetchMore }) => {
