@@ -1,5 +1,5 @@
 import React from 'react';
-import { element, shape, arrayOf, func, string } from 'prop-types';
+import { shape, arrayOf, func, string } from 'prop-types';
 import '../App.scss';
 import { CONFIG } from "../helpers/github";
 import { toggleSideMenu } from "../helpers/ui";
@@ -14,9 +14,6 @@ export default function DashBoard ({ action, status, handlers, member, members, 
   return (
     <nav className="flexContainer blueBackground">
       <ul className="nav flexItem flexStart logo-menu-container">
-        <button className="sidebar-menu-btn" onClick={toggleSideMenu}>
-          <span className="sidebar-menu-content">☰</span>
-        </button>
         <li className="logo-title"><strong>QUADRO</strong></li>
       </ul>
       <ul className="nav flexContainer flexEnd">
@@ -34,23 +31,19 @@ export default function DashBoard ({ action, status, handlers, member, members, 
                 ))}
               </select>
             </li>
-            <li>
-              <a
-                className="user-profile"
-                href={`https://github.com/${member}`}
-                target="_blank"
-                rel="noopener noreferrer">
-                  <img
-                    className="user-avatar"
-                    src={avatar}
-                    alt={member}
-                  >
-                  </img>
-                </a>
+            <li className="user-profile-container">
+              <button>
+                <img
+                  className="user-avatar"
+                  src={avatar}
+                  alt={member}
+                  onClick={toggleSideMenu}
+                >
+                </img>
+              </button>
             </li>
           </React.Fragment>
         ): null}
-        <li>{action}</li>
       </ul>
     </nav>
   )
@@ -67,7 +60,6 @@ DashBoard.propTypes = {
   handlers: shape({
     changeMemberBoard: func,
   }),
-  action: element,
   status: string.isRequired,
   data: shape({
     user: shape({}),
