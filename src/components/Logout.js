@@ -4,7 +4,7 @@ import '../App.scss';
 
 export default function Logout(){
   return (
-    <button type="button" onClick={logOut}>
+    <button type="button" className="logout-button" onClick={logOut}>
       Logout
     </button>
   );

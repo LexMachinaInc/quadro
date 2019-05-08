@@ -81,7 +81,6 @@ export default class App extends Component {
       <ApolloProvider client={client}>
         <div id="container" className="wrapper">
           <DashBoard
-            action={logBtn}
             status={status}
             handlers={handlers}
             member={member}
@@ -96,7 +95,11 @@ export default class App extends Component {
               /> : redirecting ? null : <Home /> }
           </div>
         </div>
-        { authenticated ? <SideMenu buckets={CONFIG.buckets.map((bucket) => bucket.title)} /> : null}
+        { authenticated ? (
+          <SideMenu
+            action={logBtn}
+            buckets={CONFIG.buckets.map((bucket) => bucket.title)} />
+          ) : null}
       </ApolloProvider>
     );
   }

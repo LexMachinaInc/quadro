@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { arrayOf, string } from "prop-types";
+import { arrayOf, string, element } from "prop-types";
 import { toggleSideMenu, toggleDisplay } from "../helpers/ui";
 import { getUserColDisplaySetting, saveUserColDisplaySetting } from "../helpers/user";
 
-export default function SideMenu({ buckets }) {
+export default function SideMenu({ buckets, action }) {
   const userColumnDisplay = getUserColDisplaySetting();
   const initialBucketDisplayState = userColumnDisplay ? userColumnDisplay : buckets.reduce((result, bucket) => {
     result[bucket] = true;
@@ -40,10 +40,12 @@ export default function SideMenu({ buckets }) {
             </label>
         ))}
       </div>
+      <div className="logout-button-container">{action}</div>
     </div>
   )
 }
 
 SideMenu.propTypes = {
   buckets: arrayOf(string).isRequired,
+  action: element.isRequired,
 }
