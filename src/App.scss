@@ -441,7 +441,8 @@ Remove or comment-out the code block below to see how the browser will fall-back
 
   .column-controls-container {
     display: grid;
-    grid-template-rows: auto auto;
+    grid-template-rows: auto 1fr auto;
+    grid-gap: 25px;
     height: 100%;
     width: 0;
     position: fixed;
@@ -486,6 +487,16 @@ Remove or comment-out the code block below to see how the browser will fall-back
     grid-gap: 5px;
     padding-left: 25px;
     color: $sideBarColor;
+
+    &.checkbox {
+      grid-template-columns: auto auto;
+
+      span {
+        color: $sideBarColor;
+        font-weight: bold;
+        padding: 0;
+      }
+    }
   }
 
   .column-controls-button {

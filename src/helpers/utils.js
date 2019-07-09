@@ -5,7 +5,7 @@ const ZUBE_LABELS = {
   "[zube]: Done": 3,
 };
 
-const WAFFLE_LABELS = new Set(["0 - Backlog", "1 - Ready", "2 - Working", "3 - Done"]);
+export const WAFFLE_LABELS = new Set(["0 - Backlog", "1 - Ready", "2 - Working", "3 - Done"]);
 
 export function getIssueState(labels = []) {
   const zubeLabelObj = labels.find(label => label.name in ZUBE_LABELS);
