@@ -2,6 +2,7 @@ import React from 'react';
 import { shape, string } from 'prop-types';
 import Label from './Label';
 import '../App.scss';
+import PullRequestIcon from "../assets/pull-request.svg";
 
 export default function Card({ issue, originStatusLabelId }) {
 
@@ -24,8 +25,9 @@ export default function Card({ issue, originStatusLabelId }) {
       <div className="card-container">
         <div className="card-header">
           <h4 className="issue-number-container">
+            {isPR ? <img className="issue-pull-request-icon" src={PullRequestIcon} alt="Pull Request Icon" /> : null}
             <a
-              className={`issue-number ${isPR ? "pull-request" : ""}`.trim()}
+              className="issue-number"
               href={url}
               target="_blank"
               rel="noopener noreferrer"

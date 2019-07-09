@@ -8,10 +8,14 @@ Flexbox is used as a fallback so that browsers which don't support grid will sti
 
 */
 
-//$sideBar: #1B998B;
 $sideBar: #fcfeff;
 $sideBarColor: #525252;
 $navBar: #07588a;
+$bodyColor: #e2e4e6;
+$white: #fff;
+$black: #000;
+$listTitleColor: #525252;
+$modalColor: #fefefe;
 
 /* Base styles */
 
@@ -29,7 +33,7 @@ body {
   font-family: Arial, sans-serif;
   display: flex;
   flex-direction: column;
-  background-color: #e2e4e6;
+  background-color: $bodyColor;
 }
 
 .flexContainer {
@@ -63,14 +67,14 @@ body {
   text-decoration: none;
   display: block;
   padding: 0 1em;
-  color: white;
+  color: $white;
 }
 
 .nav button {
   text-decoration: none;
   display: block;
   padding: 0 1em;
-  color: white;
+  color: $white;
   background:none!important;
   border:none;
   font: inherit;
@@ -82,12 +86,12 @@ body {
 }
 
 .add-border-black {
-  border: 0.5px solid #000;
+  border: 0.5px solid $black;
 }
 
 .logo-title {
   width: 100px;
-  color: #fff;
+  color: $white
 }
 
 .lists-container {
@@ -107,7 +111,7 @@ body {
   flex: 0 0 27rem;
   display: flex;
   flex-direction: column;
-  background-color: #e2e4e6;
+  background-color: $bodyColor;
   max-height: calc(100vh - 11.8rem);
   border-radius: 0.3rem;
   margin-right: 1rem;
@@ -121,7 +125,7 @@ body {
 .list-title {
   font-size: 1.4rem;
   font-weight: 700;
-  color: #525252;
+  color: $listTitleColor;
   padding: 1rem;
   text-align: center;
 }
@@ -139,7 +143,7 @@ body {
   font-size: 1.4rem;
   font-weight: 400;
   line-height: 1.3;
-  background-color: #fff;
+  background-color: $white;
   color: #4d4d4d;
   border-bottom: 0.1rem solid #ccc;
   border-radius: 0.3rem;
@@ -216,7 +220,7 @@ body {
 .empty-board {
   width: 300px;
   height: 250px;
-  background: white;
+  background: $white;
   margin-top: 50%;
   display: flex;
   justify-content: center;
@@ -246,6 +250,7 @@ body {
 }
 
 .issue-number-container {
+  display: flex;
   margin-block-start: 0.5em;
   margin-block-end: 0.5em;
 }
@@ -258,6 +263,14 @@ body {
   text-decoration: none;
   color: #2278cf;
   padding: 1px;
+}
+
+.issue-pull-request-icon {
+  width: 10px;
+  height: 13px;
+  margin-top: 4px;
+  margin-right: 2px;
+  opacity: 0.5;
 }
 
 .pull-request {
@@ -293,11 +306,11 @@ body {
   border-radius: 0.3rem;
 
   &.light {
-    color: #000;
+    color: $black;
   }
 
   &.dark {
-    color: #fff;
+    color: $white;
     font-weight: 700;
   }
 }
@@ -307,7 +320,7 @@ body {
 }
 
 .member-select-label {
-  color: white;
+  color: $white;
   font-weight: 800;
   display: block;
   float: left;
@@ -332,7 +345,7 @@ body {
 	-moz-appearance: none;
 	-webkit-appearance: none;
 	appearance: none;
-	background-color: #fff;
+	background-color: $white;
 	background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007CB2%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E'),
 	  linear-gradient(to bottom, #ffffff 0%,#e5e5e5 100%);
 	background-repeat: no-repeat, repeat;
@@ -428,7 +441,8 @@ Remove or comment-out the code block below to see how the browser will fall-back
 
   .column-controls-container {
     display: grid;
-    grid-template-rows: auto auto;
+    grid-template-rows: auto 1fr auto;
+    grid-gap: 25px;
     height: 100%;
     width: 0;
     position: fixed;
@@ -473,6 +487,16 @@ Remove or comment-out the code block below to see how the browser will fall-back
     grid-gap: 5px;
     padding-left: 25px;
     color: $sideBarColor;
+
+    &.checkbox {
+      grid-template-columns: auto auto;
+
+      span {
+        color: $sideBarColor;
+        font-weight: bold;
+        padding: 0;
+      }
+    }
   }
 
   .column-controls-button {
@@ -538,7 +562,7 @@ Remove or comment-out the code block below to see how the browser will fall-back
 .modal-card {
   display: flex;
   background: $navBar;
-  color: #fff;
+  color: $white;
   font-size: 18px;
   font-weight: bold;
   height: 100px;
@@ -548,6 +572,6 @@ Remove or comment-out the code block below to see how the browser will fall-back
 
   a {
     text-decoration: none;
-    color: white;
+    color: $white;
   }
 }
