@@ -63,6 +63,12 @@ function extractLabels(labels, allStatusLabels) {
     .map((label) => label.name);
 }
 
+function getRepoName(url, owner) {
+  const parts = url.split("/")
+  const ownerIndex = parts.findIndex((part) => part === owner);
+  return parts[ownerIndex + 1];
+}
+
 export async function handleOnDrop(e, statusLabelId, allStatusLabels, updateIssue) {
   const { originStatusLabelId, number, labels, url } = JSON.parse(e.dataTransfer.getData("text/plain"));
   if (statusLabelId === originStatusLabelId) {
@@ -71,20 +77,10 @@ export async function handleOnDrop(e, statusLabelId, allStatusLabels, updateIssu
 
   const { owner } = CONFIG;
 
-  const getRepoName = (url) => {
-    const parts = url.split("/")
-    const ownerIndex = parts.findIndex((part) => part === owner);
-    return parts[ownerIndex + 1];
-  };
-
-  const repo = getRepoName(url);
+  const repo = getRepoName(url, owner);
 
   const allStatusLabelNames = new Set(allStatusLabels.map((label) => label.name));
-  // `https://api.github.com/orgs/${owner}/issues?filter=assigned&sort=updated`
   const fetchedIssues = await getLabelsForIssue(`https://api.github.com/repos/${owner}/${repo}/issues/${number}`);
-
-  //const issueToUpdate = fetchedIssues.find((issue) => issue.number === number && issue.repository.name);
-
   const labelsToUpdate = fetchedIssues ? extractLabels(fetchedIssues.labels, allStatusLabelNames) : extractLabels(labels, allStatusLabelNames);
 
   // Moving card into Closed bucket
