@@ -50,6 +50,12 @@ export function toggleDisplay(title) {
   bucket.classList.toggle("js-hide");
 }
 
+export function toggleStatusLabels(hide) {
+  const hidden = "js-hide";
+  const labels = [...document.getElementsByClassName("status-label")];
+  labels.forEach((label) => hide ? label.classList.add(hidden) : label.classList.remove(hidden));
+}
+
 export async function getLabelsForIssue(url) {
   const token = await getToken();
   return axios
