@@ -1,8 +1,10 @@
 # Quadro
 
-Quadro is a kanban board to view your Github issues in the Deus_Lex repository.
+Quadro is a kanban board bootstrapped from the Create React App.
 
-It is currently hosted at [quadro-beta.stage](https://quadro-beta.stage.lexmachina.com/)
+Based on the current configuration, it connects with the Github API (both GraphQL and REST) to pull in Github Issues.
+
+It is currently hosted at [quadro](https://quadro.lexmachina.com)
 
 ## Requirement
 
@@ -32,20 +34,20 @@ Any work that you'd like to push to the repo, please do so in a branch off of `d
 
 In the project directory, you can run:
 
-### `node server`
-
-This will start the Express server. This is needed to get the Oauth token to access Github.
-You will want to open up two terminals. In the one, run `node server`. In the other,
-run `npm run build`. Then go to `http://localhost:8080`.
+To run the application locally while developing, just run `npm run dev`. As long as you have the redirect_url above set to `http://localhost:3000/oauth/redirect`, `npm run dev` will be the only command you need to run.
 
 ### `npm run dev`
 
 Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser. You won't
-be able to interact with Github.
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.<br>
 You will also see any lint errors in the console.
+
+### `node server`
+
+This will start the Express server. To run the production build, run `node server` in one terminal. In the other,
+run `npm run build`. Then go to `http://localhost:8080`.
 
 ### `npm test`
 
