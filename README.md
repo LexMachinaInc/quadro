@@ -2,9 +2,9 @@
 
 Quadro is a kanban board bootstrapped from the Create React App.
 
-Based on the current configuration, it connects with the Github API (both GraphQL and REST) to pull in Github Issues.
+Based on the current configuration in the `src/config` directory, it connects with the Github API (both GraphQL and REST) to pull in Github Issues.
 
-It is currently hosted at [quadro](https://quadro.lexmachina.com)
+It is currently hosted at [https://quadro.lexmachina.com](https://quadro.lexmachina.com)
 
 ## Requirement
 
@@ -29,6 +29,10 @@ You will need to open two tabs in your terminal and be inside the project in bot
 ## Development
 
 Any work that you'd like to push to the repo, please do so in a branch off of `develop` via a pull request. Assign the PR to `@wired4code`. All PRs will be into `develop`, as deployment is handled via `master`.
+
+## Forking This Repo
+
+If you'd like to fork this repository and customize it to use with Github or another service, you will need to update `api.js` inside the `src/config` directory. This file contains all the API-related data, e.g., the API endpoints, owner name, repository, and customizations for the board.
 
 ## Available Scripts
 
