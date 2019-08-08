@@ -6,7 +6,8 @@ import Home from "./components/Home";
 import Board from "./components/Board";
 import SideMenu from "./components/SideMenu";
 import { getToken } from "./helpers/authorization";
-import { getApolloClient, DASHBOARD_DATA, CONFIG } from "./helpers/github";
+import { getApolloClient, DASHBOARD_DATA } from "./helpers/api_interface";
+import { CONFIG } from "./config/api";
 import { updateUrl, checkViewInUrl, getStatus } from "./helpers/ui";
 import { extractMemberNames } from "./helpers/utils";
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import '../App.scss';
 import MockCard from "./MockCard";
-import { CONFIG } from "../helpers/github";
+import { CONFIG } from "../config/api";
 
 export default function Home() {
   const titles = CONFIG.buckets.map((bucket) => bucket.title);
