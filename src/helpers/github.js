@@ -1,7 +1,7 @@
 /*eslint-disable no-useless-escape */
 import { gql } from "apollo-boost";
 import { getToken } from "./authorization";
-
+import { CONFIG } from "../config/api";
 import { ApolloClient } from "apollo-client";
 import { InMemoryCache, IntrospectionFragmentMatcher } from "apollo-cache-inmemory";
 import { HttpLink } from "apollo-link-http";
@@ -50,14 +50,14 @@ export function getApolloClient() {
     })
   );
 
-  const restLink = new RestLink({ uri: "https://api.github.com" });
+  const restLink = new RestLink({ uri: CONFIG.api.github.rest });
 
   return new ApolloClient({
     link: ApolloLink.from([
       requestLink,
       restLink,
       new HttpLink({
-        uri: "https://api.github.com/graphql",
+        uri: CONFIG.api.github.gql,
       })
     ]),
     cache
@@ -70,7 +70,7 @@ export const DASHBOARD_DATA = gql`
       avatarUrl
       login
     }
-    repository(owner: "LexMachinaInc", name:"deus_lex") {
+    repository(owner: ${CONFIG.owner}, name:${CONFIG.repo}) {
       assignableUsers(first:100) {
         nodes {
           login
@@ -211,51 +211,57 @@ export const UPDATE_ISSUE = gql`
   }
 `;
 
-export const CONFIG = {
-  owner: "LexMachinaInc",
-  repo: "deus_lex",
-  buckets: [
-    {title: "Backlog", key: "backlog", label: "0 - Backlog" },
-    {title: "Ready", key: "ready", label: "1 - Ready" },
-    {title: "Working", key: "working", label: "2 - Working" },
-    {title: "Done", key: "done", label: "3 - Done" },
-    {title: "Closed", key: "closed" },
-  ],
-  meetings: {
-    design: "DESIGN MEETING",
-    development: "DEVELOPMENT MEETING",
-    frontend: "FRONTEND TEAM MEETING",
-    fullstack: "FULL-STACK MEETING",
-    nlp: "NLP MEETING",
-  },
-  queries: {
-    buckets: {
-      labels: {
-        backlog: `-label:\"1 - Ready\" -label:\"2 - Working\" -label:\"3 - Done\" -label:\"[zube]: Ready\" -label:\"[zube]: In Progress\" -label:\"[zube]: Done\"`,
-        ready: `label:\"1 - Ready\"`,
-        working: `label:\"2 - Working\"`,
-        done: `label:\"3 - Done\"`,
-      }
-    },
-    meetings: {
-      design: {
-        labels: `label:\"Design Meeting\"`
-      },
-      development: {
-        labels: `label:\"Development Meeting\"`
-      },
-      frontend: {
-        labels: `label:\"Front End Team Meeting\"`
-      },
-      fullstack: {
-        labels: `label:\"Full-Stack Meeting\"`
-      },
-      nlp: {
-        labels: `label:\"NLP Meeting\"`
-      }
-    }
-  }
-};
+// export const CONFIG = {
+//   api: {
+//     github: {
+//       rest: "https://api.github.com",
+//       gql: "https://api.github.com/graphql",
+//     }
+//   },
+//   owner: "LexMachinaInc",
+//   repo: "deus_lex",
+//   buckets: [
+//     {title: "Backlog", key: "backlog", label: "0 - Backlog" },
+//     {title: "Ready", key: "ready", label: "1 - Ready" },
+//     {title: "Working", key: "working", label: "2 - Working" },
+//     {title: "Done", key: "done", label: "3 - Done" },
+//     {title: "Closed", key: "closed" },
+//   ],
+//   meetings: {
+//     design: "DESIGN MEETING",
+//     development: "DEVELOPMENT MEETING",
+//     frontend: "FRONTEND TEAM MEETING",
+//     fullstack: "FULL-STACK MEETING",
+//     nlp: "NLP MEETING",
+//   },
+//   queries: {
+//     buckets: {
+//       labels: {
+//         backlog: `-label:\"1 - Ready\" -label:\"2 - Working\" -label:\"3 - Done\" -label:\"[zube]: Ready\" -label:\"[zube]: In Progress\" -label:\"[zube]: Done\"`,
+//         ready: `label:\"1 - Ready\"`,
+//         working: `label:\"2 - Working\"`,
+//         done: `label:\"3 - Done\"`,
+//       }
+//     },
+//     meetings: {
+//       design: {
+//         labels: `label:\"Design Meeting\"`
+//       },
+//       development: {
+//         labels: `label:\"Development Meeting\"`
+//       },
+//       frontend: {
+//         labels: `label:\"Front End Team Meeting\"`
+//       },
+//       fullstack: {
+//         labels: `label:\"Full-Stack Meeting\"`
+//       },
+//       nlp: {
+//         labels: `label:\"NLP Meeting\"`
+//       }
+//     }
+//   }
+// };
 
 export function getQueryString(member, bucket) {
   const view = Object.keys(CONFIG.meetings).includes(member) ? "meeting" : "member";
