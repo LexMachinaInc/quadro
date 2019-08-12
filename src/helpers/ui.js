@@ -1,4 +1,4 @@
-import { CONFIG } from "./github";
+import { CONFIG } from "../config/api";
 import { getToken } from "./authorization";
 import axios from "axios";
 

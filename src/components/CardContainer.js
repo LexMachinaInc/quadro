@@ -5,7 +5,7 @@ import Card from "./Card";
 import { Query, Mutation } from "react-apollo";
 import Loader from "./Loader";
 import EmptyBoard from "./EmptyBoard";
-import { UPDATE_GITHUB_ISSUE, updateIssueInCache } from "../helpers/github";
+import { UPDATE_GITHUB_ISSUE, updateIssueInCache } from "../helpers/api_interface";
 import { handleOnDrop } from "../helpers/ui";
 
 export default function CardContainer({
