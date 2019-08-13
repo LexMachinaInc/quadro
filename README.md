@@ -8,11 +8,11 @@ A [Node.js](https://nodejs.org)/[Express](https://expressjs.com/) server was add
 
 ## Features
 
-### Infinite Scrolling
+#### Infinite Scrolling
 
 The code is setup to fetch 30 issues (per column) at a time. Users can scroll down in each column, and the application will continue (if there are more) to fetch more issues.
 
-### Data Caching
+#### Data Caching
 
 Via Apollo GraphQL, data fetched via the Github GraphQL API is cached as long as you remain on the page. On a page reload, the cache will be cleared and new network request will be made to fetch the data.
 
