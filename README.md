@@ -1,6 +1,8 @@
 # Quadro
 
-Quadro is a kanban board in its current state designed to be used with Github. The UI was bootstrapped from the [Create React App](https://github.com/facebook/create-react-app).
+Quadro is a kanban board in its current state designed to be used with Github.
+
+The UI was bootstrapped from the [Create React App](https://github.com/facebook/create-react-app).
 
 A [Node.js](https://nodejs.org)/[Express](https://expressjs.com/) server was added to handle authentication. Based on the current configuration in the `src/config` directory, it connects with the Github API (both GraphQL and REST) to pull in Github Issues.
 
@@ -37,7 +39,7 @@ CLIENT_SECRET=CLIENT_SECRET_GENERATED_IN_GITHUB_OAUTH_APP
 REDIRECT_URL='http://localhost:3000/oauth/redirect'
 ```
 
-5. Start the development server by running `npm run dev`; this will open up your default browser to `localhost:3000`, and you should see:
+5. Start the development server by running `npm run dev`; this will open up your default browser to `localhost:3000`, and after logging in, you should see:
 
 [![Quadro-Screenshot.png](https://i.postimg.cc/85ZkrF8S/Quadro-Screenshot.png)](https://postimg.cc/ft0QGRT2)
 
