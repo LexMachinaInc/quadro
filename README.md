@@ -8,6 +8,14 @@ A [Node.js](https://nodejs.org)/[Express](https://expressjs.com/) server was add
 
 ## Features
 
+### Infinite Scrolling
+
+The code is setup to fetch 30 issues (per column) at a time. Users can scroll down in each column, and the application will continue (if there are more) to fetch more issues.
+
+### Data Caching
+
+Via Apollo GraphQL, data fetched via the Github GraphQL API is cached as long as you remain on the page. On a page reload, the cache will be cleared and new network request will be made to fetch the data.
+
 #### Drag 'n Drop
 
 Users can drag and drop issue cards from one column to another to update the status label for that issue.
@@ -49,7 +57,7 @@ Any work that you'd like to push to this repo, please do so in a branch off of `
 
 ## Requested Features or Bugs
 
-Please create a detailed issue and assign it to `@wired4code`.
+Please create a [detailed issue](https://github.com/LexMachinaInc/quadro/issues/new) and assign it to `@wired4code`.
 
 ## Forking This Repo
 
