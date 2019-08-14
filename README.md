@@ -53,7 +53,7 @@ REDIRECT_URL='http://localhost:3000/oauth/redirect'
 
 ## Development
 
-Any work that you'd like to push to this repo, please do in a branch off of `develop` via a pull request. Assign the PR to `@wired4code`. All PRs will be into `develop`, as deployment is handled via `master`.
+Any work that you'd like to push to this repo, please do in a branch off of `master` via a pull request. Assign the PR to `@wired4code`.
 
 To run the application locally while developing, just run `npm run dev`. As long as you have the `Authorization callback URL` in your Github Oauth App set to `http://localhost:3000/oauth/redirect`, `npm run dev` will be the only command you need to run.
 
