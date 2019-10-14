@@ -39,7 +39,7 @@ export default class App extends Component {
 
   logUserIn() {
     client
-      .query({query: DASHBOARD_DATA})
+      .query({query: DASHBOARD_DATA, variables: {owner: CONFIG.owner, repo: CONFIG.repo}})
       .then(result => {
         const {
           viewer: {

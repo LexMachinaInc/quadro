@@ -65,12 +65,12 @@ export function getApolloClient() {
 }
 
 export const DASHBOARD_DATA = gql`
-  query {
+  query Dashboard($owner: String!, $repo: String!) {
     viewer {
       avatarUrl
       login
     }
-    repository(owner: ${CONFIG.owner}, name:${CONFIG.repo}) {
+    repository(owner: $owner, name: $repo) {
       assignableUsers(first:100) {
         nodes {
           login
