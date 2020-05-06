@@ -34,7 +34,7 @@ Users can elect to hide status labels on issues cards that pertain to the actual
 To get this app working locally, in addition to having a Github account, you'll need to:
 
 1. Clone this repo
-2. Run `npm install`
+2. Run `npm install` (Node version 10 or higher must be installed in your local environment)
 3. Create a [Github Oauth App](https://developer.github.com/apps/building-oauth-apps/creating-an-oauth-app/)
    * Set the `Homepage URL` in the App to `http://localhost:3000`
    * Set the `Authorization callback URL` to `http://localhost:3000/oauth/redirect`
