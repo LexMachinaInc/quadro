@@ -1,4 +1,4 @@
-export const CONFIG = {
+const CONFIG = {
   api: {
     github: {
       rest: "https://api.github.com",
@@ -24,7 +24,7 @@ export const CONFIG = {
   queries: {
     buckets: {
       labels: {
-        backlog: `-label:\"1 - Ready\" -label:\"2 - Working\" -label:\"3 - Done\" -label:\"[zube]: Ready\" -label:\"[zube]: In Progress\" -label:\"[zube]: Done\"`,
+        backlog: `-label:\"1 - Ready\" -label:\"2 - Working\" -label:\"3 - Done\"`,
         ready: `label:\"1 - Ready\"`,
         working: `label:\"2 - Working\"`,
         done: `label:\"3 - Done\"`,
@@ -48,4 +48,6 @@ export const CONFIG = {
       }
     }
   }
-}
+};
+
+export default CONFIG;

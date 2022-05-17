@@ -4,27 +4,22 @@
   "version": "2.2.0",
   "private": true,
   "dependencies": {
-    "apollo-boost": "^0.3.1",
-    "apollo-cache-inmemory": "^1.6.6",
-    "apollo-client": "^2.6.10",
-    "apollo-link": "^1.2.14",
-    "apollo-link-http": "^1.5.17",
-    "apollo-link-rest": "^0.7.3",
-    "axios": "^0.21.4",
-    "concurrently": "^4.1.2",
-    "dotenv": "^7.0.0",
+    "@apollo/client": "^3.6.4",
+    "apollo-link-rest": "^0.9.0-rc.1",
+    "axios": "^0.27.2",
+    "concurrently": "^7.2.0",
+    "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "express-session": "^1.17.3",
-    "graphql": "^14.7.0",
+    "graphql": "^16.5.0",
     "graphql-anywhere": "^4.2.7",
     "graphql-tag": "^2.12.6",
-    "node-sass": "^4.12.0",
+    "node-sass": "^6.0.0",
+    "prop-types": "^15.8.1",
     "qs": "^6.10.3",
     "randomstring": "^1.2.2",
-    "react": "^16.14.0",
-    "react-apollo": "^2.5.8",
-    "react-dom": "^16.14.0",
-    "react-scripts": "3.0.0"
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0"
   },
   "scripts": {
     "start": "node server.js",
@@ -44,14 +39,19 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "babel-loader": "^8.2.5",
-    "eslint-config-airbnb": "^17.1.1",
-    "eslint-config-prettier": "^4.3.0",
-    "eslint-loader": "^2.2.1",
+    "@babel/core": "^7.17.12",
+    "@babel/eslint-parser": "^7.17.0",
+    "@babel/preset-react": "^7.17.12",
+    "eslint": "^8.15.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-jsx-a11y": "^6.5.1",
-    "eslint-plugin-prettier": "^3.4.1",
+    "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.29.4",
-    "prettier": "^1.19.1"
-  }
+    "http-proxy-middleware": "^0.21.0",
+    "prettier": "^2.6.2",
+    "react-scripts": "4.0.3"
+  },
+  "packageManager": "yarn@3.2.1"
 }

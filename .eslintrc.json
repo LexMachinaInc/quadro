@@ -1,7 +1,7 @@
 {
-    "parser": "babel-eslint",
+    "parser": "@babel/eslint-parser",
     "parserOptions": {
-        "ecmaVersion": 6,
+        "ecmaVersion": "latest",
         "sourceType": "module",
         "ecmaFeatures": {
             "jsx": true
@@ -14,27 +14,22 @@
     "globals": {
         "__DEV__": false
     },
-    "plugins": ["prettier", "react", "no-unused-vars-rest"],
+    "plugins": ["prettier", "react"],
     "extends": [
-        "airbnb", "prettier", "prettier/react"
+        "airbnb", "prettier"
      ],
     "rules": {
-        "import/first": "off",
-        "lodash/chain-style": "off",
-        "lodash/chaining": "off",
-        "lodash/import-scope": [1, "full"],
-        "lodash/matches-prop-shorthand": "warn",
-        "lodash/prefer-constant": "off",
-        "lodash/prefer-flat-map": "warn",
-        "lodash/prefer-includes": "warn",
-        "lodash/prefer-is-nil": "off",
-        "lodash/prefer-lodash-chain": "warn",
-        "lodash/prefer-lodash-method": "off",
-        "lodash/prefer-lodash-typecheck": "warn",
-        "lodash/prefer-map": "warn",
-        "lodash/prefer-noop": "warn",
-        "lodash/prefer-times": "warn",
-        "lodash/prefer-startswith": "warn",
+        "jsx-a11y/label-has-associated-control": [ "error", {
+            "required": {
+              "some": [ "nesting", "id"  ]
+            }
+          }],
+          "jsx-a11y/label-has-for": [ "error", {
+            "required": {
+              "some": [ "nesting", "id"  ]
+            }
+          }],
+            "import/first": "off",
         "react/jsx-no-target-blank": "off",
         "react/self-closing-comp": "off",
         "react/jsx-indent": "off",
@@ -208,7 +203,6 @@
         "no-unmodified-loop-condition": "error",
         "no-unneeded-ternary": "off",
         "no-unused-vars": "off",
-        "no-unused-vars-rest/no-unused-vars": ["warn", {"ignoreDestructuredVarsWithRest": true}],
         "no-use-before-define": "off",
         "no-useless-call": "error",
         "no-useless-computed-key": "error",
@@ -298,12 +292,5 @@
             "error",
             "never"
         ]
-    },
-    "settings": {
-    "import/resolver": {
-      "webpack": {
-        "config": "webpack-everything.config.js"
-      }
     }
-  }
 }
