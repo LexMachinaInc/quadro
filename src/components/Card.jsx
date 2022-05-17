@@ -9,7 +9,7 @@ export default function Card({ issue, originStatusLabelId }) {
   const onDragStart = (originStatusLabelId, number, labels, url) => (e) => {
     const data = JSON.stringify({ originStatusLabelId, number, labels, url });
     e.dataTransfer.setData("text/plain", data);
-  }
+  };
 
   const {
     number,
@@ -56,7 +56,7 @@ export default function Card({ issue, originStatusLabelId }) {
 
 Card.defaultProps = {
   originStatusLabelId: null,
-}
+};
 
 Card.propTypes = {
   issue: shape({}).isRequired,
