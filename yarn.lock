@@ -1394,7 +1394,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/preset-react@npm:^7.12.5, @babel/preset-react@npm:^7.16.0":
+"@babel/preset-react@npm:^7.12.5, @babel/preset-react@npm:^7.16.0, @babel/preset-react@npm:^7.17.12":
   version: 7.17.12
   resolution: "@babel/preset-react@npm:7.17.12"
   dependencies:
@@ -10974,6 +10974,7 @@ __metadata:
   dependencies:
     "@babel/core": ^7.17.12
     "@babel/eslint-parser": ^7.17.0
+    "@babel/preset-react": ^7.17.12
     apollo-boost: ^0.4.9
     apollo-cache-inmemory: ^1.5.1
     apollo-client: ^2.5.1
@@ -10994,6 +10995,7 @@ __metadata:
     graphql-tag: ^2.10.1
     node-sass: ^7.0.1
     prettier: ^2.6.2
+    prop-types: ^15.8.1
     qs: ^6.7.0
     randomstring: ^1.1.5
     react: ^16.8.6
