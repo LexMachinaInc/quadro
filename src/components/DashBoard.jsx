@@ -1,7 +1,7 @@
 import React from "react";
 import { shape, arrayOf, func, string } from "prop-types";
 import "../App.scss";
-import { CONFIG } from "../config/api";
+import CONFIG from "../config/api";
 import { toggleSideMenu } from "../helpers/ui";
 
 export default function DashBoard({

@@ -1,4 +1,4 @@
-export const CONFIG = {
+const CONFIG = {
   api: {
     github: {
       rest: "https://api.github.com",
@@ -48,4 +48,6 @@ export const CONFIG = {
       }
     }
   }
-}
+};
+
+export default CONFIG;

@@ -4,7 +4,7 @@ import "./index.scss";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 
-const rootEl = document.getElementById("root")
+const rootEl = document.getElementById("root");
 
 ReactDOM.render(<App />, rootEl);
 

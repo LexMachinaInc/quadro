@@ -7,14 +7,13 @@ import Board from "./components/Board";
 import SideMenu from "./components/SideMenu";
 import { getToken } from "./helpers/authorization";
 import { getApolloClient, DASHBOARD_DATA } from "./helpers/api_interface";
-import { CONFIG } from "./config/api";
+import CONFIG from "./config/api";
 import { updateUrl, checkViewInUrl, getStatus } from "./helpers/ui";
 import { extractMemberNames } from "./helpers/utils";
 
 const client = getApolloClient();
 
 export default class App extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -22,7 +21,7 @@ export default class App extends Component {
       member: undefined,
       avatar: undefined,
       members: undefined,
-    }
+    };
   }
 
   static setStatus() {
@@ -43,25 +42,28 @@ export default class App extends Component {
 
   logUserIn() {
     client
-      .query({query: DASHBOARD_DATA, variables: {owner: CONFIG.owner, repo: CONFIG.repo}})
+      .query({
+        query: DASHBOARD_DATA,
+        variables: { owner: CONFIG.owner, repo: CONFIG.repo },
+      })
       .then((result) => {
         const {
-          viewer: {
-            login: member, avatarUrl: avatar },
-            repository: {
-              labels: { nodes: statusLabels },
-              assignableUsers: { nodes: members }}
-            } = result.data;
+          viewer: { login: member, avatarUrl: avatar },
+          repository: {
+            labels: { nodes: statusLabels },
+            assignableUsers: { nodes: members },
+          },
+        } = result.data;
         const memberNames = extractMemberNames(members);
-        const meetings = Object.keys(CONFIG.meetings)
+        const meetings = Object.keys(CONFIG.meetings);
         const viewInUrl = checkViewInUrl([...memberNames, ...meetings]);
         this.setState({
           status: "authenticated",
           member: viewInUrl ? viewInUrl : member,
           avatar,
           members,
-          statusLabels
-        })
+          statusLabels,
+        });
         if (!viewInUrl) {
           updateUrl(member);
         }
@@ -93,18 +95,19 @@ export default class App extends Component {
             members={members}
           />
           <div className="box">
-            { authenticated ?
-              <Board
-                member={member}
-                statusLabels={statusLabels}
-              /> : redirecting ? null : <Home /> }
+            {authenticated ? (
+              <Board member={member} statusLabels={statusLabels} />
+            ) : redirecting ? null : (
+              <Home />
+            )}
           </div>
         </div>
-        { authenticated ? (
+        {authenticated ? (
           <SideMenu
             action={logBtn}
-            buckets={CONFIG.buckets.map((bucket) => bucket.title)} />
-          ) : null}
+            buckets={CONFIG.buckets.map((bucket) => bucket.title)}
+          />
+        ) : null}
       </ApolloProvider>
     );
   }

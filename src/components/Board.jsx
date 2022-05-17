@@ -3,7 +3,7 @@ import { string, arrayOf, shape } from "prop-types";
 import '../App.scss';
 import CardContainer from './CardContainer';
 import { GET_BUCKET, getQueryString } from "../helpers/api_interface";
-import { CONFIG } from "../config/api";
+import CONFIG from "../config/api";
 
 export default function Board({ member, statusLabels }) {
   const allQueryStrings = CONFIG.buckets.reduce((result, bucket) => {
