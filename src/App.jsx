@@ -14,21 +14,25 @@ import { extractMemberNames } from "./helpers/utils";
 const client = getApolloClient();
 
 export default class App extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      status: "initial",
+      member: undefined,
+      avatar: undefined,
+      members: undefined,
+    }
+  }
+
   static setStatus() {
     const status = getStatus();
     return status ? status : "initial";
   }
-  state = {
-    status: "initial",
-    member: undefined,
-    avatar: undefined,
-    members: undefined,
-    loginLoad: false,
-  }
 
   async componentDidMount() {
     const status = App.setStatus();
-    if ( status && status[0] === "redirecting" ) {
+    if (status && status[0] === "redirecting") {
       this.setState({ status: status[0] });
     }
     const token = await getToken();
@@ -40,7 +44,7 @@ export default class App extends Component {
   logUserIn() {
     client
       .query({query: DASHBOARD_DATA, variables: {owner: CONFIG.owner, repo: CONFIG.repo}})
-      .then(result => {
+      .then((result) => {
         const {
           viewer: {
             login: member, avatarUrl: avatar },
