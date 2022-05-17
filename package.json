@@ -18,7 +18,7 @@
     "graphql": "^14.7.0",
     "graphql-anywhere": "^4.2.7",
     "graphql-tag": "^2.12.6",
-    "node-sass": "^4.12.0",
+    "node-sass": "^7.0.0",
     "qs": "^6.10.3",
     "randomstring": "^1.2.2",
     "react": "^16.14.0",
