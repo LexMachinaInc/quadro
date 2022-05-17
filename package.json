@@ -11,9 +11,9 @@
     "apollo-link": "^1.2.14",
     "apollo-link-http": "^1.5.17",
     "apollo-link-rest": "^0.9.0-rc.1",
-    "axios": "^0.21.4",
-    "concurrently": "^4.1.2",
-    "dotenv": "^7.0.0",
+    "axios": "^0.27.2",
+    "concurrently": "^7.2.0",
+    "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "express-session": "^1.17.3",
     "graphql": "^16.5.0",
@@ -21,10 +21,11 @@
     "graphql-tag": "^2.12.6",
     "node-sass": "^7.0.1",
     "prop-types": "^15.8.1",
+    "qs": "^6.10.3",
     "randomstring": "^1.2.2",
-    "react": "^16.14.0",
-    "react-apollo": "^2.5.8",
-    "react-dom": "^16.8.6"
+    "react": "^18.1.0",
+    "react-apollo": "^3.1.5",
+    "react-dom": "^18.1.0"
   },
   "scripts": {
     "start": "node server.js",
