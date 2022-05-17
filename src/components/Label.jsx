@@ -5,7 +5,7 @@ import { getUserHideStatusLabelSetting } from "../helpers/user";
 
 export default function Label({ labels }) {
   const userHideStatusLabels = getUserHideStatusLabelSetting();
-  return labels.map(label => {
+  return labels.map((label) => {
     const background = lightOrDark(label.color);
     const borderClass = label.color === "ffffff" ? "add-border-black" : "";
     const statusLabel = WAFFLE_LABELS.has(label.name) ? "status-label" : "";
@@ -18,6 +18,6 @@ export default function Label({ labels }) {
       >
         {name}
       </span>
-    )
+    );
   });
 }

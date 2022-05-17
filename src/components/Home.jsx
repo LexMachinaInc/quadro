@@ -6,12 +6,11 @@ import { CONFIG } from "../config/api";
 export default function Home() {
   const titles = CONFIG.buckets.map((bucket) => bucket.title);
   return (
-    <React.Fragment>
+    <>
       <div>
         <section className="lists-container center">
-          {titles.map((title, idx) => {
-            return (
-                <div className="list" key={idx.toString()}>
+          {titles.map((title) => 
+                <div className="list" key={title}>
                   <h3 className="list-title">{title}</h3>
                   <ul className="list-items">
                     <li><MockCard /></li>
@@ -21,8 +20,7 @@ export default function Home() {
                     <li><MockCard /></li>
                   </ul>
                 </div>
-            )
-          })}
+          )}
         </section>
       </div>
       <div className="modal">
@@ -30,6 +28,6 @@ export default function Home() {
           <div className="modal-card"><a href="/login">Login</a></div>
         </div>
       </div>
-    </React.Fragment>
-  )
+    </>
+  );
 }

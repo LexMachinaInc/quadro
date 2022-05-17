@@ -24,19 +24,20 @@ export default function SideMenu({ buckets, action }) {
     setBucketDisplay(updatedBuckets);
     toggleDisplay(bucket);
     saveUserColDisplaySetting(updatedBuckets);
-  }
+  };
 
   const toggleHideStatusLabelDisplay = (e) => {
     const { checked } = e.target;
     setStatusLabelDisplay(checked);
     toggleStatusLabels(checked);
     saveUserHideStatusLabelSetting(checked);
-  }
+  };
 
   return (
     <div id="side-menu" className="column-controls-container">
       <div className="column-controls">
         <button
+          type="button"
           className="controls-menu-close-btn"
           onClick={toggleSideMenu}
         >
@@ -60,10 +61,10 @@ export default function SideMenu({ buckets, action }) {
       </div>
       <div className="logout-button-container">{action}</div>
     </div>
-  )
-}
+  );
+};
 
 SideMenu.propTypes = {
   buckets: arrayOf(string).isRequired,
   action: element.isRequired,
-}
+};
