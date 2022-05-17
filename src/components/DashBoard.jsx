@@ -67,11 +67,17 @@ export default function DashBoard({
 }
 
 DashBoard.propTypes = {
+  status: string.isRequired,
   handlers: shape({
     changeMemberBoard: func,
   }).isRequired,
-  member: shape({}).isRequired,
-  status: string.isRequired,
-  members: arrayOf(shape({})).isRequired,
-  avatar: string.isRequired,
+  member: string,
+  members: arrayOf(shape({})),
+  avatar: string,
+};
+
+DashBoard.defaultProps = {
+  member: undefined,
+  members: [undefined],
+  avatar: undefined,
 };

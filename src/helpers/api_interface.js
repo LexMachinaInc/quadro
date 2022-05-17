@@ -1,12 +1,11 @@
-/*eslint-disable no-useless-escape */
-import { gql } from "apollo-boost";
-import { ApolloClient } from "apollo-client";
+import gql from "graphql-tag";
 import {
+  ApolloClient,
   InMemoryCache,
-  IntrospectionFragmentMatcher,
-} from "apollo-cache-inmemory";
-import { HttpLink } from "apollo-link-http";
-import { ApolloLink, Observable } from "apollo-link";
+  ApolloLink,
+  Observable,
+  HttpLink,
+} from "@apollo/client";
 import { RestLink } from "apollo-link-rest";
 import { getToken } from "./authorization";
 import CONFIG from "../config/api";
@@ -23,15 +22,7 @@ export function getApolloClient() {
     }
   };
 
-  const fragmentMatcher = new IntrospectionFragmentMatcher({
-    introspectionQueryResultData: {
-      __schema: {
-        types: ["Issue", "PullRequest"],
-      },
-    },
-  });
-
-  const cache = new InMemoryCache({ fragmentMatcher });
+  const cache = new InMemoryCache();
 
   const requestLink = new ApolloLink(
     (operation, forward) =>
@@ -91,8 +82,8 @@ export const DASHBOARD_DATA = gql`
 `;
 
 function queryStringBuilder(view, member, labels, state) {
-  const { user, repo } = CONFIG;
-  let query = `user:${user} repo:${repo} sort:updated-desc state:${state}`;
+  const { owner, repo } = CONFIG;
+  let query = `user:${owner} repo:${repo} sort:updated-desc state:${state}`;
   if (view === "member") {
     query += ` assignee:${member}`;
   }
