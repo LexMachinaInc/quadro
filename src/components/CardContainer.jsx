@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { string, shape, arrayOf } from "prop-types";
-import { Query, Mutation } from "react-apollo";
+import { Query, Mutation } from '@apollo/client/react/components';
 import "../App.scss";
 import Card from "./Card";
 import Loader from "./Loader";
