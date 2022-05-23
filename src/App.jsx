@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ApolloProvider } from '@apollo/client';
+import { ApolloProvider } from "@apollo/client";
 import DashBoard from "./components/DashBoard";
 import Logout from "./components/Logout";
 import Home from "./components/Home";

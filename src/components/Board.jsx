@@ -1,7 +1,7 @@
-import React from 'react';
+import React from "react";
 import { string, arrayOf, shape } from "prop-types";
-import '../App.scss';
-import CardContainer from './CardContainer';
+import "../App.scss";
+import CardContainer from "./CardContainer";
 import { GET_BUCKET, getQueryString } from "../helpers/api_interface";
 import CONFIG from "../config/api";
 
@@ -14,7 +14,9 @@ export default function Board({ member, statusLabels }) {
     <section className="lists-container center">
       {CONFIG.buckets.map((bucket) => {
         const queryString = allQueryStrings[bucket.key];
-        const statusLabel = statusLabels.find((label) => label.name === bucket.label);
+        const statusLabel = statusLabels.find(
+          (label) => label.name === bucket.label,
+        );
         return (
           <CardContainer
             key={bucket.key}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import { lightOrDark, WAFFLE_LABELS } from "../helpers/utils";
 import { removeZube } from "../helpers/ui";
 import { getUserHideStatusLabelSetting } from "../helpers/user";
@@ -12,9 +12,14 @@ export default function Label({ labels }) {
     const hideLabel = statusLabel && userHideStatusLabels;
     const name = removeZube(label.name);
     return (
-      <span key={label.name} className={`github-label ${background} ${borderClass} ${statusLabel} ${hideLabel ? "js-hide" : ""}`} style={{
-        backgroundColor: `#${label.color}`
-      }}
+      <span
+        key={label.name}
+        className={`github-label ${background} ${borderClass} ${statusLabel} ${
+          hideLabel ? "js-hide" : ""
+        }`}
+        style={{
+          backgroundColor: `#${label.color}`,
+        }}
       >
         {name}
       </span>

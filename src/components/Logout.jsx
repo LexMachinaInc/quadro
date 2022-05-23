@@ -1,8 +1,8 @@
-import React from 'react';
+import React from "react";
 import { logOut } from "../helpers/authorization";
-import '../App.scss';
+import "../App.scss";
 
-export default function Logout(){
+export default function Logout() {
   return (
     <button type="button" className="logout-button" onClick={logOut}>
       Logout

@@ -21,7 +21,7 @@ const firebaseConfig = {
   storageBucket: "quadro-firebase.appspot.com",
   messagingSenderId: "227683563488",
   appId: "1:227683563488:web:b897a2e4001ab5b3c81d85",
-  measurementId: "G-VPDL2M7ZTP"
+  measurementId: "G-VPDL2M7ZTP",
 };
 
 // Initialize Firebase
@@ -30,9 +30,7 @@ const analytics = getAnalytics(fireApp);
 
 const rootEl = document.getElementById("root");
 const root = createRoot(rootEl);
-root.render(
-    <App />
-);
+root.render(<App />);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

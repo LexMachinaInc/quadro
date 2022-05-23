@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { arrayOf, string, element } from "prop-types";
-import { toggleSideMenu, toggleDisplay, toggleStatusLabels } from "../helpers/ui";
+import {
+  toggleSideMenu,
+  toggleDisplay,
+  toggleStatusLabels,
+} from "../helpers/ui";
 import {
   getUserColDisplaySetting,
   saveUserColDisplaySetting,
@@ -11,16 +15,22 @@ import {
 export default function SideMenu({ buckets, action }) {
   const userColumnDisplay = getUserColDisplaySetting();
   const userHideStatusLabels = getUserHideStatusLabelSetting();
-  const initialBucketDisplayState = userColumnDisplay ? userColumnDisplay : buckets.reduce((result, bucket) => {
-    result[bucket] = true;
-    return result;
-  }, {});
+  const initialBucketDisplayState = userColumnDisplay
+    ? userColumnDisplay
+    : buckets.reduce((result, bucket) => {
+        result[bucket] = true;
+        return result;
+      }, {});
 
   const [bucketDisplay, setBucketDisplay] = useState(initialBucketDisplayState);
-  const [statusLabelDisplay, setStatusLabelDisplay] = useState(userHideStatusLabels);
+  const [statusLabelDisplay, setStatusLabelDisplay] =
+    useState(userHideStatusLabels);
 
   const toggleBucketDisplay = (bucket) => (e) => {
-    const updatedBuckets = { ...bucketDisplay, [bucket]: !bucketDisplay[bucket] };
+    const updatedBuckets = {
+      ...bucketDisplay,
+      [bucket]: !bucketDisplay[bucket],
+    };
     setBucketDisplay(updatedBuckets);
     toggleDisplay(bucket);
     saveUserColDisplaySetting(updatedBuckets);
@@ -43,7 +53,9 @@ export default function SideMenu({ buckets, action }) {
         >
           x
         </button>
-        <p><strong>Columns Displayed</strong></p>
+        <p>
+          <strong>Columns Displayed</strong>
+        </p>
         {buckets.map((bucket) => (
           <label key={bucket}>
             <input
@@ -51,18 +63,22 @@ export default function SideMenu({ buckets, action }) {
               checked={bucketDisplay[bucket]}
               onChange={toggleBucketDisplay(bucket)}
             />
-              {bucket}
-            </label>
+            {bucket}
+          </label>
         ))}
       </div>
       <div className="column-controls checkbox">
-        <input type="checkbox" checked={statusLabelDisplay} onChange={toggleHideStatusLabelDisplay} />
+        <input
+          type="checkbox"
+          checked={statusLabelDisplay}
+          onChange={toggleHideStatusLabelDisplay}
+        />
         <span>Hide Status Labels</span>
       </div>
       <div className="logout-button-container">{action}</div>
     </div>
   );
-};
+}
 
 SideMenu.propTypes = {
   buckets: arrayOf(string).isRequired,
