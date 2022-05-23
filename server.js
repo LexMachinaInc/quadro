@@ -1,3 +1,5 @@
+//configure PnP
+require('./.pnp.cjs').setup();
 // save environment variables in dotenv
 require("dotenv").config();
 // Import the express lirbary
