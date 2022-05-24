@@ -13634,6 +13634,7 @@ __metadata:
     randomstring: ^1.2.2
     react: ^18.1.0
     react-dom: ^18.1.0
+    react-firebase-hooks: ^5.0.3
     react-scripts: 4.0.3
   languageName: unknown
   linkType: soft
@@ -13825,6 +13826,16 @@ __metadata:
   version: 6.0.11
   resolution: "react-error-overlay@npm:6.0.11"
   checksum: ce7b44c38fadba9cedd7c095cf39192e632daeccf1d0747292ed524f17dcb056d16bc197ddee5723f9dd888f0b9b19c3b486c430319e30504289b9296f2d2c42
+  languageName: node
+  linkType: hard
+
+"react-firebase-hooks@npm:^5.0.3":
+  version: 5.0.3
+  resolution: "react-firebase-hooks@npm:5.0.3"
+  peerDependencies:
+    firebase: ">= 9.0.0"
+    react: ">= 16.8.0"
+  checksum: 80e704f1839d44894017d7227dcea8ec02cf5f1b64045de3214a87cfda9b38906765c35ec19657486ca301b251801588cd556c7a8ebbf41eee4d0b0dbadb2eea
   languageName: node
   linkType: hard
 

@@ -62,6 +62,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["randomstring", "npm:1.2.2"],\
             ["react", "npm:18.1.0"],\
             ["react-dom", "virtual:5025b2563150a3c05e923cfdc09d8a7e556ed57c4cda86e66c470562a9e7c08fc36d6c52e8fdf46b8ac4e4b5189be48bf83ac29c17135ff20c471cf468e7b54f#npm:18.1.0"],\
+            ["react-firebase-hooks", "virtual:5025b2563150a3c05e923cfdc09d8a7e556ed57c4cda86e66c470562a9e7c08fc36d6c52e8fdf46b8ac4e4b5189be48bf83ac29c17135ff20c471cf468e7b54f#npm:5.0.3"],\
             ["react-scripts", "virtual:5025b2563150a3c05e923cfdc09d8a7e556ed57c4cda86e66c470562a9e7c08fc36d6c52e8fdf46b8ac4e4b5189be48bf83ac29c17135ff20c471cf468e7b54f#npm:4.0.3"]\
           ],\
           "linkType": "SOFT"\
@@ -17684,6 +17685,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["randomstring", "npm:1.2.2"],\
             ["react", "npm:18.1.0"],\
             ["react-dom", "virtual:5025b2563150a3c05e923cfdc09d8a7e556ed57c4cda86e66c470562a9e7c08fc36d6c52e8fdf46b8ac4e4b5189be48bf83ac29c17135ff20c471cf468e7b54f#npm:18.1.0"],\
+            ["react-firebase-hooks", "virtual:5025b2563150a3c05e923cfdc09d8a7e556ed57c4cda86e66c470562a9e7c08fc36d6c52e8fdf46b8ac4e4b5189be48bf83ac29c17135ff20c471cf468e7b54f#npm:5.0.3"],\
             ["react-scripts", "virtual:5025b2563150a3c05e923cfdc09d8a7e556ed57c4cda86e66c470562a9e7c08fc36d6c52e8fdf46b8ac4e4b5189be48bf83ac29c17135ff20c471cf468e7b54f#npm:4.0.3"]\
           ],\
           "linkType": "SOFT"\
@@ -17919,6 +17921,32 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/react-error-overlay-npm-6.0.11-021cdeaa92-ce7b44c38f.zip/node_modules/react-error-overlay/",\
           "packageDependencies": [\
             ["react-error-overlay", "npm:6.0.11"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["react-firebase-hooks", [\
+        ["npm:5.0.3", {\
+          "packageLocation": "./.yarn/cache/react-firebase-hooks-npm-5.0.3-ca50207645-80e704f183.zip/node_modules/react-firebase-hooks/",\
+          "packageDependencies": [\
+            ["react-firebase-hooks", "npm:5.0.3"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:5025b2563150a3c05e923cfdc09d8a7e556ed57c4cda86e66c470562a9e7c08fc36d6c52e8fdf46b8ac4e4b5189be48bf83ac29c17135ff20c471cf468e7b54f#npm:5.0.3", {\
+          "packageLocation": "./.yarn/__virtual__/react-firebase-hooks-virtual-9a0f894eaa/0/cache/react-firebase-hooks-npm-5.0.3-ca50207645-80e704f183.zip/node_modules/react-firebase-hooks/",\
+          "packageDependencies": [\
+            ["react-firebase-hooks", "virtual:5025b2563150a3c05e923cfdc09d8a7e556ed57c4cda86e66c470562a9e7c08fc36d6c52e8fdf46b8ac4e4b5189be48bf83ac29c17135ff20c471cf468e7b54f#npm:5.0.3"],\
+            ["@types/firebase", null],\
+            ["@types/react", null],\
+            ["firebase", "npm:9.8.1"],\
+            ["react", "npm:18.1.0"]\
+          ],\
+          "packagePeers": [\
+            "@types/firebase",\
+            "@types/react",\
+            "firebase",\
+            "react"\
           ],\
           "linkType": "HARD"\
         }]\

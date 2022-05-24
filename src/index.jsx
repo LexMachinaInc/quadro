@@ -7,6 +7,7 @@ import { getAnalytics } from "firebase/analytics";
 
 import "./index.scss";
 import App from "./App";
+import FireApp from "./FireApp";
 import * as serviceWorker from "./serviceWorker";
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -25,12 +26,12 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const fireApp = initializeApp(firebaseConfig);
-const analytics = getAnalytics(fireApp);
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 
 const rootEl = document.getElementById("root");
 const root = createRoot(rootEl);
-root.render(<App />);
+root.render(<FireApp />);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
