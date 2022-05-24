@@ -3,19 +3,21 @@ import { shape, arrayOf, func, string, bool } from "prop-types";
 import "../App.scss";
 import CONFIG from "../config/api";
 import { toggleSideMenu } from "../helpers/ui";
+import { useGithubClient } from "../contexts/githubClient";
+import { useRepoInfo } from "../contexts/githubRepoInfo";
 
 export default function DashBoard({
   authenticated,
   changeMemberBoard,
   activeMember,
-  members,
-  avatar,
 }) {
   const onChangeHandler = (e) => {
     e.currentTarget.blur();
     const { value } = e.target;
     changeMemberBoard(value);
   };
+
+  const { loading, members, userAvatar } = useRepoInfo();
 
   return (
     <nav className="flexContainer blueBackground">
@@ -25,7 +27,7 @@ export default function DashBoard({
         </li>
       </ul>
       <ul className="nav flexContainer flexEnd">
-        {authenticated ? (
+        {authenticated && !loading ? (
           <>
             <li className="member-dropdown">
               <label className="member-select-label" htmlFor="member-select">
@@ -56,7 +58,7 @@ export default function DashBoard({
                 onClick={toggleSideMenu}
                 onKeyPress={toggleSideMenu}
               >
-                <img className="user-avatar" src={avatar} alt={activeMember} />
+                <img className="user-avatar" src={userAvatar} alt={activeMember} />
               </button>
             </li>
           </>
@@ -70,14 +72,10 @@ DashBoard.propTypes = {
   authenticated: bool,
   changeMemberBoard: func,
   activeMember: string,
-  members: arrayOf(shape({})),
-  avatar: string,
 };
 
 DashBoard.defaultProps = {
   authenticated: false,
   changeMemberBoard: () => {},
   activeMember: undefined,
-  members: [undefined],
-  avatar: undefined,
 };

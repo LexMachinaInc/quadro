@@ -10,16 +10,13 @@ import { RestLink } from "apollo-link-rest";
 import { getToken } from "./authorization";
 import CONFIG from "../config/api";
 
-export function getApolloClient() {
+export function getApolloClient(token) {
   const request = async (operation) => {
-    const token = await getToken();
-    if (token) {
-      operation.setContext({
-        headers: {
-          authorization: `Bearer ${token}`,
-        },
-      });
-    }
+    operation.setContext({
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
   };
 
   const cache = new InMemoryCache();

@@ -1,12 +1,12 @@
 /* eslint-disable react/prop-types */
 import React from "react";
-import { getAuth, GithubAuthProvider } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import { useSignInWithGithub } from "react-firebase-hooks/auth";
 
 import LoginScreen from "./components/LoginScreen";
 import DashBoard from "./components/DashBoard";
-import Board from "./components/Board";
-import { GithubTokenProvider } from "./contexts/githubToken";
+import { GithubClientProvider } from "./contexts/githubClient";
+import { GithubRepoInfoProvider } from "./contexts/githubRepoInfo";
 
 export default function FireApp({ firebaseApp }) {
   const auth = getAuth(firebaseApp);
@@ -25,12 +25,14 @@ export default function FireApp({ firebaseApp }) {
   if (result) {
     const { user } = result;
     return (
-      <GithubTokenProvider authResult={result}>
-        <div id="container" className="wrapper">
-          <DashBoard authenticated />
-          <div className="box"></div>
-        </div>
-      </GithubTokenProvider>
+      <GithubClientProvider authResult={result}>
+        <GithubRepoInfoProvider>
+          <div id="container" className="wrapper">
+            <DashBoard authenticated />
+            <div className="box"></div>
+          </div>
+        </GithubRepoInfoProvider>
+      </GithubClientProvider>
     );
   }
   return (
@@ -38,7 +40,10 @@ export default function FireApp({ firebaseApp }) {
       <DashBoard />
       <div className="box">
         <LoginScreen>
-          <button type="button" onClick={() => signInWithGithub()}>
+          <button
+            type="button"
+            onClick={() => signInWithGithub(["user", "repo"])}
+          >
             Sign In
           </button>
         </LoginScreen>
