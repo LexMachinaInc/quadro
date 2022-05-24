@@ -1,31 +1,31 @@
 import React from "react";
-import { shape, arrayOf, func, string } from "prop-types";
+import { shape, arrayOf, func, string, bool } from "prop-types";
 import "../App.scss";
 import CONFIG from "../config/api";
 import { toggleSideMenu } from "../helpers/ui";
 
 export default function DashBoard({
-  status,
-  handlers,
-  member,
+  authenticated,
+  changeMemberBoard,
+  activeMember,
   members,
   avatar,
 }) {
   const onChangeHandler = (e) => {
     e.currentTarget.blur();
     const { value } = e.target;
-    handlers.changeMemberBoard(value);
+    changeMemberBoard(value);
   };
 
   return (
     <nav className="flexContainer blueBackground">
       <ul className="nav flexItem flexStart logo-menu-container">
         <li className="logo-title">
-          <strong>QUADRO</strong>
+          <strong>QUADRO 🔥</strong>
         </li>
       </ul>
       <ul className="nav flexContainer flexEnd">
-        {status === "authenticated" ? (
+        {authenticated ? (
           <>
             <li className="member-dropdown">
               <label className="member-select-label" htmlFor="member-select">
@@ -35,7 +35,7 @@ export default function DashBoard({
                 onChange={onChangeHandler}
                 id="member-select"
                 className="select-css"
-                value={member}
+                value={activeMember}
               >
                 {members.map((mem) => (
                   <option key={mem.login} value={mem.login}>
@@ -56,7 +56,7 @@ export default function DashBoard({
                 onClick={toggleSideMenu}
                 onKeyPress={toggleSideMenu}
               >
-                <img className="user-avatar" src={avatar} alt={member} />
+                <img className="user-avatar" src={avatar} alt={activeMember} />
               </button>
             </li>
           </>
@@ -67,17 +67,17 @@ export default function DashBoard({
 }
 
 DashBoard.propTypes = {
-  status: string.isRequired,
-  handlers: shape({
-    changeMemberBoard: func,
-  }).isRequired,
-  member: string,
+  authenticated: bool,
+  changeMemberBoard: func,
+  activeMember: string,
   members: arrayOf(shape({})),
   avatar: string,
 };
 
 DashBoard.defaultProps = {
-  member: undefined,
+  authenticated: false,
+  changeMemberBoard: () => {},
+  activeMember: undefined,
   members: [undefined],
   avatar: undefined,
 };
