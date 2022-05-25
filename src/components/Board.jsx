@@ -4,8 +4,11 @@ import "../App.scss";
 import CardContainer from "./CardContainer";
 import { GET_BUCKET, getQueryString } from "../helpers/api_interface";
 import CONFIG from "../config/api";
+import { useRepoInfo } from "../contexts/githubRepoInfo";
 
-export default function Board({ member, statusLabels }) {
+export default function Board({ member }) {
+  const { labels } = useRepoInfo();
+  const statusLabels = labels;
   const allQueryStrings = CONFIG.buckets.reduce((result, bucket) => {
     result[bucket.key] = getQueryString(member, bucket.key);
     return result;
@@ -35,5 +38,4 @@ export default function Board({ member, statusLabels }) {
 
 Board.propTypes = {
   member: string.isRequired,
-  statusLabels: arrayOf(shape({})).isRequired,
 };

@@ -4,7 +4,7 @@ import "../App.scss";
 import MockCard from "./MockCard";
 import CONFIG from "../config/api";
 
-export default function Home({children}) {
+export default function Home({ children }) {
   const titles = CONFIG.buckets.map((bucket) => bucket.title);
   return (
     <>
@@ -36,9 +36,7 @@ export default function Home({children}) {
       </div>
       <div className="modal">
         <div className="modal-content">
-          <div className="modal-card">
-            {children}
-          </div>
+          <div className="modal-card">{children}</div>
         </div>
       </div>
     </>

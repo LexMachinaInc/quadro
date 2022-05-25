@@ -58,7 +58,11 @@ export default function DashBoard({
                 onClick={toggleSideMenu}
                 onKeyPress={toggleSideMenu}
               >
-                <img className="user-avatar" src={userAvatar} alt={activeMember} />
+                <img
+                  className="user-avatar"
+                  src={userAvatar}
+                  alt={activeMember}
+                />
               </button>
             </li>
           </>

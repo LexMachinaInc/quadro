@@ -7,6 +7,7 @@ import useCookie from "react-use-cookie";
 
 import LoginScreen from "./components/LoginScreen";
 import DashBoard from "./components/DashBoard";
+import Board from "./components/Board";
 import { GithubClientProvider } from "./contexts/githubClient";
 import { GithubRepoInfoProvider } from "./contexts/githubRepoInfo";
 
@@ -60,7 +61,9 @@ export default function FireApp({ firebaseApp }) {
         <GithubRepoInfoProvider>
           <div id="container" className="wrapper">
             <DashBoard authenticated />
-            <div className="box"></div>
+            <div className="box">
+              <Board member="gcarothers" />
+            </div>
           </div>
         </GithubRepoInfoProvider>
       </GithubClientProvider>

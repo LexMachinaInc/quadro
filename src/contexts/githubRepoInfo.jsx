@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { node, shape, string } from "prop-types";
 import { DASHBOARD_DATA, getApolloClient } from "../helpers/api_interface";
 import CONFIG from "../config/api";
@@ -39,7 +45,6 @@ function GithubRepoInfoProvider({ children }) {
         setUserAvatar(avatar);
       });
   }, [client]);
-
 
   const value = useMemo(
     () => ({ loading, members, labels, userAvatar }),

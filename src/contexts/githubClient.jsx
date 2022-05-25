@@ -2,6 +2,8 @@ import React, { createContext, useContext, useMemo } from "react";
 import { shape, node, string } from "prop-types";
 
 import { GithubAuthProvider } from "firebase/auth";
+import { ApolloProvider } from "@apollo/client";
+
 import { getApolloClient } from "../helpers/api_interface";
 
 /**
@@ -15,7 +17,7 @@ function GithubClientProvider({ children, accessToken }) {
   const client = useMemo(() => getApolloClient(accessToken), [accessToken]);
   return (
     <GithubClientContext.Provider value={client}>
-      {children}
+      <ApolloProvider client={client}>{children}</ApolloProvider>
     </GithubClientContext.Provider>
   );
 }
