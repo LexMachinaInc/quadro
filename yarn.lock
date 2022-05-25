@@ -13636,6 +13636,7 @@ __metadata:
     react-dom: ^18.1.0
     react-firebase-hooks: ^5.0.3
     react-scripts: 4.0.3
+    react-use-cookie: ^1.4.0
   languageName: unknown
   linkType: soft
 
@@ -13935,6 +13936,15 @@ __metadata:
   bin:
     react-scripts: ./bin/react-scripts.js
   checksum: a05a46ce3145b42ac8b57633d3b90b6689c24697c1449bccf219349996d718a3cd0796e4910f4ab6abb5b024982cafd62345e88c8e7b42a45efca3bef1a0eb87
+  languageName: node
+  linkType: hard
+
+"react-use-cookie@npm:^1.4.0":
+  version: 1.4.0
+  resolution: "react-use-cookie@npm:1.4.0"
+  peerDependencies:
+    react: ">=16.8"
+  checksum: 79e4494ab60858e7e6cbdbe5d55e8968f9d66100b6914de759c6db18b894d4c137976b91551bfc0226eec44101c06751fe9091ac30a0e24f480a00d5a3f6f595
   languageName: node
   linkType: hard
 

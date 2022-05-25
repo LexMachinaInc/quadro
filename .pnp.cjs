@@ -63,7 +63,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react", "npm:18.1.0"],\
             ["react-dom", "virtual:5025b2563150a3c05e923cfdc09d8a7e556ed57c4cda86e66c470562a9e7c08fc36d6c52e8fdf46b8ac4e4b5189be48bf83ac29c17135ff20c471cf468e7b54f#npm:18.1.0"],\
             ["react-firebase-hooks", "virtual:5025b2563150a3c05e923cfdc09d8a7e556ed57c4cda86e66c470562a9e7c08fc36d6c52e8fdf46b8ac4e4b5189be48bf83ac29c17135ff20c471cf468e7b54f#npm:5.0.3"],\
-            ["react-scripts", "virtual:5025b2563150a3c05e923cfdc09d8a7e556ed57c4cda86e66c470562a9e7c08fc36d6c52e8fdf46b8ac4e4b5189be48bf83ac29c17135ff20c471cf468e7b54f#npm:4.0.3"]\
+            ["react-scripts", "virtual:5025b2563150a3c05e923cfdc09d8a7e556ed57c4cda86e66c470562a9e7c08fc36d6c52e8fdf46b8ac4e4b5189be48bf83ac29c17135ff20c471cf468e7b54f#npm:4.0.3"],\
+            ["react-use-cookie", "virtual:5025b2563150a3c05e923cfdc09d8a7e556ed57c4cda86e66c470562a9e7c08fc36d6c52e8fdf46b8ac4e4b5189be48bf83ac29c17135ff20c471cf468e7b54f#npm:1.4.0"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -17686,7 +17687,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react", "npm:18.1.0"],\
             ["react-dom", "virtual:5025b2563150a3c05e923cfdc09d8a7e556ed57c4cda86e66c470562a9e7c08fc36d6c52e8fdf46b8ac4e4b5189be48bf83ac29c17135ff20c471cf468e7b54f#npm:18.1.0"],\
             ["react-firebase-hooks", "virtual:5025b2563150a3c05e923cfdc09d8a7e556ed57c4cda86e66c470562a9e7c08fc36d6c52e8fdf46b8ac4e4b5189be48bf83ac29c17135ff20c471cf468e7b54f#npm:5.0.3"],\
-            ["react-scripts", "virtual:5025b2563150a3c05e923cfdc09d8a7e556ed57c4cda86e66c470562a9e7c08fc36d6c52e8fdf46b8ac4e4b5189be48bf83ac29c17135ff20c471cf468e7b54f#npm:4.0.3"]\
+            ["react-scripts", "virtual:5025b2563150a3c05e923cfdc09d8a7e556ed57c4cda86e66c470562a9e7c08fc36d6c52e8fdf46b8ac4e4b5189be48bf83ac29c17135ff20c471cf468e7b54f#npm:4.0.3"],\
+            ["react-use-cookie", "virtual:5025b2563150a3c05e923cfdc09d8a7e556ed57c4cda86e66c470562a9e7c08fc36d6c52e8fdf46b8ac4e4b5189be48bf83ac29c17135ff20c471cf468e7b54f#npm:1.4.0"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -18057,6 +18059,28 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             "@types/typescript",\
             "react",\
             "typescript"\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["react-use-cookie", [\
+        ["npm:1.4.0", {\
+          "packageLocation": "./.yarn/cache/react-use-cookie-npm-1.4.0-4807bb41fb-79e4494ab6.zip/node_modules/react-use-cookie/",\
+          "packageDependencies": [\
+            ["react-use-cookie", "npm:1.4.0"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:5025b2563150a3c05e923cfdc09d8a7e556ed57c4cda86e66c470562a9e7c08fc36d6c52e8fdf46b8ac4e4b5189be48bf83ac29c17135ff20c471cf468e7b54f#npm:1.4.0", {\
+          "packageLocation": "./.yarn/__virtual__/react-use-cookie-virtual-9839ffebca/0/cache/react-use-cookie-npm-1.4.0-4807bb41fb-79e4494ab6.zip/node_modules/react-use-cookie/",\
+          "packageDependencies": [\
+            ["react-use-cookie", "virtual:5025b2563150a3c05e923cfdc09d8a7e556ed57c4cda86e66c470562a9e7c08fc36d6c52e8fdf46b8ac4e4b5189be48bf83ac29c17135ff20c471cf468e7b54f#npm:1.4.0"],\
+            ["@types/react", null],\
+            ["react", "npm:18.1.0"]\
+          ],\
+          "packagePeers": [\
+            "@types/react",\
+            "react"\
           ],\
           "linkType": "HARD"\
         }]\

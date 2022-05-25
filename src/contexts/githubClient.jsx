@@ -11,9 +11,7 @@ const GithubClientContext = createContext({});
 
 const useGithubClient = () => useContext(GithubClientContext);
 
-function GithubClientProvider({ children, authResult }) {
-  const credential = GithubAuthProvider.credentialFromResult(authResult);
-  const { accessToken } = credential;
+function GithubClientProvider({ children, accessToken }) {
   const client = useMemo(() => getApolloClient(accessToken), [accessToken]);
   return (
     <GithubClientContext.Provider value={client}>
@@ -24,7 +22,7 @@ function GithubClientProvider({ children, authResult }) {
 
 GithubClientProvider.propTypes = {
   children: node.isRequired,
-  authResult: shape({ user: shape({}), provider: string }).isRequired,
+  accessToken: string.isRequired,
 };
 
 export { GithubClientProvider, useGithubClient };
