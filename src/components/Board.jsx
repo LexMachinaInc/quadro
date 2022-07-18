@@ -5,12 +5,14 @@ import CardContainer from "./CardContainer";
 import { GET_BUCKET, getQueryString } from "../helpers/api_interface";
 import CONFIG from "../config/api";
 import { useRepoInfo } from "../contexts/githubRepoInfo";
+import { useActiveBoard } from "../contexts/activeBoard";
 
-export default function Board({ member }) {
+export default function Board() {
   const { labels } = useRepoInfo();
+  const { activeBoard } = useActiveBoard();
   const statusLabels = labels;
   const allQueryStrings = CONFIG.buckets.reduce((result, bucket) => {
-    result[bucket.key] = getQueryString(member, bucket.key);
+    result[bucket.key] = getQueryString(activeBoard, bucket.key);
     return result;
   }, {});
   return (
@@ -36,6 +38,4 @@ export default function Board({ member }) {
   );
 }
 
-Board.propTypes = {
-  member: string.isRequired,
-};
+Board.propTypes = {};

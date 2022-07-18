@@ -19,6 +19,7 @@ const useRepoInfo = () => useContext(GithubRepoInfoContext);
 
 function GithubRepoInfoProvider({ children }) {
   const [loading, setLoading] = useState(true);
+  const [member, setMember] = useState("");
   const [members, setMembers] = useState([]);
   const [labels, setLabels] = useState([]);
   const [userAvatar, setUserAvatar] = useState("");
@@ -33,13 +34,14 @@ function GithubRepoInfoProvider({ children }) {
       })
       .then((result) => {
         const {
-          viewer: { login: member, avatarUrl: avatar },
+          viewer: { login: loginMember, avatarUrl: avatar },
           repository: {
             labels: { nodes: statusLabels },
             assignableUsers: { nodes: lookedUpmembers },
           },
         } = result.data;
         setLoading(false);
+        setMember(loginMember);
         setMembers(lookedUpmembers);
         setLabels(statusLabels);
         setUserAvatar(avatar);
@@ -47,8 +49,8 @@ function GithubRepoInfoProvider({ children }) {
   }, [client]);
 
   const value = useMemo(
-    () => ({ loading, members, labels, userAvatar }),
-    [loading, members, labels, userAvatar],
+    () => ({ loading, member, members, labels, userAvatar }),
+    [loading, member, members, labels, userAvatar],
   );
   return (
     <GithubRepoInfoContext.Provider value={value}>
