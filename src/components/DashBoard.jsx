@@ -3,21 +3,20 @@ import { shape, arrayOf, func, string, bool } from "prop-types";
 import "../App.scss";
 import CONFIG from "../config/api";
 import { toggleSideMenu } from "../helpers/ui";
-import { useGithubClient } from "../contexts/githubClient";
 import { useRepoInfo } from "../contexts/githubRepoInfo";
+import { useActiveBoard } from "../contexts/activeBoard";
 
-export default function DashBoard({
-  authenticated,
-  changeMemberBoard,
-  activeMember,
-}) {
+export default function DashBoard({ authenticated }) {
+  const {
+    activeBoardState: { activeBoardName: activeBoard },
+    activeBoardMethods: { setActiveBoardName },
+  } = useActiveBoard();
+  const { loading, member, members, userAvatar } = useRepoInfo();
   const onChangeHandler = (e) => {
     e.currentTarget.blur();
     const { value } = e.target;
-    changeMemberBoard(value);
+    setActiveBoardName(value);
   };
-
-  const { loading, members, userAvatar } = useRepoInfo();
 
   return (
     <nav className="flexContainer blueBackground">
@@ -37,7 +36,7 @@ export default function DashBoard({
                 onChange={onChangeHandler}
                 id="member-select"
                 className="select-css"
-                value={activeMember}
+                value={activeBoard}
               >
                 {members.map((mem) => (
                   <option key={mem.login} value={mem.login}>
@@ -58,11 +57,7 @@ export default function DashBoard({
                 onClick={toggleSideMenu}
                 onKeyPress={toggleSideMenu}
               >
-                <img
-                  className="user-avatar"
-                  src={userAvatar}
-                  alt={activeMember}
-                />
+                <img className="user-avatar" src={userAvatar} alt={member} />
               </button>
             </li>
           </>
@@ -74,12 +69,8 @@ export default function DashBoard({
 
 DashBoard.propTypes = {
   authenticated: bool,
-  changeMemberBoard: func,
-  activeMember: string,
 };
 
 DashBoard.defaultProps = {
   authenticated: false,
-  changeMemberBoard: () => {},
-  activeMember: undefined,
 };

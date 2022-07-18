@@ -10,6 +10,7 @@ import DashBoard from "./components/DashBoard";
 import Board from "./components/Board";
 import { GithubClientProvider } from "./contexts/githubClient";
 import { GithubRepoInfoProvider } from "./contexts/githubRepoInfo";
+import { ActiveBoardProvider } from "./contexts/activeBoard";
 
 function Login({ signInWithGithub }) {
   return (
@@ -59,12 +60,14 @@ export default function FireApp({ firebaseApp }) {
     return (
       <GithubClientProvider accessToken={githubToken}>
         <GithubRepoInfoProvider>
-          <div id="container" className="wrapper">
-            <DashBoard authenticated />
-            <div className="box">
-              <Board member="gcarothers" />
+          <ActiveBoardProvider>
+            <div id="container" className="wrapper">
+              <DashBoard authenticated />
+              <div className="box">
+                <Board member="gcarothers" />
+              </div>
             </div>
-          </div>
+          </ActiveBoardProvider>
         </GithubRepoInfoProvider>
       </GithubClientProvider>
     );
