@@ -1,53 +1,45 @@
-/*eslint-disable no-useless-escape */
-import { gql } from "apollo-boost";
+import gql from "graphql-tag";
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloLink,
+  Observable,
+  HttpLink,
+} from "@apollo/client";
+import { RestLink } from "apollo-link-rest";
 import { getToken } from "./authorization";
-import { CONFIG } from "../config/api";
-import { ApolloClient } from "apollo-client";
-import { InMemoryCache, IntrospectionFragmentMatcher } from "apollo-cache-inmemory";
-import { HttpLink } from "apollo-link-http";
-import { ApolloLink, Observable } from "apollo-link";
-import { RestLink } from 'apollo-link-rest';
+import CONFIG from "../config/api";
 
-export function getApolloClient() {
-  const request = async operation => {
-    const token = await getToken();
-    if (token) {
-      operation.setContext({
-        headers: {
-          authorization: `Bearer ${token}`
-        }
-      });
-    }
-  }
-
-  const fragmentMatcher = new IntrospectionFragmentMatcher({
-    introspectionQueryResultData: {
-      __schema: {
-        types: ["Issue", "PullRequest"],
+export function getApolloClient(token) {
+  const request = async (operation) => {
+    operation.setContext({
+      headers: {
+        authorization: `Bearer ${token}`,
       },
-    },
-  });
+    });
+  };
 
-  const cache = new InMemoryCache({ fragmentMatcher });
+  const cache = new InMemoryCache();
 
-  const requestLink = new ApolloLink((operation, forward) =>
-    new Observable(observer => {
-      let handle;
-      Promise.resolve(operation)
-        .then(oper => request(oper))
-        .then(() => {
-          handle = forward(operation).subscribe({
-            next: observer.next.bind(observer),
-            error: observer.error.bind(observer),
-            complete: observer.complete.bind(observer),
-          });
-        })
-        .catch(observer.error.bind(observer));
+  const requestLink = new ApolloLink(
+    (operation, forward) =>
+      new Observable((observer) => {
+        let handle;
+        Promise.resolve(operation)
+          .then((oper) => request(oper))
+          .then(() => {
+            handle = forward(operation).subscribe({
+              next: observer.next.bind(observer),
+              error: observer.error.bind(observer),
+              complete: observer.complete.bind(observer),
+            });
+          })
+          .catch(observer.error.bind(observer));
 
-      return () => {
-        if (handle) handle.unsubscribe();
-      };
-    })
+        return () => {
+          if (handle) handle.unsubscribe();
+        };
+      }),
   );
 
   const restLink = new RestLink({ uri: CONFIG.api.github.rest });
@@ -58,9 +50,9 @@ export function getApolloClient() {
       restLink,
       new HttpLink({
         uri: CONFIG.api.github.gql,
-      })
+      }),
     ]),
-    cache
+    cache,
   });
 }
 
@@ -71,26 +63,26 @@ export const DASHBOARD_DATA = gql`
       login
     }
     repository(owner: $owner, name: $repo) {
-      assignableUsers(first:100) {
+      assignableUsers(first: 100) {
         nodes {
           login
         }
       }
-      labels(first:4) {
+      labels(first: 4) {
         nodes {
           name
           id
         }
       }
     }
-  }`;
+  }
+`;
 
 function queryStringBuilder(view, member, labels, state) {
-  const user = CONFIG.owner;
-  const repo = CONFIG.repo;
-  let query = `user:${user} repo:${repo} sort:updated-desc state:${state}`;
+  const { owner, repo } = CONFIG;
+  let query = `user:${owner} repo:${repo} sort:updated-desc state:${state}`;
   if (view === "member") {
-    query = query + ` assignee:${member}`;
+    query += ` assignee:${member}`;
   }
   if (labels) {
     query = `${query} ${labels}`;
@@ -101,11 +93,11 @@ function queryStringBuilder(view, member, labels, state) {
 export const GET_BACKLOG = (member, bucket) => {
   const queryStr = getQueryString(member, bucket);
   return GET_BUCKET(queryStr);
-}
+};
 
 export const GET_BUCKET = gql`
   query board($queryStr: String!, $end: String) {
-    search(first:30, type:ISSUE, query:$queryStr, after: $end) {
+    search(first: 30, type: ISSUE, query: $queryStr, after: $end) {
       issueCount
       pageInfo {
         hasNextPage
@@ -163,29 +155,40 @@ export const GET_BUCKET = gql`
       }
     }
   }
-`
+`;
 
 export const UPDATE_GITHUB_ISSUE = gql`
-  mutation updateIssue($owner: String!, $repo: String!, $issue: String!, $state: String!, $labels: [String!]) {
-    updateIssue(input:{state:$state, labels:$labels}, owner:$owner, repo:$repo, issue:$issue)
+  mutation updateIssue(
+    $owner: String!
+    $repo: String!
+    $issue: String!
+    $state: String!
+    $labels: [String!]
+  ) {
+    updateIssue(
+      input: { state: $state, labels: $labels }
+      owner: $owner
+      repo: $repo
+      issue: $issue
+    )
       @rest(
-        type:"PullRequest"
-        path:"/repos/{args.owner}/{args.repo}/issues/{args.issue}"
+        type: "PullRequest"
+        path: "/repos/{args.owner}/{args.repo}/issues/{args.issue}"
         method: "PATCH"
       ) {
-        node_id
-        labels
-        number
-        title
-        html_url
-        assignees
-      }
+      node_id
+      labels
+      number
+      title
+      html_url
+      assignees
+    }
   }
 `;
 
 export const UPDATE_ISSUE = gql`
   mutation UpdateIssueLabels($id: ID!, $labelIds: [ID!], $state: IssueState) {
-    updateIssue(input:{id:$id, labelIds:$labelIds, state:$state}) {
+    updateIssue(input: { id: $id, labelIds: $labelIds, state: $state }) {
       issue {
         id
         labels(first: 10) {
@@ -212,12 +215,15 @@ export const UPDATE_ISSUE = gql`
 `;
 
 export function getQueryString(member, bucket) {
-  const view = Object.keys(CONFIG.meetings).includes(member) ? "meeting" : "member";
+  const view = Object.keys(CONFIG.meetings).includes(member)
+    ? "meeting"
+    : "member";
   const state = bucket === "closed" ? "closed" : "open";
   const bucketLabels = CONFIG.queries.buckets.labels[bucket];
-  const labels = view === "meeting" ?
-    `${bucketLabels} ${CONFIG.queries.meetings[member].labels}` :
-    bucketLabels;
+  const labels =
+    view === "meeting"
+      ? `${bucketLabels} ${CONFIG.queries.meetings[member].labels}`
+      : bucketLabels;
   return queryStringBuilder(view, member, labels, state);
 }
 
@@ -227,20 +233,20 @@ export function updateIssueInCache(updatedIssue) {
     number: updatedIssue.number,
     title: updatedIssue.title,
     url: updatedIssue.html_url,
-    assignees: { edges: updatedIssue.assignees.map((assignee) => (
-      {
+    assignees: {
+      edges: updatedIssue.assignees.map((assignee) => ({
         node: {
           login: assignee.login,
-          avatarUrl: assignee.avatar_url
-         }
-      }
-    ))},
+          avatarUrl: assignee.avatar_url,
+        },
+      })),
+    },
     labels: {
-      nodes: updatedIssue.labels.map((label) => (
-        {
-          color: label.color,
-          id: label.node_id, name: label.name
-        }))
-    }
+      nodes: updatedIssue.labels.map((label) => ({
+        color: label.color,
+        id: label.node_id,
+        name: label.name,
+      })),
+    },
   };
 }
