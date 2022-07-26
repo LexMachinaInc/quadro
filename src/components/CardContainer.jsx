@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { string, shape, arrayOf } from "prop-types";
+import { string, shape, arrayOf, bool } from "prop-types";
 import { Query, Mutation } from "@apollo/client/react/components";
 import "../App.scss";
 import Card from "./Card";
@@ -18,6 +18,7 @@ export default function CardContainer({
   statusLabelId,
   allQueryStrings,
   allStatusLabels,
+  isEmpty,
 }) {
   const [isFetching, setIsFetching] = useState(false);
 
@@ -51,113 +52,116 @@ export default function CardContainer({
       }`}
     >
       <h3 className="list-title">{title}</h3>
-      <Query query={query} variables={{ queryStr: queryString, end: null }}>
-        {({ loading, error, data, fetchMore }) => {
-          if (loading) return <Loader />;
-          if (error) return <EmptyBoard />;
-          const { hasNextPage, endCursor } = data.search.pageInfo;
-          const issues = data.search.edges.map((edge) => {
-            const {
-              number,
-              url,
-              title,
-              labels,
-              assignees,
-              id,
-              __typename: typeName,
-            } = edge.node;
-            return {
-              id,
-              number,
-              url,
-              title,
-              labels: labels.nodes,
-              assignees: assignees.edges,
-              typeName,
-            };
-          });
+      {!isEmpty && (
+        <Query query={query} variables={{ queryStr: queryString, end: null }}>
+          {({ loading, error, data, fetchMore }) => {
+            if (loading) return <Loader />;
+            if (error) return <EmptyBoard />;
+            const { hasNextPage, endCursor } = data.search.pageInfo;
+            const issues = data.search.edges.map((edge) => {
+              const {
+                number,
+                url,
+                title,
+                labels,
+                assignees,
+                id,
+                __typename: typeName,
+              } = edge.node;
+              return {
+                id,
+                number,
+                url,
+                title,
+                labels: labels.nodes,
+                assignees: assignees.edges,
+                typeName,
+              };
+            });
 
-          return (
-            <Mutation
-              mutation={UPDATE_GITHUB_ISSUE}
-              update={(cache, { data, data: { updateIssue } }) => {
-                Object.keys(allQueryStrings).forEach((qs) => {
-                  const queryCache = cache.readQuery({
-                    query,
-                    variables: { queryStr: allQueryStrings[qs], end: null },
-                  });
-                  queryCache.search.edges = queryCache.search.edges.filter(
-                    (edge) => edge.node.id !== updateIssue.node_id,
-                  );
-                });
-
-                const q = cache.readQuery({
-                  query,
-                  variables: { queryStr: queryString, end: null },
-                });
-                q.search.edges = [
-                  { node: updateIssueInCache(updateIssue) },
-                  ...q.search.edges,
-                ];
-              }}
-            >
-              {(updateGithubIssue, { loading }) => {
-                if (loading) return <Loader />;
-                const fetchMoreProps = {
-                  variables: { queryStr: queryString, end: endCursor },
-                  updateQuery: (prev, { fetchMoreResult }) => {
-                    setIsFetching(false);
-                    if (!fetchMoreResult) return prev;
-                    const updatedEdges = prev.search.edges.concat(
-                      fetchMoreResult.search.edges,
+            return (
+              <Mutation
+                mutation={UPDATE_GITHUB_ISSUE}
+                update={(cache, { data, data: { updateIssue } }) => {
+                  Object.keys(allQueryStrings).forEach((qs) => {
+                    const queryCache = cache.readQuery({
+                      query,
+                      variables: { queryStr: allQueryStrings[qs], end: null },
+                    });
+                    queryCache.search.edges = queryCache.search.edges.filter(
+                      (edge) => edge.node.id !== updateIssue.node_id,
                     );
-                    fetchMoreResult.search.edges = updatedEdges;
-                    return fetchMoreResult;
-                  },
-                };
+                  });
 
-                const handleFetchMore = () => fetchMore(fetchMoreProps);
+                  const q = cache.readQuery({
+                    query,
+                    variables: { queryStr: queryString, end: null },
+                  });
+                  q.search.edges = [
+                    { node: updateIssueInCache(updateIssue) },
+                    ...q.search.edges,
+                  ];
+                }}
+              >
+                {(updateGithubIssue, { loading }) => {
+                  if (loading) return <Loader />;
+                  const fetchMoreProps = {
+                    variables: { queryStr: queryString, end: endCursor },
+                    updateQuery: (prev, { fetchMoreResult }) => {
+                      setIsFetching(false);
+                      if (!fetchMoreResult) return prev;
+                      const updatedEdges = prev.search.edges.concat(
+                        fetchMoreResult.search.edges,
+                      );
+                      fetchMoreResult.search.edges = updatedEdges;
+                      return fetchMoreResult;
+                    },
+                  };
 
-                return (
-                  <ul
-                    id={title}
-                    className="list-items"
-                    onScroll={handleScroll(hasNextPage, handleFetchMore)}
-                    onTouchMove={handleScroll(hasNextPage, handleFetchMore)}
-                    onDragOver={onDragOver}
-                    onDrop={onDrop(
-                      statusLabelId,
-                      allStatusLabels,
-                      updateGithubIssue,
-                    )}
-                  >
-                    {issues.map((issue) => (
-                      <li key={issue.number}>
-                        <Card
-                          key={issue.number}
-                          issue={issue}
-                          originStatusLabelId={statusLabelId}
-                        />
-                      </li>
-                    ))}
-                    {isFetching && (
-                      <div className="loading-more">
-                        Loading more issues ...
-                      </div>
-                    )}
-                  </ul>
-                );
-              }}
-            </Mutation>
-          );
-        }}
-      </Query>
+                  const handleFetchMore = () => fetchMore(fetchMoreProps);
+
+                  return (
+                    <ul
+                      id={title}
+                      className="list-items"
+                      onScroll={handleScroll(hasNextPage, handleFetchMore)}
+                      onTouchMove={handleScroll(hasNextPage, handleFetchMore)}
+                      onDragOver={onDragOver}
+                      onDrop={onDrop(
+                        statusLabelId,
+                        allStatusLabels,
+                        updateGithubIssue,
+                      )}
+                    >
+                      {issues.map((issue) => (
+                        <li key={issue.number}>
+                          <Card
+                            key={issue.number}
+                            issue={issue}
+                            originStatusLabelId={statusLabelId}
+                          />
+                        </li>
+                      ))}
+                      {isFetching && (
+                        <div className="loading-more">
+                          Loading more issues ...
+                        </div>
+                      )}
+                    </ul>
+                  );
+                }}
+              </Mutation>
+            );
+          }}
+        </Query>
+      )}
     </div>
   );
 }
 
 CardContainer.defaultProps = {
   statusLabelId: null,
+  isEmpty: false,
 };
 
 CardContainer.propTypes = {
@@ -167,4 +171,5 @@ CardContainer.propTypes = {
   allQueryStrings: shape({}).isRequired,
   statusLabelId: string,
   allStatusLabels: arrayOf(shape({})).isRequired,
+  isEmpty: bool,
 };

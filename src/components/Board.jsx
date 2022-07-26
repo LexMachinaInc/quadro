@@ -31,6 +31,7 @@ export default function Board() {
             statusLabelId={statusLabel ? statusLabel.id : null}
             allQueryStrings={allQueryStrings}
             allStatusLabels={statusLabels}
+            isEmpty={activeBoard == ""}
           />
         );
       })}
