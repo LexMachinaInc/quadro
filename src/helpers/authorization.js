@@ -32,7 +32,7 @@ export function getToken() {
 
 export function logOut(e) {
   e.preventDefault();
-  deleteCookie("quadro");
+  deleteCookie("githubToken");
   fetch("/logout")
     .then((resp) => resp.json())
     .then((resp) => {
