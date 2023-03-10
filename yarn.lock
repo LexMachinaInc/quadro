@@ -13036,6 +13036,8 @@ __metadata:
   dependenciesMeta:
     core-js-pure:
       built: false
+    protobufjs:
+      built: false
   languageName: unknown
   linkType: soft
 

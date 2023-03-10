@@ -18736,7 +18736,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ]],\
       ["protobufjs", [\
         ["npm:6.11.3", {\
-          "packageLocation": "./.yarn/unplugged/protobufjs-npm-6.11.3-566fb31188/node_modules/protobufjs/",\
+          "packageLocation": "./.yarn/cache/protobufjs-npm-6.11.3-566fb31188-4a6ce19641.zip/node_modules/protobufjs/",\
           "packageDependencies": [\
             ["protobufjs", "npm:6.11.3"],\
             ["@protobufjs/aspromise", "npm:1.1.2"],\
@@ -18756,7 +18756,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }],\
         ["npm:7.2.0", {\
-          "packageLocation": "./.yarn/unplugged/protobufjs-npm-7.2.0-d81dafbd88/node_modules/protobufjs/",\
+          "packageLocation": "./.yarn/cache/protobufjs-npm-7.2.0-d81dafbd88-27d204d576.zip/node_modules/protobufjs/",\
           "packageDependencies": [\
             ["protobufjs", "npm:7.2.0"],\
             ["@protobufjs/aspromise", "npm:1.1.2"],\

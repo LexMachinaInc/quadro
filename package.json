@@ -50,6 +50,9 @@
   "dependenciesMeta": {
     "core-js-pure": {
       "built": false
+    },
+    "protobufjs": {
+      "built": false
     }
   }
 }
