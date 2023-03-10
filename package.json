@@ -46,7 +46,7 @@
     "react-scripts": "5.0.1",
     "sass": "^1.58.3"
   },
-  "packageManager": "yarn@3.2.1",
+  "packageManager": "yarn@3.4.1",
   "dependenciesMeta": {
     "core-js-pure": {
       "built": false
