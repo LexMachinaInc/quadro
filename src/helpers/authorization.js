@@ -1,4 +1,3 @@
-import axios from "axios";
 import APP_CONFIG from "../config/app.json";
 
 const AUTH_TOKEN_KEY = APP_CONFIG.cookies.authToken;
@@ -23,25 +22,17 @@ export function getToken() {
   if (quadro != null) {
     return quadro;
   } else {
-    return axios("/authenticated")
-      .then((resp) => resp.data)
-      .then(({ token }) => {
-        if (token) {
-          setCookie(AUTH_TOKEN_KEY, token, 14);
-          return token;
-        }
-      })
-      .catch((err) => {
-        // eslint-disable-next-line no-console
-        console.log(err);
-        return null;
-      });
+    /*
+      @TODO: consider an alternative token re-fetching mechanism
+      or an error/re-login overlay message
+    */
+    throw new Error("No access token available.");
   }
 }
 
 export function logOut(e) {
   e.preventDefault();
-  deleteCookie("quadro");
+  deleteCookie("githubToken");
   fetch("/logout")
     .then((resp) => resp.json())
     .then((resp) => {
